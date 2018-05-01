@@ -39,7 +39,6 @@ public class Sprite extends Rectangle2D.Double {
 		y = Math.max(0,y);
 	}
 	
-	
 	public void draw(PApplet g) {
 		g.image(image,(int)x,(int)y,(int)width,(int)height);
 	}
