@@ -6,7 +6,10 @@ import java.util.*;
 import processing.core.PImage;
 
 public class Mario extends Sprite {
-
+	
+	private double xVel = 0;
+	private double yVel = 0;
+	
 	public static final int MARIO_WIDTH = 40;
 	public static final int MARIO_HEIGHT = 60;
 
@@ -16,11 +19,11 @@ public class Mario extends Sprite {
 
 	// METHODS
 	public void walk(int dir) {
-		// WALK!
+		moveByAmount(dir, 0);
 	}
 
 	public void jump() {
-		// JUMP!
+		yVel = -10;
 	}
 
 	public void act(ArrayList<Shape> obstacles) {
