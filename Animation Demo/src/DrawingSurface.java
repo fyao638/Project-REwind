@@ -85,9 +85,9 @@ public class DrawingSurface extends PApplet {
 		// modifying stuff
 
 		if (isPressed(KeyEvent.VK_LEFT))
-			mario.walk(-1);
+			mario.walk(-1, obstacles);
 		if (isPressed(KeyEvent.VK_RIGHT))
-			mario.walk(1);
+			mario.walk(1, obstacles);
 		if (isPressed(KeyEvent.VK_UP))
 			mario.jump();
 
