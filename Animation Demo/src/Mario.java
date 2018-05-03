@@ -7,19 +7,22 @@ import processing.core.PImage;
 
 public class Mario extends Sprite {
 	
-	private double xVel = 0;
-	private double yVel = 0;
+	private double xVel;
+	private double yVel;
 	
 	public static final int MARIO_WIDTH = 40;
 	public static final int MARIO_HEIGHT = 60;
+	
 
 	public Mario(PImage img, int x, int y) {
 		super(img, x, y, MARIO_WIDTH, MARIO_HEIGHT);
+		yVel = 0;
+		xVel = 0;
 	}
 
 	// METHODS
 	public void walk(int dir) {
-		this.moveByAmount(dir * 3, 0);
+		moveByAmount(3 * dir, 0);
 	}
 
 	public void jump() {
@@ -27,9 +30,19 @@ public class Mario extends Sprite {
 	}
 
 	public void act(ArrayList<Shape> obstacles) {
-		yVel += 0.05;
+		
+		yVel += 0.324;
+		
 		// FALL (and stop when a platform is hit)
+		for(Shape s : obstacles) {
+			if(s.intersects(this.getX(),this.getY() , MARIO_WIDTH, MARIO_HEIGHT)) {
+				yVel = 0;
+			}
+		}
+		
+		
 		this.moveByAmount(xVel, yVel);
+		
 	}
 
 
