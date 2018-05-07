@@ -1,5 +1,7 @@
 package testers;
 
-public class Map {
-
+public class Map { //extend sprite?
+	public Map() {
+		
+	}
 }
