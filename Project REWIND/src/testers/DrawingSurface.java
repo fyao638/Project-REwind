@@ -44,7 +44,7 @@ public class DrawingSurface extends PApplet {
 	// execute once when the program begins
 	public void setup() {
 		//size(0,0,PApplet.P3D);
-		assets.add(loadImage("mario.png"));
+		assets.add(loadImage("player.png"));
 		
 		spawnNewPlayer();
 	}
@@ -57,9 +57,7 @@ public class DrawingSurface extends PApplet {
 
 		// drawing stuff
 
-		background(0,255,255);   
-
-		pushMatrix();
+		background(128,128,128);  
 
 		float ratioX = (float)width/DRAWING_WIDTH;
 		float ratioY = (float)height/DRAWING_HEIGHT;
@@ -73,16 +71,13 @@ public class DrawingSurface extends PApplet {
 				rect(r.x,r.y,r.width,r.height);
 			}
 		}
-
+		p1.turnToward(mouseX, mouseY);
 		p1.draw(this);
-		//p1.turnToward(mouseX, mouseY);
-
-		popMatrix();
 
 
 		// modifying stuff
 
-		if (isPressed(KeyEvent.VK_A)) 
+		if (isPressed(KeyEvent.VK_A))
 			p1.walk(-1, 0);	
 		if (isPressed(KeyEvent.VK_D))
 			p1.walk(1, 0);
@@ -90,6 +85,8 @@ public class DrawingSurface extends PApplet {
 			p1.walk(0, -1);
 		if (isPressed(KeyEvent.VK_S))
 			p1.walk(0, 1);
+		
+		
 
 		p1.act(obstacles);
 
