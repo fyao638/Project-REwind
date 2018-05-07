@@ -73,8 +73,6 @@ public class DrawingSurface extends PApplet {
 		}
 		p1.turnToward(mouseX, mouseY);
 		p1.draw(this);
-
-
 		// modifying stuff
 
 		if (isPressed(KeyEvent.VK_A))
