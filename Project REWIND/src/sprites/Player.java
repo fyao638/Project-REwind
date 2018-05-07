@@ -1,6 +1,7 @@
 package sprites;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.*;
 
 import processing.core.PApplet;
@@ -54,11 +55,16 @@ public class Player extends Sprite {
 	}
 	public void draw(PApplet drawer) {
 		drawer.image(img,(int)x,(int)y,(int)width,(int)height);
-		drawer.rotate((float) dir);
+		//drawer.rotate((float) dir);
 	}
 	
 	public void turnToMouse(int mouseX, int mouseY) {
 		this.turnToward(mouseX, mouseY);
+	}
+	
+	public void rewind(Point2D.Double p) {
+		this.x = p.getX();
+		this.y = p.getY();
 	}
 
 	public void act(ArrayList<Shape> obstacles) {
