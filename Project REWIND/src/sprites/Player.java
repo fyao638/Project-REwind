@@ -6,6 +6,7 @@ import java.util.*;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import testers.DrawingSurface;
 
 public class Player extends Sprite {
 
@@ -38,8 +39,17 @@ public class Player extends Sprite {
 		}
 	}
 	// Dunno what to do with this
-	public void shoot(Bullet b) {
+	public Bullet shoot(int mouseX, int mouseY, DrawingSurface d) {
+		double newXVel =  - (getX() - mouseX) ;
+		double newYVel =  - (getY() - mouseY) ;
 		
+		double angle = Math.atan(newYVel / newXVel);
+		
+		if(newXVel < 0) {
+			angle += Math.PI;
+		}
+		
+		return new Bullet(d.getAssets().get(2), getX(), getY(), 10 * Math.cos(angle), 10 * Math.sin(angle));
 	}
 	public void turnToward(int x, int y) {
 		if ((this.x + width / 2) - x == 0) {

@@ -26,6 +26,7 @@ public class DrawingSurface extends PApplet {
 	
 	private ArrayList<PImage> assets;
 	
+	
 	private ArrayList<Point2D.Double> prevLocs;
 
 	public DrawingSurface() {
@@ -50,6 +51,10 @@ public class DrawingSurface extends PApplet {
 	
 	public void runMe() {
 		runSketch();
+	}
+	
+	public  ArrayList<PImage> getAssets(){
+		return assets;
 	}
 
 	// The statements in the setup() function 
@@ -109,19 +114,6 @@ public class DrawingSurface extends PApplet {
 		if (isPressed(KeyEvent.VK_R))
 			p1.rewind(prevLocs.get(0));
 		
-		if(mousePressed) {
-			
-			double newXVel =  - (p1.getX() - mouseX) ;
-			double newYVel =  - (p1.getY() - mouseY) ;
-			
-			double angle = Math.atan(newYVel / newXVel);
-			
-			if(newXVel < 0) {
-				angle += Math.PI;
-			}
-			
-			bullets.add(new Bullet(assets.get(2), p1.getX(), p1.getY(), 10 * Math.cos(angle), 10 * Math.sin(angle)));
-		}
 		
 		for(Bullet b : bullets) {
 			b.act();
@@ -142,6 +134,10 @@ public class DrawingSurface extends PApplet {
 
 	public void keyPressed() {
 		keys.add(keyCode);
+	}
+	
+	public void mouseClicked() {
+		bullets.add(p1.shoot(mouseX, mouseY, this));
 	}
 
 	public void keyReleased() {
