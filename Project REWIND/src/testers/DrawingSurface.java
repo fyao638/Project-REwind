@@ -75,6 +75,7 @@ public class DrawingSurface extends PApplet {
 		}
 
 		p1.draw(this);
+		//p1.turnToward(mouseX, mouseY);
 
 		popMatrix();
 
@@ -109,5 +110,6 @@ public class DrawingSurface extends PApplet {
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
 	}
+	
 }
 

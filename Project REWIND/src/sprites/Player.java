@@ -18,6 +18,10 @@ public class Player extends Sprite {
 	public void walk(int xDir, int yDir) {
 		this.moveByAmount(xDir * 3, yDir * 3);
 	}
+	
+	public void turnToMouse(int mouseX, int mouseY) {
+		this.turnToward(mouseX, mouseY);
+	}
 
 	public void act(ArrayList<Shape> obstacles) {
 		// FALL (and stop when a platform is hit)
