@@ -15,8 +15,8 @@ public class Player extends Sprite {
 	}
 
 	// METHODS
-	public void walk(int dir) {
-		this.moveByAmount(dir * 3, 0);
+	public void walk(int xDir, int yDir) {
+		this.moveByAmount(xDir * 3, yDir * 3);
 	}
 
 	public void act(ArrayList<Shape> obstacles) {

@@ -1,11 +1,14 @@
 package sprites;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Obstacle extends Sprite {
+	
+	private PImage img;
 
-	public Obstacle(String filename, double x, double y, double w, double h, PApplet marker) {
-		super(filename, x, y, w, h, marker);
+	public Obstacle(PImage image, double x, double y, double w, double h) {
+		super(image, x, y, w, h);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -15,9 +15,6 @@ public class Sprite extends Rectangle2D.Double {
 	private PImage img;
 	
 	//Constructors
-	public Sprite(String filename, double x, double y, double w, double h, PApplet marker) {
-		this(marker.loadImage(filename),x,y,w,h);
-	}
 	
 	public Sprite(PImage image, double x, double y, double w, double h) {
 		super(x,y,w,h);
