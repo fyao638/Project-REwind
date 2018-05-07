@@ -82,13 +82,13 @@ public class DrawingSurface extends PApplet {
 
 		// modifying stuff
 
-		if (isPressed(KeyEvent.VK_LEFT)) 
+		if (isPressed(KeyEvent.VK_A)) 
 			p1.walk(-1, 0);	
-		if (isPressed(KeyEvent.VK_RIGHT))
+		if (isPressed(KeyEvent.VK_D))
 			p1.walk(1, 0);
-		if (isPressed(KeyEvent.VK_UP))
+		if (isPressed(KeyEvent.VK_W))
 			p1.walk(0, -1);
-		if (isPressed(KeyEvent.VK_DOWN))
+		if (isPressed(KeyEvent.VK_S))
 			p1.walk(0, 1);
 
 		p1.act(obstacles);
