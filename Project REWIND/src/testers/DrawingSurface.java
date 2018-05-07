@@ -29,10 +29,6 @@ public class DrawingSurface extends PApplet {
 		screenRect = new Rectangle(0,0,DRAWING_WIDTH,DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(200,400,400,50));
-		obstacles.add(new Rectangle(0,250,100,50));
-		obstacles.add(new Rectangle(700,250,100,50));
-		obstacles.add(new Rectangle(375,300,50,100));
-		obstacles.add(new Rectangle(300,250,200,50));
 	}
 
 

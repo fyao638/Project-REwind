@@ -16,12 +16,11 @@ public class Player extends Sprite {
 
 	// METHODS
 	public void walk(int xDir, int yDir) {
-		this.moveByAmount(xDir * 3, yDir * 3);
+		this.setXVel(xDir * 3);
+		this.setYVel(yDir * 3);
 	}
 
 	public void act(ArrayList<Shape> obstacles) {
-		// FALL (and stop when a platform is hit)
+		this.moveByAmount(this.getXVel(), this.getYVel());
 	}
-
-
 }

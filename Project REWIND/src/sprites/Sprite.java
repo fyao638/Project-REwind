@@ -88,4 +88,16 @@ public class Sprite extends Rectangle2D.Double {
 		public boolean visible() {
 			return isVisible;
 		}
+		public double getXVel() {
+			return xVel;
+		}
+		public void setXVel(double xVel) {
+			this.xVel = xVel;
+		}
+		public double getYVel() {
+			return yVel;
+		}
+		public void setYVel(double yVel) {
+			this.yVel = yVel;
+		}
 }
