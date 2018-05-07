@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Bullet;
 import sprites.Player;
 
 public class DrawingSurface extends PApplet {
@@ -21,6 +22,8 @@ public class DrawingSurface extends PApplet {
 
 	private ArrayList<Integer> keys;
 	
+	private ArrayList<Bullet> bullets;
+	
 	private ArrayList<PImage> assets;
 	
 	private ArrayList<Point2D.Double> prevLocs;
@@ -29,6 +32,7 @@ public class DrawingSurface extends PApplet {
 		super();
 		assets = new ArrayList<PImage>();
 		keys = new ArrayList<Integer>();
+		bullets = new ArrayList<Bullet>();
 		screenRect = new Rectangle(0,0,DRAWING_WIDTH,DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(200,400,400,50));
@@ -54,6 +58,7 @@ public class DrawingSurface extends PApplet {
 		//size(0,0,PApplet.P3D);
 		assets.add(loadImage("player.png"));
 		assets.add(loadImage("ghost.png"));
+		assets.add(loadImage("bullet.png"));
 		
 		spawnNewPlayer();
 	}
@@ -104,7 +109,24 @@ public class DrawingSurface extends PApplet {
 		if (isPressed(KeyEvent.VK_R))
 			p1.rewind(prevLocs.get(0));
 		
+		if(mousePressed) {
+			
+			double newXVel =  - (p1.getX() - mouseX) ;
+			double newYVel =  - (p1.getY() - mouseY) ;
+			
+			double angle = Math.atan(newYVel / newXVel);
+			
+			if(newXVel < 0) {
+				angle += Math.PI;
+			}
+			
+			bullets.add(new Bullet(assets.get(2), p1.getX(), p1.getY(), 10 * Math.cos(angle), 10 * Math.sin(angle)));
+		}
 		
+		for(Bullet b : bullets) {
+			b.act();
+			b.draw(this);
+		}
 
 		p1.act(obstacles);
 

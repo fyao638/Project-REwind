@@ -37,6 +37,10 @@ public class Player extends Sprite {
 			yMov = yDir;
 		}
 	}
+	// Dunno what to do with this
+	public void shoot(Bullet b) {
+		
+	}
 	public void turnToward(int x, int y) {
 		if ((this.x + width / 2) - x == 0) {
 			if ((this.y + height / 2) - y > 0)

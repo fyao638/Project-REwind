@@ -7,9 +7,17 @@ public class Bullet extends Sprite {
 	
 	private PImage img;
 
-	public Bullet(PImage image, double x, double y, double w, double h) {
-		super(image, x, y, w, h);
-		// TODO Auto-generated constructor stub
+	public static final int PLAYER_WIDTH = 50;
+	public static final int PLAYER_HEIGHT = 50;
+	
+	public Bullet(PImage image, double x, double y, double xVel, double yVel) {
+		super(image, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
+		setXVel(xVel);
+		setYVel(yVel);
+		
+	}
+	public void act() {
+		moveByAmount(getXVel(), getYVel());
 	}
 	
 }
