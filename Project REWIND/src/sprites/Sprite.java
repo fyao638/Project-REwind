@@ -49,7 +49,7 @@ public class Sprite extends Rectangle2D.Double {
 		
 		public void draw(PApplet drawer) {
 			if (isVisible) {
-				
+				drawer.image(img,(int)x,(int)y,(int)width,(int)height);
 			}
 		}
 		

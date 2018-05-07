@@ -1,12 +1,27 @@
 package sprites;
 
-import processing.core.PApplet;
+import java.awt.*;
+import java.util.*;
+
+import processing.core.PImage;
 
 public class Player extends Sprite {
 
-	public Player(String filename, double x, double y, double w, double h, PApplet marker) {
-		super(filename, x, y, w, h, marker);
-		// TODO Auto-generated constructor stub
+	public static final int PLAYER_WIDTH = 40;
+	public static final int PLAYER_HEIGHT = 60;
+
+	public Player(PImage img, int x, int y) {
+		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 	}
+
+	// METHODS
+	public void walk(int dir) {
+		this.moveByAmount(dir * 3, 0);
+	}
+
+	public void act(ArrayList<Shape> obstacles) {
+		// FALL (and stop when a platform is hit)
+	}
+
 
 }
