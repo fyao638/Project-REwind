@@ -53,9 +53,30 @@ public class Sprite extends Rectangle2D.Double {
 		public void turn(double dir) {
 			this.dir = dir;
 		}
+
+		public void turnToward(float x, float y) {
+			if ((this.x + width / 2) - x == 0) {
+				if ((this.y + height / 2) - y > 0)
+					dir = 3 * Math.PI / 2;
+				else
+					dir = Math.PI / 2;
+			}
+			else
+				dir = Math.atan(((double)(this.y + height / 2) - y)/((this.x + width / 2) - x));
+			
+			if ((this.x + width / 2) > x)
+				dir += Math.PI;
+			
+			if (dir >= 2 * Math.PI)
+				dir -= 2 * Math.PI;
+		}
 		
 		public double getDirection() {
 			return dir;
+		}
+		
+		public PImage getImage() {
+			return img;
 		}
 		
 		public boolean isPointInImage(double mouseX, double mouseY) {

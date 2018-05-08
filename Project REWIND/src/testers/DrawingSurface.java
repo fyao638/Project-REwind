@@ -67,10 +67,9 @@ public class DrawingSurface extends PApplet {
 	// program is stopped. Each statement is executed in 
 	// sequence and after the last line is read, the first 
 	// line is executed again.
-	int drawCount = 0;
+	int timer = 0;
 	public void draw() {
 
-		// drawing stuff
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
@@ -92,11 +91,7 @@ public class DrawingSurface extends PApplet {
 				rect(r.x,r.y,r.width,r.height);
 			}
 		}
-		p1.turnToward(mouseX, mouseY);
-		p1Ghost.draw(this);
-		p1.draw(this);
-		
-		// modifying stuff
+		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
 			p1.walk(-1, 0);	
@@ -111,16 +106,8 @@ public class DrawingSurface extends PApplet {
 		
 		if(mousePressed) {
 			
-			double newXVel =  - (p1.getX() - mouseX) ;
-			double newYVel =  - (p1.getY() - mouseY) ;
 			
-			double angle = Math.atan(newYVel / newXVel);
-			
-			if(newXVel < 0) {
-				angle += Math.PI;
-			}
-			
-			bullets.add(new Bullet(assets.get(2), p1.getX(), p1.getY(), 10 * Math.cos(angle), 10 * Math.sin(angle)));
+			bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
 		}
 		
 		for(Bullet b : bullets) {
@@ -128,17 +115,15 @@ public class DrawingSurface extends PApplet {
 			b.draw(this);
 		}
 
-		p1.act(obstacles);
-
-		if (!screenRect.intersects(p1))
-			spawnNewPlayer();
-		if(!screenRect.intersects(p1Ghost))
-			spawnNewGhost();
-		drawCount++;
+		// draw the players after the bullets so the bullets don't appear above the gun
+		p1Ghost.draw(this);
+		p1.draw(this);
 		
+		p1.checkObstacleCollision(obstacles);
+
+		timer++;
 		
 	}
-
 
 	public void keyPressed() {
 		keys.add(keyCode);

@@ -11,22 +11,22 @@ public class Player extends Sprite {
 
 	public static final int PLAYER_WIDTH = 90;
 	public static final int PLAYER_HEIGHT = 60;
+	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
+	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.225 / 2;
 	
 	private boolean canMove;
 	
+	private Point2D.Double bulletPoint;
+	
 	private int xMov;
 	private int yMov;
-
-	private PImage img;
-	private double dir;
 	
 	public Player(PImage img, int x, int y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		canMove = true;
 		xMov = 0;
 		yMov = 0;
-		dir = 0;
-		this.img = img;
+		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 	}
 
 	// METHODS
@@ -37,29 +37,29 @@ public class Player extends Sprite {
 			yMov = yDir;
 		}
 	}
-	// Dunno what to do with this
+
 	public void shoot(Bullet b) {
 		
 	}
-	public void turnToward(int x, int y) {
-		if ((this.x + width / 2) - x == 0) {
-			if ((this.y + height / 2) - y > 0)
-				dir = 3 * Math.PI / 2;
-			else
-				dir = Math.PI / 2;
-		}
-		else
-			dir = Math.atan(((double)(this.y + height / 2) - y)/((this.x + width / 2) - x));
-		
-		if ((this.x + width / 2) > x)
-			dir += Math.PI;
-		
-		if (dir >= 2 * Math.PI)
-			dir -= 2 * Math.PI;
-	}
+	
 	public void draw(PApplet drawer) {
-		drawer.image(img,(int)x,(int)y,(int)width,(int)height);
-		//drawer.rotate((float) dir);
+		// change where the bullet hole is
+		double angle = getDirection();
+		bulletPoint.setLocation(x - 10 + BUL_DISTANCE + Math.cos(angle + BUL_ANGLE) * (BUL_DISTANCE - 5), 
+				y - 26 + BUL_DISTANCE + Math.sin(angle + BUL_ANGLE) * (BUL_DISTANCE - 5));
+		
+		// draw the player
+		drawer.pushMatrix();
+		drawer.translate((float) (x + PLAYER_WIDTH / 2), (float) (y + PLAYER_HEIGHT / 2));
+		drawer.rotate((float) angle);
+		drawer.image(getImage(),(int) - PLAYER_WIDTH / 3,(int) - PLAYER_HEIGHT/ 2 - 16,(int)width,(int)height);
+		drawer.popMatrix();
+		drawer.point((float) (bulletPoint.getX()), (float) bulletPoint.getY());
+		drawer.noFill();
+		drawer.ellipseMode(PApplet.CORNER);
+		//center: x-10 + P_W * 1.225, y-25 + P_W*1.225
+		//drawer.ellipse((float) (x - 10), (float) (y - 25), 
+				//(float) (PLAYER_WIDTH * 1.225), (float) (PLAYER_WIDTH * 1.225));
 	}
 	
 	public void turnToMouse(int mouseX, int mouseY) {
@@ -71,8 +71,7 @@ public class Player extends Sprite {
 		this.y = p.getY();
 	}
 
-	public void act(ArrayList<Shape> obstacles) {
-		// FALL (and stop when a platform is hit)
+	public void checkObstacleCollision(ArrayList<Shape> obstacles) {
 		for(Shape s: obstacles) {
 			if(s.getBounds().intersects(this.getX(), this.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
 				canMove = false;
@@ -82,5 +81,15 @@ public class Player extends Sprite {
 				canMove = true;
 			}
 		}
+	}
+	
+	public Point2D.Double getBulletPoint() {
+		return bulletPoint;
+	}
+	
+	
+	
+	public Point2D.Double getCenterPoint() {
+		return new Point2D.Double(x - PLAYER_WIDTH / 3,x - PLAYER_HEIGHT/ 2 - 16);
 	}
 }
