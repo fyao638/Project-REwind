@@ -54,12 +54,10 @@ public class Player extends Sprite {
 		drawer.rotate((float) angle);
 		drawer.image(getImage(),(int) - PLAYER_WIDTH / 3,(int) - PLAYER_HEIGHT/ 2 - 16,(int)width,(int)height);
 		drawer.popMatrix();
+		//the point you see kind of inside the gun (also visible on the ghost is where the bullet spawns
+			//the bullet doesn't always seem to spawn there but I don't know the issue to that.
 		drawer.point((float) (bulletPoint.getX()), (float) bulletPoint.getY());
-		drawer.noFill();
-		drawer.ellipseMode(PApplet.CORNER);
-		//center: x-10 + P_W * 1.225, y-25 + P_W*1.225
-		//drawer.ellipse((float) (x - 10), (float) (y - 25), 
-				//(float) (PLAYER_WIDTH * 1.225), (float) (PLAYER_WIDTH * 1.225));
+		
 	}
 	
 	public void turnToMouse(int mouseX, int mouseY) {
