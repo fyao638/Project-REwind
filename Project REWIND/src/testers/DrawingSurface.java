@@ -3,6 +3,7 @@ package testers;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import processing.core.PApplet;
@@ -62,6 +63,7 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("player.png"));
 		assets.add(loadImage("ghost.png"));
 		assets.add(loadImage("bullet.png"));
+		assets.add(loadImage("fireball.gif"));
 		
 		spawnNewPlayer();
 		
