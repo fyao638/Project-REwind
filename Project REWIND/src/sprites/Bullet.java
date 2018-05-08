@@ -31,13 +31,15 @@ public class Bullet extends Sprite {
 		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
 	}
 	
-	public void checkObstacles(ArrayList<Shape> obstacles) {
+	// return true if it hits an obstacle, false if otherwise
+	public boolean checkObstacles(ArrayList<Shape> obstacles) {
 		
 		for(Shape s : obstacles) {
 			if(s.getBounds().intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
-				this.setVisibility(false);
+				return true;
 			}
 		}
+		return false;
 	}
 		
 	

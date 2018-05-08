@@ -20,6 +20,8 @@ public class DrawingSurface extends PApplet {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 
+	private Rectangle screenRect;
+
 	private Player p1, p1Ghost;
 
 	private ArrayList<Integer> keys;
@@ -36,6 +38,8 @@ public class DrawingSurface extends PApplet {
 
 	private long shotReadyTime, rewindReadyTime;
 	
+	private float abilWidth, abilHeight;
+	
 	public DrawingSurface() {
 		super();
 		assets = new ArrayList<PImage>();
@@ -47,6 +51,8 @@ public class DrawingSurface extends PApplet {
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
+		abilWidth = 100;
+		abilHeight = 100;
 	}
 
 
@@ -105,15 +111,12 @@ public class DrawingSurface extends PApplet {
 		float ratioY = (float)height/DRAWING_HEIGHT;
 
 		scale(ratioX, ratioY);
-
-		fill(100);
-		map.draw(this);
 		
 		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
 		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
-			p1.walk(-1, 0, map.getObstacles());	
+			p1.walk(-1, 0, map.getObstacles());
 		if (isPressed(KeyEvent.VK_D))
 			p1.walk(1, 0, map.getObstacles());
 		if (isPressed(KeyEvent.VK_W))
@@ -128,7 +131,11 @@ public class DrawingSurface extends PApplet {
 			}
 		}
 		
-		hud.draw(this, shotReadyTime, rewindReadyTime, millis());
+		hud.draw(this, shotReadyTime, rewindReadyTime, millis(), abilWidth, abilHeight);
+
+		// Draw abilities
+		
+		hud.draw(this, shotReadyTime, rewindReadyTime, millis(), abilWidth, abilHeight);
 		
 		if(mousePressed) {
 			if(mouseButton == LEFT) {
@@ -144,16 +151,24 @@ public class DrawingSurface extends PApplet {
 				}
 			}
 		}
-		
-		for(Bullet b : bullets) {
-			b.act();
-			b.checkObstacles(map.getObstacles());
-			b.draw(this);
+
+		if (bullets.size() > 0) {
+			for(int i = 0; i < bullets.size(); i++) {
+					bullets.get(i).act();
+					bullets.get(i).draw(this);
+					if (bullets.get(i).checkObstacles(map.getObstacles())) {
+						bullets.remove(i);
+					}
+			}
 		}
 
+		fill(100);
+		map.draw(this);
+		
 		// draw the players after the bullets so the bullets don't appear above the gun
 		p1Ghost.draw(this);
 		p1.draw(this);
+
 
 		timer++;
 	}
