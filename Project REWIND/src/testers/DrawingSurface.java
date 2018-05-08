@@ -1,7 +1,5 @@
 package testers;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -12,9 +10,10 @@ import sprites.Player;
 
 public class DrawingSurface extends PApplet {
 /* Ghost class ?
- * Use the obstacle class
+ * Use the obstacle class (style)
  * move the code to playScreen
- * player should be the one shooting and rewinding
+ * make a main menu
+ * player should be the one shooting and rewinding (style)
  * 
  * 
  */
@@ -134,9 +133,14 @@ public class DrawingSurface extends PApplet {
 		if(mousePressed) {
 			if(mouseButton == LEFT) {
 				if(shotReadyTime - millis() <= 0) {
-					bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
-					
+					bullets.add(p1.shoot(assets.get(2)));
 					shotReadyTime = millis() + 1000;
+				}
+			}
+			else if(mouseButton == RIGHT) {
+				ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(2));
+				for(Bullet b : fan) {
+					bullets.add(b);
 				}
 			}
 		}

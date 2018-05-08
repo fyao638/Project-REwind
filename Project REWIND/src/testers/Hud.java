@@ -4,7 +4,8 @@ import processing.core.PConstants;
 
 public class Hud {
 	public Hud() {
-		
+		// Nothing here 
+		// could maybe take in some colors to change the huds
 	}
 	public void draw(DrawingSurface d, long shotReadyTime, long rewindReadyTime, long currentTime) {
 		d.noFill();
