@@ -31,6 +31,8 @@ public class DrawingSurface extends PApplet {
 
 	private long shotReadyTime, rewindReadyTime;
 	
+	private float abilWidth, abilHeight;
+	
 	public DrawingSurface() {
 		super();
 		assets = new ArrayList<PImage>();
@@ -48,6 +50,8 @@ public class DrawingSurface extends PApplet {
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
+		abilWidth = 100;
+		abilHeight = 100;
 	}
 
 
@@ -120,7 +124,7 @@ public class DrawingSurface extends PApplet {
 		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
-			p1.walk(-1, 0, obstacles);	
+			p1.walk(-1, 0, obstacles);
 		if (isPressed(KeyEvent.VK_D))
 			p1.walk(1, 0, obstacles);
 		if (isPressed(KeyEvent.VK_W))
@@ -135,50 +139,56 @@ public class DrawingSurface extends PApplet {
 			}
 		}
 		
+		
+
+		// Draw abilities
+		
 		noFill();
 		
 		stroke(0, 102, 153);
 		strokeWeight(10); 
 		
-		rect(20, 480, 150, 100, 20);
-		rect(190, 480, 150, 100, 20);
+		
+		rect(20, 480, abilWidth, abilHeight, 20);
+		rect(140, 480, abilWidth, abilHeight, 20);
 		
 		fill(0, 102, 153, 128);
 		
+		
 		if(shotReadyTime - millis() > 0) {
 			rectMode(CORNERS);
-			
-			rect(20, 580, 170, 580 - 100 * (shotReadyTime - millis()) / 1000, 20);
-			
+			rect(20, 580, abilWidth + 20, 580 - 100 * (shotReadyTime - millis()) / 1000, 20);
 			rectMode(CORNER);
 		}
 		if(rewindReadyTime - millis() > 0) {
 			rectMode(CORNERS);
-			
-			rect(190, 580, 340, 580 - 100 * (rewindReadyTime - millis()) / 15000, 20);
-			
+			rect(140, 580, 140 + abilWidth, 580 - 100 * (rewindReadyTime - millis()) / 15000, 20);
 			rectMode(CORNER);
 		}
 		
 		noStroke();
 		strokeWeight(1);
 		
-		
 		this.textSize(26); 
 		fill(0, 102, 153);
 		
 		if(shotReadyTime - millis() <= 0) {
-			this.text("SHOT", 60, 540);
+			this.text("SHOT", 37, 540);
 		}
 		else {
-			this.text("0." + Math.round((double)(shotReadyTime - millis()) * 10) / 1000 + "sec", 60, 540);
+			fill(255, 255, 255);
+			this.text("0." + Math.round((double)(shotReadyTime - millis()) * 10) / 1000 + "sec", 30, 540);
+			fill(0, 102, 153);
 		}
 		
 		if(rewindReadyTime - millis() <= 0) {
-			this.text("REwind", 230, 540);
+			textSize(20);
+			this.text("REwind", 155, 539);
 		}
 		else {
-			this.text(Math.round((double)(rewindReadyTime - millis()) * 10) / 10000 + "sec", 230, 540);
+			fill(255, 255, 255);
+			this.text(Math.round((double)(rewindReadyTime - millis()) * 10) / 10000 + "sec", 150, 540);
+			fill(0, 102, 153);
 		}
 		
 		if(mousePressed) {
@@ -190,11 +200,15 @@ public class DrawingSurface extends PApplet {
 				}
 			}
 		}
-		
-		for(Bullet b : bullets) {
-			b.act();
-			b.checkObstacles(obstacles);
-			b.draw(this);
+
+		if (bullets.size() > 0) {
+			for(int i = 0; i < bullets.size(); i++) {
+					bullets.get(i).act();
+					bullets.get(i).draw(this);
+					if (bullets.get(i).checkObstacles(obstacles)) {
+						bullets.remove(i);
+					}
+			}
 		}
 
 		// draw the players after the bullets so the bullets don't appear above the gun

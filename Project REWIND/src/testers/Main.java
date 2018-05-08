@@ -11,10 +11,10 @@ import processing.core.PApplet;
 
 public class Main {
 
-private JFrame window;
+	private JFrame window;
 	
 	private JPanel cardPanel;
-	
+	  
 	private DrawingSurface panel2;
 	
 	private PSurfaceAWT.SmoothCanvas processingCanvas;
@@ -27,7 +27,7 @@ private JFrame window;
 		processingCanvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
 		window = (JFrame)processingCanvas.getFrame();
 
-		window.setBounds(0,0,800, 600);
+		window.setBounds(100,0,800, 600);
 		window.setMinimumSize(new Dimension(100,100));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(true);
