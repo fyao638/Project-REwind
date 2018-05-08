@@ -166,7 +166,6 @@ public class DrawingSurface extends PApplet {
 		p1.draw(this);
 
 
-		
 		timer++;
 	}
 
