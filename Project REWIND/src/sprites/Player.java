@@ -127,4 +127,12 @@ public class Player extends Sprite {
 		Rectangle rect = new Rectangle((int) x + PLAYER_WIDTH / 12, (int) y - PLAYER_WIDTH / 12, PLAYER_WIDTH * 5/6, PLAYER_WIDTH * 5/6);
 		return rect;
 	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
 }

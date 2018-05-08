@@ -17,7 +17,7 @@ public class DrawingSurface extends PApplet {
 
 	private Rectangle screenRect;
 
-	private Player p1;
+	private Player p1, p1Ghost;
 	private ArrayList<Shape> obstacles;
 
 	private ArrayList<Integer> keys;
@@ -27,9 +27,9 @@ public class DrawingSurface extends PApplet {
 	private ArrayList<PImage> assets;
 	
 	private ArrayList<Point2D.Double> prevLocs;
-	
-	private long shotReadyTime;
-	private long rewindReadyTime;
+	private ArrayList<Point2D.Double> prevMouseLocs;
+
+	private long shotReadyTime, rewindReadyTime;
 	
 	public DrawingSurface() {
 		super();
@@ -43,11 +43,16 @@ public class DrawingSurface extends PApplet {
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
+		prevMouseLocs = new ArrayList<Point2D.Double>();
 	}
 
 
 	public void spawnNewPlayer() {
 		p1 = new Player(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+	}
+	
+	public void spawnNewGhost() {
+		p1Ghost = new Player(assets.get(1), (int)prevLocs.get(0).getX(), (int)prevLocs.get(0).getY());
 	}
 	
 	public void runMe() {
@@ -64,6 +69,11 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("bullet.png"));
 		
 		spawnNewPlayer();
+		
+		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
+		prevLocs.add(p);
+		
+		spawnNewGhost();
 	}
 
 	// The statements in draw() are executed until the 
@@ -77,6 +87,15 @@ public class DrawingSurface extends PApplet {
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
 			prevLocs.remove(0);
+		
+
+		Point2D.Double pMouse = new Point2D.Double(mouseX, mouseY);
+		prevMouseLocs.add(pMouse);
+		if (prevMouseLocs.size() > 120)
+			prevMouseLocs.remove(0);
+		
+		p1Ghost.setX((int)prevLocs.get(0).getX());
+		p1Ghost.setY((int)prevLocs.get(0).getY());
 		
 		background(128,128,128);  
 
@@ -92,7 +111,9 @@ public class DrawingSurface extends PApplet {
 				rect(r.x,r.y,r.width,r.height);
 			}
 		}
+		
 		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
+		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
 			p1.walk(-1, 0, obstacles);	
@@ -171,12 +192,10 @@ public class DrawingSurface extends PApplet {
 			b.checkObstacles(obstacles);
 			b.draw(this);
 		}
+
+		// draw the players after the bullets so the bullets don't appear above the gun
+		p1Ghost.draw(this);
 		p1.draw(this);
-		
-		ellipseMode(CENTER);
-		fill(176, 79, 79, 100);
-		ellipse((int)prevLocs.get(0).getX(), (int)prevLocs.get(0).getY(), 40,40);
-		ellipseMode(CORNER);
 
 		timer++;
 	}
