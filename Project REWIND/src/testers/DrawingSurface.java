@@ -17,7 +17,7 @@ public class DrawingSurface extends PApplet {
 
 	private Rectangle screenRect;
 
-	private Player p1, p1Ghost;
+	private Player p1;
 	private ArrayList<Shape> obstacles;
 
 	private ArrayList<Integer> keys;
@@ -27,7 +27,10 @@ public class DrawingSurface extends PApplet {
 	private ArrayList<PImage> assets;
 	
 	private ArrayList<Point2D.Double> prevLocs;
-
+	
+	private long shotReadyTime;
+	private long rewindReadyTime;
+	
 	public DrawingSurface() {
 		super();
 		assets = new ArrayList<PImage>();
@@ -38,15 +41,13 @@ public class DrawingSurface extends PApplet {
 		obstacles.add(new Rectangle(375,100,50,400));
 		obstacles.add(new Rectangle(200,250,400,50));
 		prevLocs = new ArrayList<Point2D.Double>();
+		shotReadyTime = 0;
+		rewindReadyTime = 0;
 	}
 
 
 	public void spawnNewPlayer() {
 		p1 = new Player(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-	}
-	
-	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevLocs.get(0).getX(), (int)prevLocs.get(0).getY());
 	}
 	
 	public void runMe() {
@@ -56,6 +57,7 @@ public class DrawingSurface extends PApplet {
 	// The statements in the setup() function 
 	// execute once when the program begins
 	public void setup() {
+		noStroke();
 		//size(0,0,PApplet.P3D);
 		assets.add(loadImage("player.png"));
 		assets.add(loadImage("ghost.png"));
@@ -75,10 +77,6 @@ public class DrawingSurface extends PApplet {
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
 			prevLocs.remove(0);
-		
-		//NO
-		//change it so that it changes fields in ghost, not making a new one EVERY SINGLE TIME WE DRAW
-		spawnNewGhost();
 		
 		background(128,128,128);  
 
@@ -104,13 +102,68 @@ public class DrawingSurface extends PApplet {
 			p1.walk(0, -1, obstacles);
 		if (isPressed(KeyEvent.VK_S))
 			p1.walk(0, 1, obstacles);
-		if (isPressed(KeyEvent.VK_R))
-			p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
+		if (isPressed(KeyEvent.VK_R)) {
+			if(rewindReadyTime - millis() <= 0) {
+				p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				
+				rewindReadyTime = millis() + 15000;
+			}
+		}
+		
+		noFill();
+		
+		stroke(0, 102, 153);
+		strokeWeight(10); 
+		
+		rect(20, 480, 150, 100, 20);
+		rect(190, 480, 150, 100, 20);
+		
+		fill(0, 102, 153, 128);
+		
+		if(shotReadyTime - millis() > 0) {
+			rectMode(CORNERS);
+			
+			rect(20, 580, 170, 580 - 100 * (shotReadyTime - millis()) / 1000, 20);
+			
+			rectMode(CORNER);
+		}
+		if(rewindReadyTime - millis() > 0) {
+			rectMode(CORNERS);
+			
+			rect(190, 580, 340, 580 - 100 * (rewindReadyTime - millis()) / 15000, 20);
+			
+			rectMode(CORNER);
+		}
+		
+		noStroke();
+		strokeWeight(1);
+		
+		
+		this.textSize(26); 
+		fill(0, 102, 153);
+		
+		if(shotReadyTime - millis() <= 0) {
+			this.text("SHOT", 60, 540);
+		}
+		else {
+			this.text("0." + Math.round((double)(shotReadyTime - millis()) * 10) / 1000 + "sec", 60, 540);
+		}
+		
+		if(rewindReadyTime - millis() <= 0) {
+			this.text("REwind", 230, 540);
+		}
+		else {
+			this.text(Math.round((double)(rewindReadyTime - millis()) * 10) / 10000 + "sec", 230, 540);
+		}
 		
 		if(mousePressed) {
-			
-			
-			bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
+			if(mouseButton == LEFT) {
+				if(shotReadyTime - millis() <= 0) {
+					bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
+					
+					shotReadyTime = millis() + 1000;
+				}
+			}
 		}
 		
 		for(Bullet b : bullets) {
@@ -118,10 +171,12 @@ public class DrawingSurface extends PApplet {
 			b.checkObstacles(obstacles);
 			b.draw(this);
 		}
-
-		// draw the players after the bullets so the bullets don't appear above the gun
-		p1Ghost.draw(this);
 		p1.draw(this);
+		
+		ellipseMode(CENTER);
+		fill(176, 79, 79, 100);
+		ellipse((int)prevLocs.get(0).getX(), (int)prevLocs.get(0).getY(), 40,40);
+		ellipseMode(CORNER);
 
 		timer++;
 	}

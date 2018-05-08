@@ -27,10 +27,6 @@ public class Player extends Sprite {
 
 	// METHODS
 	
-	public void shoot(Bullet b) {
-		
-	}
-	
 	public void draw(PApplet drawer) {
 		// change where the bullet hole is
 		double angle = getDirection();

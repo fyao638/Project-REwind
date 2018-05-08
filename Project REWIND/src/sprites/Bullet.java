@@ -36,11 +36,13 @@ public class Bullet extends Sprite {
 		
 	
 	public void draw(PApplet drawer) {
-		drawer.pushMatrix();
-		drawer.translate((float) (x + BULLET_WIDTH / 2), (float) (y + BULLET_HEIGHT / 2));
-		drawer.rotate((float) getDirection());
-		drawer.image(getImage(),(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)width,(int)height);
-		drawer.popMatrix();
+		if(this.visible()) {
+			drawer.pushMatrix();
+			drawer.translate((float) (x + BULLET_WIDTH / 2), (float) (y + BULLET_HEIGHT / 2));
+			drawer.rotate((float) getDirection());
+			drawer.image(getImage(),(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)width,(int)height);
+			drawer.popMatrix();
+		}
 	}
 	
 }
