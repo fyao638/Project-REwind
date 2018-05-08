@@ -36,7 +36,8 @@ public class DrawingSurface extends PApplet {
 		bullets = new ArrayList<Bullet>();
 		screenRect = new Rectangle(0,0,DRAWING_WIDTH,DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
-		obstacles.add(new Rectangle(200,400,400,50));
+		obstacles.add(new Rectangle(375,100,50,400));
+		obstacles.add(new Rectangle(200,250,400,50));
 		prevLocs = new ArrayList<Point2D.Double>();
 	}
 
@@ -116,7 +117,7 @@ public class DrawingSurface extends PApplet {
 		
 		
 		for(Bullet b : bullets) {
-			b.act();
+			b.act(obstacles);
 			b.draw(this);
 		}
 

@@ -10,13 +10,10 @@ import testers.DrawingSurface;
 
 public class Player extends Sprite {
 
-	public static final int PLAYER_WIDTH = 90;
-	public static final int PLAYER_HEIGHT = 60;
+	public static final int PLAYER_WIDTH = 60;
+	public static final int PLAYER_HEIGHT = 40;
 	
 	private boolean canMove;
-	
-	private int xMov;
-	private int yMov;
 
 	private PImage img;
 	private double dir;
@@ -24,8 +21,6 @@ public class Player extends Sprite {
 	public Player(PImage img, int x, int y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		canMove = true;
-		xMov = 0;
-		yMov = 0;
 		dir = 0;
 		this.img = img;
 	}
@@ -34,8 +29,6 @@ public class Player extends Sprite {
 	public void walk(int xDir, int yDir) {
 		if(canMove) {
 			this.moveByAmount(xDir * 5, yDir * 5);
-			xMov = xDir;
-			yMov = yDir;
 		}
 	}
 	// Dunno what to do with this
@@ -85,8 +78,38 @@ public class Player extends Sprite {
 		// FALL (and stop when a platform is hit)
 		for(Shape s: obstacles) {
 			if(s.getBounds().intersects(this.getX(), this.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
+				
 				canMove = false;
-				moveToLocation(this.getX() - PLAYER_WIDTH * xMov, s.getBounds().getY() - PLAYER_HEIGHT * yMov);
+				
+				Rectangle obsBounds = s.getBounds();
+				double obsWidth = obsBounds.getWidth();
+				double obsHeight = obsBounds.getHeight();
+				double obsX = obsBounds.getX();
+				double obsY = obsBounds.getY();
+				
+				boolean isXBetween = (obsX + obsWidth > getX() && obsX < getX() ) || (getX() + PLAYER_WIDTH > obsX && getX() + PLAYER_WIDTH < obsX + obsWidth);
+				boolean isYBetween = (obsY + obsHeight > getY() && obsY < getY() ) || (getY() + PLAYER_HEIGHT > obsY && getY() + PLAYER_HEIGHT < obsY + obsHeight);
+				
+				//BROKEN
+				
+				if(isXBetween) {
+					if( obsY > getY()) {
+						moveToLocation(getX(), obsY - PLAYER_HEIGHT);
+					}
+					else{
+						moveToLocation(getX(), obsY + obsHeight);
+					}
+				}
+				else {
+					if( obsX > getX()) {
+						moveToLocation(obsX - PLAYER_WIDTH, getY());
+					}
+					else{
+						moveToLocation(obsX + obsWidth, getY());
+					}
+				}
+				
+				
 			}
 			else {
 				canMove = true;
