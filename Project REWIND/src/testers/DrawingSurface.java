@@ -40,6 +40,10 @@ public class DrawingSurface extends PApplet {
 		obstacles = new ArrayList<Shape>();
 		obstacles.add(new Rectangle(375,100,50,400));
 		obstacles.add(new Rectangle(200,250,400,50));
+		obstacles.add(new Rectangle(0,0,DRAWING_WIDTH,1));
+		obstacles.add(new Rectangle(0,0,1,DRAWING_HEIGHT));
+		obstacles.add(new Rectangle(0,DRAWING_HEIGHT,DRAWING_WIDTH,1));
+		obstacles.add(new Rectangle(DRAWING_WIDTH,0,1,DRAWING_HEIGHT));
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
