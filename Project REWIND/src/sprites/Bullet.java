@@ -17,7 +17,13 @@ public class Bullet extends Sprite {
 	
 	public Bullet(PImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT);
-		turn(dir);
+		
+		double i = Math.random();
+		if (i < 0.5)
+			turn(dir + (Math.random()/50.0));
+		else
+			turn(dir - (Math.random()/50.0));
+		
 		this.speed = speed;
 	}
 	

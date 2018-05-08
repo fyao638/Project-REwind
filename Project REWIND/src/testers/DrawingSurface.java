@@ -121,8 +121,6 @@ public class DrawingSurface extends PApplet {
 			p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
 		
 		if(mousePressed) {
-			
-			
 			bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
 		}
 		
