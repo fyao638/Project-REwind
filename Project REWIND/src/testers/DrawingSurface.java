@@ -20,8 +20,6 @@ public class DrawingSurface extends PApplet {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 
-	private Rectangle screenRect;
-
 	private Player p1, p1Ghost;
 
 	private ArrayList<Integer> keys;
@@ -36,7 +34,7 @@ public class DrawingSurface extends PApplet {
 	private Map map;
 	private Hud hud;
 
-	private long shotReadyTime, rewindReadyTime;
+	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime;
 	
 	private float abilWidth, abilHeight;
 	
@@ -50,6 +48,8 @@ public class DrawingSurface extends PApplet {
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
+		secondaryReadyTime = 0;
+		shiftReadyTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
 		abilWidth = 100;
 		abilHeight = 100;
@@ -75,6 +75,7 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("player.png"));
 		assets.add(loadImage("ghost.png"));
 		assets.add(loadImage("bullet.png"));
+		assets.add(loadImage("star.png"));
 		
 		spawnNewPlayer();
 		
@@ -131,11 +132,9 @@ public class DrawingSurface extends PApplet {
 			}
 		}
 		
-		hud.draw(this, shotReadyTime, rewindReadyTime, millis(), abilWidth, abilHeight);
+		hud.draw(this, shotReadyTime, rewindReadyTime, secondaryReadyTime, millis(), abilWidth, abilHeight);
 
 		// Draw abilities
-		
-		hud.draw(this, shotReadyTime, rewindReadyTime, millis(), abilWidth, abilHeight);
 		
 		if(mousePressed) {
 			if(mouseButton == LEFT) {
@@ -145,9 +144,12 @@ public class DrawingSurface extends PApplet {
 				}
 			}
 			else if(mouseButton == RIGHT) {
-				ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(2));
-				for(Bullet b : fan) {
-					bullets.add(b);
+				if(secondaryReadyTime - millis() <= 0) {
+					ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
+					for(Bullet b : fan) {
+						bullets.add(b);
+						secondaryReadyTime = millis() + 7000;
+					}
 				}
 			}
 		}
