@@ -27,6 +27,7 @@ public class DrawingSurface extends PApplet {
 	private ArrayList<PImage> assets;
 	
 	private ArrayList<Point2D.Double> prevLocs;
+	private ArrayList<Point2D.Double> prevMouseLocs;
 
 	public DrawingSurface() {
 		super();
@@ -38,6 +39,7 @@ public class DrawingSurface extends PApplet {
 		obstacles.add(new Rectangle(375,100,50,400));
 		obstacles.add(new Rectangle(200,250,400,50));
 		prevLocs = new ArrayList<Point2D.Double>();
+		prevMouseLocs = new ArrayList<Point2D.Double>();
 	}
 
 
@@ -62,6 +64,11 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("bullet.png"));
 		
 		spawnNewPlayer();
+		
+		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
+		prevLocs.add(p);
+		
+		spawnNewGhost();
 	}
 
 	// The statements in draw() are executed until the 
@@ -76,9 +83,13 @@ public class DrawingSurface extends PApplet {
 		if (prevLocs.size() > 120)
 			prevLocs.remove(0);
 		
-		//NO
-		//change it so that it changes fields in ghost, not making a new one EVERY SINGLE TIME WE DRAW
-		spawnNewGhost();
+		Point2D.Double pMouse = new Point2D.Double(mouseX, mouseY);
+		prevMouseLocs.add(pMouse);
+		if (prevMouseLocs.size() > 120)
+			prevMouseLocs.remove(0);
+		
+		p1Ghost.setX((int)prevLocs.get(0).getX());
+		p1Ghost.setY((int)prevLocs.get(0).getY());
 		
 		background(128,128,128);  
 
@@ -94,7 +105,9 @@ public class DrawingSurface extends PApplet {
 				rect(r.x,r.y,r.width,r.height);
 			}
 		}
+		
 		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
+		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
 			p1.walk(-1, 0, obstacles);	
