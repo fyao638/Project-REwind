@@ -35,7 +35,8 @@ public class DrawingSurface extends PApplet {
 		bullets = new ArrayList<Bullet>();
 		screenRect = new Rectangle(0,0,DRAWING_WIDTH,DRAWING_HEIGHT);
 		obstacles = new ArrayList<Shape>();
-		obstacles.add(new Rectangle(200,400,400,50));
+		obstacles.add(new Rectangle(375,100,50,400));
+		obstacles.add(new Rectangle(200,250,400,50));
 		prevLocs = new ArrayList<Point2D.Double>();
 	}
 
@@ -75,6 +76,8 @@ public class DrawingSurface extends PApplet {
 		if (prevLocs.size() > 120)
 			prevLocs.remove(0);
 		
+		//NO
+		//change it so that it changes fields in ghost, not making a new one EVERY SINGLE TIME WE DRAW
 		spawnNewGhost();
 		
 		background(128,128,128);  
@@ -94,15 +97,15 @@ public class DrawingSurface extends PApplet {
 		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
-			p1.walk(-1, 0);	
+			p1.walk(-1, 0, obstacles);	
 		if (isPressed(KeyEvent.VK_D))
-			p1.walk(1, 0);
+			p1.walk(1, 0, obstacles);
 		if (isPressed(KeyEvent.VK_W))
-			p1.walk(0, -1);
+			p1.walk(0, -1, obstacles);
 		if (isPressed(KeyEvent.VK_S))
-			p1.walk(0, 1);
+			p1.walk(0, 1, obstacles);
 		if (isPressed(KeyEvent.VK_R))
-			p1.rewind(prevLocs.get(0));
+			p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
 		
 		if(mousePressed) {
 			
@@ -112,17 +115,15 @@ public class DrawingSurface extends PApplet {
 		
 		for(Bullet b : bullets) {
 			b.act();
+			b.checkObstacles(obstacles);
 			b.draw(this);
 		}
 
 		// draw the players after the bullets so the bullets don't appear above the gun
 		p1Ghost.draw(this);
 		p1.draw(this);
-		
-		p1.checkObstacleCollision(obstacles);
 
 		timer++;
-		
 	}
 
 	public void keyPressed() {

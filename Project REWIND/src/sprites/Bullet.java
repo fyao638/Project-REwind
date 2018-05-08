@@ -1,5 +1,8 @@
 package sprites;
 
+import java.awt.Shape;
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -21,6 +24,16 @@ public class Bullet extends Sprite {
 	public void act() {
 		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
 	}
+	
+	public void checkObstacles(ArrayList<Shape> obstacles) {
+		
+		for(Shape s : obstacles) {
+			if(s.getBounds().intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				this.setVisibility(false);
+			}
+		}
+	}
+		
 	
 	public void draw(PApplet drawer) {
 		drawer.pushMatrix();
