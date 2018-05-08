@@ -14,7 +14,7 @@ public class Main {
 private JFrame window;
 	
 	private JPanel cardPanel;
-	  
+	
 	private DrawingSurface panel2;
 	
 	private PSurfaceAWT.SmoothCanvas processingCanvas;
