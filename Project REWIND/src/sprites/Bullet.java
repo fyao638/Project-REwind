@@ -46,23 +46,8 @@ public class Bullet extends Sprite {
 				if(!isBouncing)
 					return true;
 				else {
-					if(timesBounced > 3) {
-						isBouncing = false;
-						break;
-					}
-					//System.out.println(dir);
-					if(dir > 3 && dir < 3.5) {
-						double angle = Math.atan2(Math.sin(dir), Math.cos(dir));
-						System.out.println(angle);
-						dir = -(3.14 + (dir - 3.14));
-						//dir += angle;
-					}
-//					else
-//						dir -= 1;
-//					if(dir > 4.7)
-//						dir = -1.55 + (dir - 4.7);
-					turn(dir);
 					timesBounced++;
+					return true;
 				}
 					
 			}
