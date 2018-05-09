@@ -10,20 +10,27 @@ public class Bullet extends Sprite {
 	
 	private PImage img;
 
-	public static final int BULLET_WIDTH = 10;
-	public static final int BULLET_HEIGHT = 10;
+	public static final int BULLET_WIDTH = 20;
+	public static final int BULLET_HEIGHT = 20;
 	
-	private double speed;
+	private double speed, dir;
 	
-	public Bullet(PImage image, double x, double y, double dir, double speed) {
+	private int timesBounced;
+	
+	private boolean isBouncing;
+	
+	public Bullet(PImage image, double x, double y, double dir, double speed, boolean isBouncing) {
 		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT);
 		
-		double i = Math.random();
-		if (i < 0.5)
-			turn(dir + (Math.random()/50.0));
-		else
-			turn(dir - (Math.random()/50.0));
+//		double i = Math.random();
+//		if (i < 0.5)
+//			turn(dir + (Math.random()/50.0));
+//		else
+//			turn(dir - (Math.random()/50.0));
+		turn(dir);
 		
+		this.isBouncing = isBouncing;
+		this.dir = dir;
 		this.speed = speed;
 	}
 	
@@ -31,13 +38,36 @@ public class Bullet extends Sprite {
 		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
 	}
 	
-	public void checkObstacles(ArrayList<Shape> obstacles) {
+	// return true if it hits an obstacle, false if otherwise
+	public boolean checkObstacles(ArrayList<Shape> obstacles) {
 		
 		for(Shape s : obstacles) {
 			if(s.getBounds().intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
-				this.setVisibility(false);
+				if(!isBouncing)
+					return true;
+				else {
+					if(timesBounced > 3) {
+						isBouncing = false;
+						break;
+					}
+					//System.out.println(dir);
+					if(dir > 3 && dir < 3.5) {
+						double angle = Math.atan2(Math.sin(dir), Math.cos(dir));
+						System.out.println(angle);
+						dir = -(3.14 + (dir - 3.14));
+						//dir += angle;
+					}
+//					else
+//						dir -= 1;
+//					if(dir > 4.7)
+//						dir = -1.55 + (dir - 4.7);
+					turn(dir);
+					timesBounced++;
+				}
+					
 			}
 		}
+		return false;
 	}
 		
 	

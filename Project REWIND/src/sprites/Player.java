@@ -15,6 +15,16 @@ public class Player extends Sprite {
 	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
 	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.225 / 2;
 	
+	
+	//This will be used to determine the abilities and secondary fire of the player as there be different ones
+	// EX:
+	// num = name = color scheme = secondary fire / shift ability
+	// 1 = "Frank" = blue and black = shotgun / flash
+	// 2 = "Aakarsh" = red and black = burst / grenade
+	// 3 = "Michael" = green and grey = bounce / shield
+	//Will also determine the look?
+	private int playerType;
+	
 	private Rectangle boundingRect;
 	
 	private Point2D.Double bulletPoint;
@@ -26,6 +36,24 @@ public class Player extends Sprite {
 	}
 
 	// METHODS
+	public Bullet shoot(PImage img) {
+		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false);
+	}
+	public ArrayList<Bullet> secondaryShoot(PImage img) {
+		ArrayList<Bullet> fan = new ArrayList<Bullet>();
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10, false));
+		
+		return fan;
+	}
+	
+	public Bullet secondaryShoot2(PImage img) {
+		Bullet b = new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, true);
+		return b;
+	}
 	
 	public void draw(PApplet drawer) {
 		// change where the bullet hole is

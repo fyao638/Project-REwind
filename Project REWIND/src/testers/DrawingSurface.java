@@ -1,7 +1,5 @@
 package testers;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -12,14 +10,18 @@ import sprites.Bullet;
 import sprites.Player;
 
 public class DrawingSurface extends PApplet {
-
+/* Ghost class ?
+ * Use the obstacle class (style)
+ * move the code to playScreen
+ * make a main menu
+ * player should be the one shooting and rewinding (style)
+ * 
+ * 
+ */
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 
-	private Rectangle screenRect;
-
 	private Player p1, p1Ghost;
-	private ArrayList<Shape> obstacles;
 
 	private ArrayList<Integer> keys;
 	
@@ -29,26 +31,29 @@ public class DrawingSurface extends PApplet {
 	
 	private ArrayList<Point2D.Double> prevLocs;
 	private ArrayList<Point2D.Double> prevMouseLocs;
+	
+	private Map map;
+	private Hud hud;
 
-	private long shotReadyTime, rewindReadyTime;
+	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime;
+	
+	private float abilWidth, abilHeight;
 	
 	public DrawingSurface() {
 		super();
 		assets = new ArrayList<PImage>();
 		keys = new ArrayList<Integer>();
 		bullets = new ArrayList<Bullet>();
-		screenRect = new Rectangle(0,0,DRAWING_WIDTH,DRAWING_HEIGHT);
-		obstacles = new ArrayList<Shape>();
-		obstacles.add(new Rectangle(375,100,50,400));
-		obstacles.add(new Rectangle(200,250,400,50));
-		obstacles.add(new Rectangle(0,0,DRAWING_WIDTH,1));
-		obstacles.add(new Rectangle(0,0,1,DRAWING_HEIGHT));
-		obstacles.add(new Rectangle(0,DRAWING_HEIGHT,DRAWING_WIDTH,1));
-		obstacles.add(new Rectangle(DRAWING_WIDTH,0,1,DRAWING_HEIGHT));
+		map = new Map();
+		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
+		secondaryReadyTime = 0;
+		shiftReadyTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
+		abilWidth = 100;
+		abilHeight = 100;
 	}
 
 
@@ -68,11 +73,10 @@ public class DrawingSurface extends PApplet {
 	// execute once when the program begins
 	public void setup() {
 		noStroke();
-		//size(0,0,PApplet.P3D);
 		assets.add(loadImage("player.png"));
 		assets.add(loadImage("ghost.png"));
 		assets.add(loadImage("bullet.png"));
-		assets.add(loadImage("fireball.gif"));
+		assets.add(loadImage("star.png"));
 		
 		spawnNewPlayer();
 		
@@ -88,7 +92,8 @@ public class DrawingSurface extends PApplet {
 	// line is executed again.
 	int timer = 0;
 	public void draw() {
-
+		
+		//System.out.println(p1.getDirection());
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
@@ -109,26 +114,18 @@ public class DrawingSurface extends PApplet {
 		float ratioY = (float)height/DRAWING_HEIGHT;
 
 		scale(ratioX, ratioY);
-
-		fill(100);
-		for (Shape s : obstacles) {
-			if (s instanceof Rectangle) {
-				Rectangle r = (Rectangle)s;
-				rect(r.x,r.y,r.width,r.height);
-			}
-		}
 		
 		p1.turnToward(mouseX / ratioX, mouseY / ratioY);
 		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if (isPressed(KeyEvent.VK_A))
-			p1.walk(-1, 0, obstacles);	
+			p1.walk(-1, 0, map.getObstacles());
 		if (isPressed(KeyEvent.VK_D))
-			p1.walk(1, 0, obstacles);
+			p1.walk(1, 0, map.getObstacles());
 		if (isPressed(KeyEvent.VK_W))
-			p1.walk(0, -1, obstacles);
+			p1.walk(0, -1, map.getObstacles());
 		if (isPressed(KeyEvent.VK_S))
-			p1.walk(0, 1, obstacles);
+			p1.walk(0, 1, map.getObstacles());
 		if (isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime - millis() <= 0) {
 				p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
@@ -137,71 +134,51 @@ public class DrawingSurface extends PApplet {
 			}
 		}
 		
-		noFill();
-		
-		stroke(0, 102, 153);
-		strokeWeight(10); 
-		
-		rect(20, 480, 150, 100, 20);
-		rect(190, 480, 150, 100, 20);
-		
-		fill(0, 102, 153, 128);
-		
-		if(shotReadyTime - millis() > 0) {
-			rectMode(CORNERS);
-			
-			rect(20, 580, 170, 580 - 100 * (shotReadyTime - millis()) / 1000, 20);
-			
-			rectMode(CORNER);
-		}
-		if(rewindReadyTime - millis() > 0) {
-			rectMode(CORNERS);
-			
-			rect(190, 580, 340, 580 - 100 * (rewindReadyTime - millis()) / 15000, 20);
-			
-			rectMode(CORNER);
-		}
-		
-		noStroke();
-		strokeWeight(1);
-		
-		
-		this.textSize(26); 
-		fill(0, 102, 153);
-		
-		if(shotReadyTime - millis() <= 0) {
-			this.text("SHOT", 60, 540);
-		}
-		else {
-			this.text("0." + Math.round((double)(shotReadyTime - millis()) * 10) / 1000 + "sec", 60, 540);
-		}
-		
-		if(rewindReadyTime - millis() <= 0) {
-			this.text("REwind", 230, 540);
-		}
-		else {
-			this.text(Math.round((double)(rewindReadyTime - millis()) * 10) / 10000 + "sec", 230, 540);
-		}
+		hud.draw(this, shotReadyTime, rewindReadyTime, secondaryReadyTime, millis(), abilWidth, abilHeight);
+
+		// Draw abilities
 		
 		if(mousePressed) {
 			if(mouseButton == LEFT) {
 				if(shotReadyTime - millis() <= 0) {
-					bullets.add(new Bullet(assets.get(2), p1.getBulletPoint().getX(), p1.getBulletPoint().getY(), p1.getDirection(), 10));
-					
+					bullets.add(p1.shoot(assets.get(2)));
 					shotReadyTime = millis() + 1000;
 				}
 			}
-		}
-		
-		for(Bullet b : bullets) {
-			b.act();
-			b.checkObstacles(obstacles);
-			b.draw(this);
+			else if(mouseButton == RIGHT) {
+				if(secondaryReadyTime - millis() <= 0) {
+					ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
+					for(Bullet b : fan) {
+						bullets.add(b);
+						secondaryReadyTime = millis() + 7000;
+					}
+				}
+			}
+			else if(mouseButton == CENTER) {
+				if(secondaryReadyTime - millis() <= 0) {
+					bullets.add(p1.secondaryShoot2(assets.get(2)));
+					secondaryReadyTime = millis() + 1000;
+				}
+			}
 		}
 
+		if (bullets.size() > 0) {
+			for(int i = 0; i < bullets.size(); i++) {
+					bullets.get(i).act();
+					bullets.get(i).draw(this);
+					if (bullets.get(i).checkObstacles(map.getObstacles())) {
+						bullets.remove(i);
+					}
+			}
+		}
+
+		fill(100);
+		map.draw(this);
+		
 		// draw the players after the bullets so the bullets don't appear above the gun
 		p1Ghost.draw(this);
 		p1.draw(this);
+
 
 		timer++;
 	}
