@@ -19,9 +19,9 @@ public class Player extends Sprite {
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
 	// num = name = color scheme = secondary fire / shift ability
-	// 1 = "Frank" = blue and black = shotgun / flash
-	// 2 = "Aakarsh" = red and black = burst / grenade
-	// 3 = "Michael" = green and grey = bounce / shield
+	// 1 = "thicc and slick" / assault = blue and black = shotgun / flash
+	// 2 = "loud and proud" / demolition = red and black = burst(may be changed) / grenade
+	// 3 = "400+ IQ plays" / technician = green and grey = bounce / shield
 	//Will also determine the look?
 	private int playerType;
 	
@@ -29,8 +29,12 @@ public class Player extends Sprite {
 	
 	private Point2D.Double bulletPoint;
 	
+	private int health;
+	
 	public Player(PImage img, int x, int y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
+		playerType = 1;
+		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
 	}
@@ -40,15 +44,28 @@ public class Player extends Sprite {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
 	public ArrayList<Bullet> secondaryShoot(PImage img) {
-		ArrayList<Bullet> fan = new ArrayList<Bullet>();
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
+		//if(playerType == 1) {
+			ArrayList<Bullet> fan = new ArrayList<Bullet>();
+			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
+			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
+			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
+			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10));
+			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
+			
+			return fan;
+	//	}
 		
-		return fan;
 	}
+	public int getType() {
+		return playerType;
+	}
+	public int getHealth() {
+		return health;
+	}
+	public void changeHealth(int amount) {
+		health += amount;
+	}
+	
 	public void draw(PApplet drawer) {
 		// change where the bullet hole is
 		double angle = getDirection();

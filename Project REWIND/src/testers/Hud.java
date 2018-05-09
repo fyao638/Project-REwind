@@ -2,18 +2,44 @@ package testers;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PImage;
 
 public class Hud {
+	
 	public Hud() {
-		// Nothing here 
-		// could maybe take in some colors to change the huds
 	}
-	public void draw(PApplet drawer, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(PApplet drawer, int currentHealth, PImage icon1, PImage icon2, PImage icon3, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
 		
+		drawer.stroke(255);
+		drawer.strokeWeight(2);
+		drawer.rect( 10, 10, 200, 50);
+		
+		boolean isDead = false;
+		
+		if(currentHealth < 0) {
+			isDead = true;
+		}
+		else if(currentHealth < 3 && currentHealth > -1) {
+			drawer.fill(255, 0, 0);
+		}
+		else if(currentHealth < 4) {
+			drawer.fill(255, 255, 0);
+		}
+		else if(currentHealth < 6){
+			drawer.fill(0, 255, 0);
+		}
+		else {
+			isDead = true;
+			// or broken
+		}
+		if(!isDead) {
+			drawer.rect( 10, 10, (float)(200 * (double)currentHealth / 5), 50);
+		}
+		
+		drawer.noFill();
 		drawer.stroke(0, 102, 153);
 		drawer.strokeWeight(10); 
-		
 		
 		drawer.rect(20, 480, abilWidth, abilHeight, 20);
 		drawer.rect(140, 480, abilWidth, abilHeight, 20);
@@ -47,7 +73,8 @@ public class Hud {
 		
 		if(shotReadyTime - currentTime <= 0) {
 			drawer.textSize(26); 
-			drawer.text("SHOT", 37, 540);
+			//drawer.text("SHOT", 37, 540);
+			drawer.image(icon1, 30, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
@@ -57,7 +84,8 @@ public class Hud {
 		}
 		if(rewindReadyTime - currentTime <= 0) {
 			drawer.textSize(20);
-			drawer.text("REwind", 155, 539);
+			//drawer.text("REwind", 155, 539);
+			drawer.image(icon2, 150, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
@@ -67,7 +95,8 @@ public class Hud {
 		}
 		if(secondaryReadyTime - currentTime <= 0) {
 			drawer.textSize(20);
-			drawer.text("spread", 280, 539);
+			//drawer.text("spread", 280, 539);
+			drawer.image(icon3, 270, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
