@@ -41,35 +41,28 @@ public class Bullet extends Sprite {
 	// return true if it hits an obstacle, false if otherwise
 	public boolean checkObstacles(ArrayList<Obstacle> obstacles) {
 		double direction = getDirection();
-		
-		for(Shape s : obstacles) {
-			if(s.getBounds().intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
-				if(!isBouncing)
-					return true;
-				else {
-					if(direction > PI && direction < (3*PI/2)) {
-						if(direction-PI < PI/4)
-							direction = -(direction - 3.14);
-						else
-							direction = 1.57-(direction - 4.71);
-						turn(direction);
+		for(Obstacle s : obstacles) {
+			for(int i = 0; i < 4; i++) {
+				if(s.getLineComposition()[i].intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+					if(!isBouncing)
+						return true;
+					else {
+						double incidence = (direction - s.getLineCompositionNormals()[i]);
+						if (s.getLineCompositionNormals()[i] == 0) {
+							turn(Math.PI - incidence);
+						}
+						else {
+							turn((Math.PI/2) - incidence);
+						}
+
+						timesBounced++;
+//						if(timesBounced > 3)
+//							isBouncing = false;
 					}
-//					else if(dir > 3.93 && dir < 4.71) {
-//						dir = 1.57-(dir - 4.71);
-//						turn(dir);
-//					}
-					else if(direction > 3.14 && direction < 3.93) {
-						direction = -(direction - 3.14);
-						turn(direction);
-					}
-					else if(direction > 3.14 && direction < 3.93) {
-						direction = -(direction - 3.14);
-						turn(direction);
-					}
-					timesBounced++;
+						
 				}
-					
 			}
+			
 		}
 		return false;
 	}

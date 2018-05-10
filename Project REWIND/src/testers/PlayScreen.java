@@ -127,7 +127,7 @@ public class PlayScreen {
 				
 				// create particles, maybe find a cleaner way to do this later
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-					particles.add(new Particle(assets.get(10), p1.x, p1.y, 20, 20));
+					particles.add(new Particle(assets.get(10), p1.x + p1.getWidth() / 2, p1.y + p1.getHeight() / 2, 20, 20));
 				}
 				
 				p1.shiftAbility(map.getObstacles());
