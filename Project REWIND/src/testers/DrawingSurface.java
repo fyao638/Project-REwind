@@ -15,21 +15,42 @@ public class DrawingSurface extends PApplet {
  * 
  */
 	private PlayScreen playScreen;
+	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
+	//States:
+	// 0 = main menu
+	// 1 = playScreen
+	private int state;
 	
 	public DrawingSurface() {
 		super();
+		state = 0;
 		playScreen = new PlayScreen();
+		menuScreen = new MenuScreen();
 		keys = new ArrayList<Integer>();
 		
 	}
 
 	public void setup() {
+		menuScreen.setup(this);
 		playScreen.setup(this);
 	}
 
 	public void draw() {
-		playScreen.draw(this);
+		if(state == 0) {
+			menuScreen.draw(this);
+		}
+		else {
+			playScreen.draw(this);
+		}
+	}
+	public void swapState() {
+		if(state == 0) {
+			state = 1;
+		}
+		else {
+			state = 0;
+		}
 	}
 	
 	public void keyPressed() {
