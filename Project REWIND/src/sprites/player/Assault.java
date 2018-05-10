@@ -1,14 +1,15 @@
 package sprites.player;
 
 import processing.core.PImage;
+import sprites.projectile.Bullet;
 
 public class Assault extends Player{
 
 	public Assault(PImage img, int x, int y) {
 		super(img, x, y);
 	}
-	public void shoot() {
-		
+	public Bullet shoot(PImage img) {
+		return super.shoot(img);
 	}
 	public void secondary() {
 		
