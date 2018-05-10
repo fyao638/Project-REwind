@@ -41,7 +41,7 @@ public class Player extends Sprite {
 
 	// METHODS
 	public Bullet shoot(PImage img) {
-		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false);
 	}
 	public ArrayList<Bullet> secondaryShoot(PImage img) {
 		ArrayList<Bullet> fan = new ArrayList<Bullet>();
@@ -57,7 +57,7 @@ public class Player extends Sprite {
 		Bullet b = new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, true);
 		return b;
 	}
-	public void shiftAbility(ArrayList<Shape> obstacles) {
+	public void shiftAbility(ArrayList<Obstacle> obstacles) {
 		
 		double amountX = 110 * Math.cos(super.getDirection());
 		double amountY = 110 * Math.sin(super.getDirection());
@@ -109,13 +109,13 @@ public class Player extends Sprite {
 		*/
 	}
 	
-	public void walk(int xDir, int yDir, ArrayList<Shape> obstacles) {
+	public void walk(int xDir, int yDir, ArrayList<Obstacle> obstacles) {
 		if(canMove(xDir * 5, yDir * 5, obstacles)) {
 			this.moveByAmount(xDir * 5, yDir * 5);
 		}
 	}
 	
-	private boolean canMove(int xChange, int yChange, ArrayList<Shape> obstacles) {
+	private boolean canMove(int xChange, int yChange, ArrayList<Obstacle> obstacles) {
 		double pX = getX();
 		double pY = getY();
 		for(Shape s: obstacles) {

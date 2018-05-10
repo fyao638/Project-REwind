@@ -35,7 +35,7 @@ public class DrawingSurface extends PApplet {
 	private Map map;
 	private Hud hud;
 
-	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime;
+	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
 	
@@ -83,8 +83,9 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("starIcon.png"));
 		assets.add(loadImage("flash.png"));
 		assets.add(loadImage("wall.png"));
+		assets.add(loadImage("wall2.png"));
 		
-		map = new Map(assets.get(7));
+		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
 		
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
