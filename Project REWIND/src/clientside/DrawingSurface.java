@@ -6,6 +6,7 @@ import gui.MenuScreen;
 import jay.jaysound.JayLayer;
 import jay.jaysound.JayLayerListener;
 import processing.core.PApplet;
+import sound.SoundManager;
 
 /**
  * 
@@ -26,7 +27,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
 	
-	JayLayer sound;
+	private SoundManager sound;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -37,6 +38,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	
 	public DrawingSurface() {
 		super();
+		sound = new SoundManager();
 		gameState = 0;
 		playScreen = new PlayScreen();
 		menuScreen = new MenuScreen();
@@ -45,16 +47,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 	}
 
 	public void setup() {
-		String[] songs = new String[]{"title2.mp3"};
-		
-		 sound=new JayLayer("audio/","audio/",false);
-		  sound.addPlayList();
-		  sound.addSongs(0,songs);
-		  sound.changePlayList(0);
-		  sound.addJayLayerListener(this);
-		  
-		  sound.nextSong();
-		
+		sound.playMenuMusic();
 		menuScreen.setup(this);
 		playScreen.setup(this);
 	}
@@ -68,9 +61,7 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 			menuScreen.draw(this);
 		}
 		else {
-			if(sound.isPlaying()) {
-				sound.stopSong();
-			}
+			sound.stopMusic();
 			playScreen.draw(this);
 		}
 	}

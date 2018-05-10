@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import sprites.Obstacle;
+import sprites.obstacles.Obstacle;
 
 /**
  * 

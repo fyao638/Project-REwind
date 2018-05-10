@@ -1,10 +1,11 @@
-package sprites;
+package sprites.obstacles;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Sprite;
 
 /**
  * 

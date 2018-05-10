@@ -1,4 +1,4 @@
-package sprites;
+package sprites.player;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -7,6 +7,9 @@ import java.util.*;
 import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Sprite;
+import sprites.obstacles.Obstacle;
+import sprites.projectile.Bullet;
 
 /**
  * 

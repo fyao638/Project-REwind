@@ -9,9 +9,9 @@ import maps.Map;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-import sprites.Bullet;
 import sprites.Particle;
-import sprites.Player;
+import sprites.player.Player;
+import sprites.projectile.Bullet;
 
 /**
  * 

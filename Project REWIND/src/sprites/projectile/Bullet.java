@@ -1,10 +1,12 @@
-package sprites;
+package sprites.projectile;
 
 import java.awt.Shape;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Sprite;
+import sprites.obstacles.Obstacle;
 
 /**
  * 
