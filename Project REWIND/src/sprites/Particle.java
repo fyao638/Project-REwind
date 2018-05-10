@@ -2,7 +2,7 @@ package sprites;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-
+//doesn't have to be a sprite
 public class Particle extends Sprite {
 
 	private double speed;
@@ -20,6 +20,7 @@ public class Particle extends Sprite {
 		
 		turn(Math.random() * Math.PI * 2);
 	}
+	
 	
 	//return false if lifeTime is over
 	public boolean act() {
