@@ -28,6 +28,10 @@ public class DrawingSurface extends PApplet {
 		playScreen.setup(this);
 	}
 
+	// The statements in draw() are executed until the 
+	// program is stopped. Each statement is executed in 
+	// sequence and after the last line is read, the first 
+	// line is executed again.
 	public void draw() {
 		playScreen.draw(this);
 	}
@@ -45,4 +49,5 @@ public class DrawingSurface extends PApplet {
 		return keys.contains(code);
 	}
 }
+
 
