@@ -28,21 +28,17 @@ public class DrawingSurface extends PApplet {
 		playScreen.setup(this);
 	}
 
-	// The statements in draw() are executed until the 
-	// program is stopped. Each statement is executed in 
-	// sequence and after the last line is read, the first 
-	// line is executed again.
 	public void draw() {
 		playScreen.draw(this);
 	}
 	
-	public void keyPressed(PApplet a) {
-		keys.add(a.keyCode);
+	public void keyPressed() {
+		keys.add(keyCode);
 	}
 
-	public void keyReleased(PApplet a ) {
-		while(keys.contains(a.keyCode))
-			keys.remove(new Integer(a.keyCode));
+	public void keyReleased() {
+		while(keys.contains(keyCode))
+			keys.remove(new Integer(keyCode));
 	}
 
 	public boolean isPressed(Integer code) {
