@@ -17,14 +17,18 @@ public class DrawingSurface extends PApplet {
 	private PlayScreen playScreen;
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
+	
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
-	private int state;
+	private int gameState;
+	
+	//Networking fields
+	
 	
 	public DrawingSurface() {
 		super();
-		state = 0;
+		gameState = 0;
 		playScreen = new PlayScreen();
 		menuScreen = new MenuScreen();
 		keys = new ArrayList<Integer>();
@@ -41,20 +45,17 @@ public class DrawingSurface extends PApplet {
 	// sequence and after the last line is read, the first 
 	// line is executed again.
 	public void draw() {
-		if(state == 0) {
+		if(gameState == 0) {
 			menuScreen.draw(this);
 		}
 		else {
 			playScreen.draw(this);
 		}
 	}
-	public void swapState() {
-		if(state == 0) {
-			state = 1;
-		}
-		else {
-			state = 0;
-		}
+	
+	// 0 = menu, 1 = in game
+	public void changeState(int newState) {
+		gameState = newState;
 	}
 	
 	public void keyPressed() {

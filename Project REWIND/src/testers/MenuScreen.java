@@ -40,7 +40,7 @@ public class MenuScreen {
 		drawer.text("PLAY", rectX + 75, rectY + rectHeight - 10);
 	
 	  	if(drawer.mousePressed && overRect(rectX, rectY, rectWidth, rectHeight, drawer)) {
-	  		drawer.swapState();
+	  		drawer.changeState(1);
 	    }
 	}
 	

@@ -7,14 +7,16 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Bullet;
+import sprites.Particle;
 import sprites.Player;
 
-public class PlayScreen{
+public class PlayScreen {
 	
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 
 	private Player p1, p1Ghost;
+	private ArrayList<Particle> particles;
 	
 	private ArrayList<Bullet> bullets;
 	
@@ -32,7 +34,6 @@ public class PlayScreen{
 	
 	
 	public PlayScreen() {
-		super();
 		assets = new ArrayList<PImage>();
 		bullets = new ArrayList<Bullet>();
 		hud = new Hud();
@@ -43,6 +44,8 @@ public class PlayScreen{
 		shiftReadyTime = 0;
 		ghostReappearTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
+		particles = new ArrayList<Particle>();
+		
 		abilWidth = 100;
 		abilHeight = 100;
 	}
@@ -66,6 +69,7 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("flash.png"));
 		assets.add(drawer.loadImage("wall.png"));
 		assets.add(drawer.loadImage("wall2.png"));
+		assets.add(drawer.loadImage("particle.png"));
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
@@ -121,6 +125,11 @@ public class PlayScreen{
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
 			if(shiftReadyTime - drawer.millis() <= 0) {
 				
+				// create particles, maybe find a cleaner way to do this later
+				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
+					particles.add(new Particle(assets.get(10), p1.x, p1.y, 20, 20));
+				}
+				
 				p1.shiftAbility(map.getObstacles());
 				
 				shiftReadyTime = drawer.millis() + 7000;
@@ -135,7 +144,6 @@ public class PlayScreen{
 		}
 
 		// Draw abilities
-		
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
 				if(shotReadyTime - drawer.millis() <= 0) {
@@ -172,6 +180,7 @@ public class PlayScreen{
 			}
 		}
 
+		
 		drawer.fill(100);
 		map.draw(drawer);
 		
@@ -180,7 +189,16 @@ public class PlayScreen{
 			p1Ghost.draw(drawer);
 		}
 		p1.draw(drawer);
-
+		
+		if (particles.size() > 0) {
+			for(int i = 0; i < particles.size(); i++) {
+					particles.get(i).draw(drawer);
+					if (!particles.get(i).act()) {
+						particles.remove(i);
+					}
+			}
+		}
+		
 		hud.draw(drawer, p1.getHealth(), assets.get(4), assets.get(5), assets.get(6),assets.get(7), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
 		timer++;
