@@ -44,7 +44,7 @@ public class DrawingSurface extends PApplet {
 		assets = new ArrayList<PImage>();
 		keys = new ArrayList<Integer>();
 		bullets = new ArrayList<Bullet>();
-		map = new Map();
+		
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
@@ -77,7 +77,12 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("ghost.png"));
 		assets.add(loadImage("bullet.png"));
 		assets.add(loadImage("star.png"));
+		assets.add(loadImage("crosshair.png"));
+		assets.add(loadImage("time.png"));
+		assets.add(loadImage("starIcon.png"));
+		assets.add(loadImage("wall.png"));
 		
+		map = new Map(assets.get(7));
 		spawnNewPlayer();
 		
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
@@ -133,8 +138,13 @@ public class DrawingSurface extends PApplet {
 				rewindReadyTime = millis() + 15000;
 			}
 		}
+		//TESTING HEALTH
+		if(isPressed(KeyEvent.VK_SPACE)) { 
+			p1.changeHealth(-1);
+			System.out.println(p1.getHealth());
+		}
 		
-		hud.draw(this, shotReadyTime, rewindReadyTime, secondaryReadyTime, millis(), abilWidth, abilHeight);
+		hud.draw(this, p1.getHealth(), assets.get(4), assets.get(5), assets.get(6), shotReadyTime, rewindReadyTime, secondaryReadyTime, millis(), abilWidth, abilHeight);
 
 		// Draw abilities
 		
@@ -147,9 +157,11 @@ public class DrawingSurface extends PApplet {
 			}
 			else if(mouseButton == RIGHT) {
 				if(secondaryReadyTime - millis() <= 0) {
-					ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
-					for(Bullet b : fan) {
-						bullets.add(b);
+					if(p1.getType() == 1) {
+						ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
+						for(Bullet b : fan) {
+							bullets.add(b);
+						}
 						secondaryReadyTime = millis() + 7000;
 					}
 				}

@@ -12,6 +12,7 @@ public class Bullet extends Sprite {
 
 	public static final int BULLET_WIDTH = 20;
 	public static final int BULLET_HEIGHT = 20;
+	public static final double PI = Math.PI;
 	
 	private double speed, dir;
 	
@@ -39,15 +40,33 @@ public class Bullet extends Sprite {
 	}
 	
 	// return true if it hits an obstacle, false if otherwise
-	public boolean checkObstacles(ArrayList<Shape> obstacles) {
+	public boolean checkObstacles(ArrayList<Obstacle> obstacles) {
 		
 		for(Shape s : obstacles) {
 			if(s.getBounds().intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
 				if(!isBouncing)
 					return true;
 				else {
+					if(dir > PI && dir < (3*PI/2)) {
+						if(dir-PI < PI/4)
+							dir = -(dir - 3.14);
+						else
+							dir = 1.57-(dir - 4.71);
+						turn(dir);
+					}
+//					else if(dir > 3.93 && dir < 4.71) {
+//						dir = 1.57-(dir - 4.71);
+//						turn(dir);
+//					}
+					else if(dir > 3.14 && dir < 3.93) {
+						dir = -(dir - 3.14);
+						turn(dir);
+					}
+					else if(dir > 3.14 && dir < 3.93) {
+						dir = -(dir - 3.14);
+						turn(dir);
+					}
 					timesBounced++;
-					return true;
 				}
 					
 			}

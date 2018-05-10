@@ -10,4 +10,8 @@ public class Obstacle extends Sprite {
 	public Obstacle(PImage image, double x, double y, double w, double h) {
 		super(image, x, y, w, h);
 	}
+	
+	public void draw(PApplet drawer) {
+		drawer.image(getImage(), (float)x,(float)y,(float)width,(float)height);
+	}
 }

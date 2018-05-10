@@ -15,6 +15,7 @@ public class Main {
 	
 	private JPanel cardPanel;
 	  
+	private MenuScreen panel1;
 	private DrawingSurface panel2;
 	
 	private PSurfaceAWT.SmoothCanvas processingCanvas;
@@ -37,7 +38,8 @@ public class Main {
 	    cardPanel.setLayout(cl);
 	    
 	    window.getContentPane().removeAll();
-	       
+	    
+	    //panel1 = new MenuScreen(this); 
 	    panel2 = new DrawingSurface();
 	    
 	    cardPanel.add(processingCanvas,"2");
