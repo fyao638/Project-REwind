@@ -1,4 +1,4 @@
-package testers;
+package maps;
 
 import java.awt.Rectangle;
 import java.awt.Shape;

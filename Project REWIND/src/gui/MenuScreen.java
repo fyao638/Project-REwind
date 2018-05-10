@@ -1,4 +1,5 @@
-package testers;
+package gui;
+import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -16,10 +17,10 @@ public class MenuScreen {
 		rectY = 300;
 	}
 
-	void setup(PApplet drawer) {
+	public void setup(PApplet drawer) {
 		logo = drawer.loadImage("logo.png");
 	}	
-	void draw(DrawingSurface drawer) {
+	public void draw(DrawingSurface drawer) {
 		update(drawer.mouseX, drawer.mouseY, drawer);
 		drawer.background(255);
 	  

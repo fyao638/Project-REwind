@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 
+import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
-import testers.DrawingSurface;
 
 public class Player extends Sprite {
 

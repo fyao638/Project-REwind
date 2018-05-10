@@ -1,4 +1,4 @@
-package testers;
+package gui;
 
 import processing.core.PApplet;
 import processing.core.PConstants;

@@ -1,7 +1,8 @@
-package testers;
+package clientside;
 
 import java.util.ArrayList;
 
+import gui.MenuScreen;
 import processing.core.PApplet;
 
 

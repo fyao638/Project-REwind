@@ -1,4 +1,4 @@
-package testers;
+package clientside;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import gui.MenuScreen;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 

@@ -1,8 +1,11 @@
-package testers;
+package clientside;
 
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import gui.Hud;
+import maps.Map;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
