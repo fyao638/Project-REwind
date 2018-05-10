@@ -67,18 +67,18 @@ public class PlayScreen {
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("player.png"));
-		assets.add(drawer.loadImage("ghost.png"));
-		assets.add(drawer.loadImage("bullet.png"));
-		assets.add(drawer.loadImage("star.png"));
-		assets.add(drawer.loadImage("crosshair.png"));
-		assets.add(drawer.loadImage("time.png"));
-		assets.add(drawer.loadImage("starIcon.png"));
-		assets.add(drawer.loadImage("flash.png"));
-		assets.add(drawer.loadImage("wall.png"));
-		assets.add(drawer.loadImage("wall2.png"));
-		assets.add(drawer.loadImage("particle.png"));
-		assets.add(drawer.loadImage("bounceLogo.png"));
+		assets.add(drawer.loadImage("assets/player.png"));
+		assets.add(drawer.loadImage("assets/ghost.png"));
+		assets.add(drawer.loadImage("assets/bullet.png"));
+		assets.add(drawer.loadImage("assets/star.png"));
+		assets.add(drawer.loadImage("assets/crosshair.png"));
+		assets.add(drawer.loadImage("assets/time.png"));
+		assets.add(drawer.loadImage("assets/starIcon.png"));
+		assets.add(drawer.loadImage("assets/flash.png"));
+		assets.add(drawer.loadImage("assets/wall.png"));
+		assets.add(drawer.loadImage("assets/wall2.png"));
+		assets.add(drawer.loadImage("assets/particle.png"));
+		assets.add(drawer.loadImage("assets/bounceLogo.png"));
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();

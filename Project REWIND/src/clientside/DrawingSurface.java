@@ -3,6 +3,8 @@ package clientside;
 import java.util.ArrayList;
 
 import gui.MenuScreen;
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
 import processing.core.PApplet;
 
 /**
@@ -11,7 +13,7 @@ import processing.core.PApplet;
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
  *
  */
-public class DrawingSurface extends PApplet {
+public class DrawingSurface extends PApplet implements JayLayerListener {
 /* Ghost class ?
  * Use the obstacle class (style)
  * move the code to playScreen
@@ -24,6 +26,7 @@ public class DrawingSurface extends PApplet {
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
 	
+	JayLayer sound;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -42,6 +45,16 @@ public class DrawingSurface extends PApplet {
 	}
 
 	public void setup() {
+		String[] songs = new String[]{"title2.mp3"};
+		
+		 sound=new JayLayer("audio/","audio/",false);
+		  sound.addPlayList();
+		  sound.addSongs(0,songs);
+		  sound.changePlayList(0);
+		  sound.addJayLayerListener(this);
+		  
+		  sound.nextSong();
+		
 		menuScreen.setup(this);
 		playScreen.setup(this);
 	}
@@ -55,6 +68,9 @@ public class DrawingSurface extends PApplet {
 			menuScreen.draw(this);
 		}
 		else {
+			if(sound.isPlaying()) {
+				sound.stopSong();
+			}
 			playScreen.draw(this);
 		}
 	}
@@ -75,6 +91,30 @@ public class DrawingSurface extends PApplet {
 
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
+	}
+
+	@Override
+	public void musicStarted() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void musicStopped() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playlistEnded() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void songEnded() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

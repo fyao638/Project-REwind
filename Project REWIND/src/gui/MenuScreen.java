@@ -1,5 +1,7 @@
 package gui;
 import clientside.DrawingSurface;
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -22,9 +24,11 @@ public class MenuScreen {
 	}
 
 	public void setup(PApplet drawer) {
-		logo = drawer.loadImage("logo.png");
+		logo = drawer.loadImage("assets/logo.png");
+		
 	}	
 	public void draw(DrawingSurface drawer) {
+	
 		update(drawer.mouseX, drawer.mouseY, drawer);
 		drawer.background(255);
 	  
