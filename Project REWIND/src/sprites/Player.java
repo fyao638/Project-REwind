@@ -44,17 +44,18 @@ public class Player extends Sprite {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
 	public ArrayList<Bullet> secondaryShoot(PImage img) {
-		//if(playerType == 1) {
-			ArrayList<Bullet> fan = new ArrayList<Bullet>();
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
-			
-			return fan;
-	//	}
+		ArrayList<Bullet> fan = new ArrayList<Bullet>();
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10, false));
+		return fan;
+	}
 		
+	public Bullet secondaryShoot2(PImage img) {
+		Bullet b = new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, true);
+		return b;
 	}
 	public void shiftAbility(ArrayList<Shape> obstacles) {
 		

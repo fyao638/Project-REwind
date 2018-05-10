@@ -1,6 +1,7 @@
 package testers;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import processing.core.PApplet;
@@ -34,7 +35,7 @@ public class DrawingSurface extends PApplet {
 	private Map map;
 	private Hud hud;
 
-	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
+	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime;
 	
 	private float abilWidth, abilHeight;
 	
@@ -43,7 +44,7 @@ public class DrawingSurface extends PApplet {
 		assets = new ArrayList<PImage>();
 		keys = new ArrayList<Integer>();
 		bullets = new ArrayList<Bullet>();
-		map = new Map();
+		
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
@@ -81,7 +82,9 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("time.png"));
 		assets.add(loadImage("starIcon.png"));
 		assets.add(loadImage("flash.png"));
+		assets.add(loadImage("wall.png"));
 		
+		map = new Map(assets.get(7));
 		spawnNewPlayer();
 		
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
@@ -171,6 +174,12 @@ public class DrawingSurface extends PApplet {
 						}
 						secondaryReadyTime = millis() + 7000;
 					}
+				}
+			}
+			else if(mouseButton == CENTER) {
+				if(secondaryReadyTime - millis() <= 0) {
+					bullets.add(p1.secondaryShoot2(assets.get(2)));
+					secondaryReadyTime = millis() + 1000;
 				}
 			}
 		}
