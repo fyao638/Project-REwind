@@ -8,12 +8,12 @@ public class Hud {
 	
 	public Hud() {
 	}
-	public void draw(PApplet drawer, int currentHealth, PImage icon1, PImage icon2, PImage icon3, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(PApplet drawer, int currentHealth, PImage icon1, PImage icon2, PImage icon3, PImage icon4, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
 		
 		drawer.stroke(255);
 		drawer.strokeWeight(2);
-		drawer.rect( 10, 10, 200, 50);
+		drawer.rect( 10, 10, 200, 50, 20);
 		
 		boolean isDead = false;
 		
@@ -34,7 +34,7 @@ public class Hud {
 			// or broken
 		}
 		if(!isDead) {
-			drawer.rect( 10, 10, (float)(200 * (double)currentHealth / 5), 50);
+			drawer.rect( 10, 10, (float)(200 * (double)currentHealth / 5), 50, 20);
 		}
 		
 		drawer.noFill();
@@ -44,6 +44,7 @@ public class Hud {
 		drawer.rect(20, 480, abilWidth, abilHeight, 20);
 		drawer.rect(140, 480, abilWidth, abilHeight, 20);
 		drawer.rect(260, 480, abilWidth, abilHeight, 20);
+		drawer.rect(380, 480, abilWidth, abilHeight, 20);
 		
 		drawer.fill(0, 102, 153, 128);
 		drawer.textSize(26); 
@@ -62,6 +63,11 @@ public class Hud {
 		if(secondaryReadyTime - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
 			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (secondaryReadyTime - currentTime) / 7000, 20);
+			drawer.rectMode(PApplet.CORNER);
+		}
+		if(shiftReadyTime - currentTime > 0) {
+			drawer.rectMode(PApplet.CORNERS);
+			drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (shiftReadyTime - currentTime) / 7000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
 		
@@ -102,6 +108,17 @@ public class Hud {
 		else {
 			drawer.fill(255, 255, 255);
 			drawer.text(Math.round((double)(secondaryReadyTime - currentTime) * 10) / 10000 + "sec", 280, 540);
+			drawer.fill(0, 102, 153);
+		}
+		if(shiftReadyTime - currentTime <= 0) {
+			drawer.textSize(20);
+			//drawer.text("FLASH", 400, 539);
+			drawer.image(icon4, 390, 490, 80, 80);
+			drawer.textSize(26); 
+		}
+		else {
+			drawer.fill(255, 255, 255);
+			drawer.text(Math.round((double)(shiftReadyTime - currentTime) * 10) / 10000 + "sec", 400, 540);
 			drawer.fill(0, 102, 153);
 		}
 		

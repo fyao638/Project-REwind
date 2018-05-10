@@ -56,6 +56,22 @@ public class Player extends Sprite {
 	//	}
 		
 	}
+	public void shiftAbility(ArrayList<Shape> obstacles) {
+		
+		double amountX = 110 * Math.cos(super.getDirection());
+		double amountY = 110 * Math.sin(super.getDirection());
+		
+		boolean canFlash = true;
+		
+		for(Shape s : obstacles) {
+			if(s.getBounds().intersects(new Rectangle((int)(getX() + amountX),(int)(getY() + amountY), PLAYER_WIDTH, PLAYER_HEIGHT))) {
+				canFlash = false;
+			}
+		}
+		if(canFlash) {
+			super.moveToLocation(x + amountX, y + amountY);	
+		}
+	}
 	public int getType() {
 		return playerType;
 	}

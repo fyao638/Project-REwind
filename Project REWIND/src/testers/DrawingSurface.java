@@ -34,7 +34,7 @@ public class DrawingSurface extends PApplet {
 	private Map map;
 	private Hud hud;
 
-	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime;
+	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
 	
@@ -50,6 +50,7 @@ public class DrawingSurface extends PApplet {
 		rewindReadyTime = 0;
 		secondaryReadyTime = 0;
 		shiftReadyTime = 0;
+		ghostReappearTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
 		abilWidth = 100;
 		abilHeight = 100;
@@ -79,6 +80,7 @@ public class DrawingSurface extends PApplet {
 		assets.add(loadImage("crosshair.png"));
 		assets.add(loadImage("time.png"));
 		assets.add(loadImage("starIcon.png"));
+		assets.add(loadImage("flash.png"));
 		
 		spawnNewPlayer();
 		
@@ -132,15 +134,24 @@ public class DrawingSurface extends PApplet {
 				p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
 				
 				rewindReadyTime = millis() + 15000;
+				ghostReappearTime = millis() + 2000;
 			}
 		}
+		if (isPressed(KeyEvent.VK_SHIFT)) {
+			if(shiftReadyTime - millis() <= 0) {
+				
+				p1.shiftAbility(map.getObstacles());
+				
+				shiftReadyTime = millis() + 7000;
+				
+			}
+		}
+			
 		//TESTING HEALTH
 		if(isPressed(KeyEvent.VK_SPACE)) { 
 			p1.changeHealth(-1);
 			System.out.println(p1.getHealth());
 		}
-		
-		hud.draw(this, p1.getHealth(), assets.get(4), assets.get(5), assets.get(6), shotReadyTime, rewindReadyTime, secondaryReadyTime, millis(), abilWidth, abilHeight);
 
 		// Draw abilities
 		
@@ -178,10 +189,13 @@ public class DrawingSurface extends PApplet {
 		map.draw(this);
 		
 		// draw the players after the bullets so the bullets don't appear above the gun
-		p1Ghost.draw(this);
+		if(ghostReappearTime - millis() < 0) {
+			p1Ghost.draw(this);
+		}
 		p1.draw(this);
 
-
+		hud.draw(this, p1.getHealth(), assets.get(4), assets.get(5), assets.get(6),assets.get(7), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, millis(), abilWidth, abilHeight);
+		
 		timer++;
 	}
 
