@@ -4,6 +4,11 @@ import java.awt.geom.Rectangle2D;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class is the superclass for all objects on the map. It controls things that apply to all of them like moving and turning.
+ */
 public class Sprite extends Rectangle2D.Double {
 	private double xVel;
 	private double yVel;

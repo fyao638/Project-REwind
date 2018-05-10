@@ -10,6 +10,12 @@ import gui.MenuScreen;
 import processing.awt.PSurfaceAWT;
 import processing.core.PApplet;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class handles the initial setup of the window and DrawingSurface.
+ *
+ */
 public class Main {
 
 	private JFrame window;

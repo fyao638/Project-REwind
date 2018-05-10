@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents an obstacle on the map that tracks collisions with other players, bullets, and abilities.
+ */
 public class Obstacle extends Sprite {
 	
 	private PImage img;

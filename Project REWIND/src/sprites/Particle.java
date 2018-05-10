@@ -3,6 +3,11 @@ package sprites;
 import processing.core.PApplet;
 import processing.core.PImage;
 //doesn't have to be a sprite
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the particles that are created when certain actions occur.
+ */
 public class Particle extends Sprite {
 
 	private double speed;

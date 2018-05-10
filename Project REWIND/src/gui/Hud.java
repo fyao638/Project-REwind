@@ -5,6 +5,11 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Player;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the all the HUD elements of the game, like ability icons with cooldowns and the life bar.
+ */
 public class Hud {
 	
 	public Hud() {

@@ -8,6 +8,11 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Obstacle;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the game map and controls what obstacles are present.
+ */
 public class Map { //extend sprite? NO
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;

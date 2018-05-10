@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import gui.MenuScreen;
 import processing.core.PApplet;
 
-
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
+ *
+ */
 public class DrawingSurface extends PApplet {
 /* Ghost class ?
  * Use the obstacle class (style)

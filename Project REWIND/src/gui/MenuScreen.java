@@ -3,7 +3,11 @@ import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the main menu. It is drawn by DrawingSurface.
+ */
 public class MenuScreen {
 	
 	int rectX, rectY;      // Position of square button

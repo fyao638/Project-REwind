@@ -8,6 +8,11 @@ import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents a player in the game.
+ */
 public class Player extends Sprite {
 
 	public static final int PLAYER_WIDTH = 60;

@@ -13,6 +13,11 @@ import sprites.Bullet;
 import sprites.Particle;
 import sprites.Player;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the screen where the actual playing occurs. It is drawn by DrawingSurface.
+ */
 public class PlayScreen {
 	
 	public static final int DRAWING_WIDTH = 800;

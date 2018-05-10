@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * 
+ * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * This class represents the bullets that are shot from weapons in the game.
+ */
 public class Bullet extends Sprite {
 	
 	private PImage img;
