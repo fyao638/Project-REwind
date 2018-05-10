@@ -3,12 +3,13 @@ package testers;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
+import sprites.Player;
 
 public class Hud {
 	
 	public Hud() {
 	}
-	public void draw(PApplet drawer, int currentHealth, PImage icon1, PImage icon2, PImage icon3, PImage icon4, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(PApplet drawer, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
 		
 		drawer.stroke(255);
@@ -17,16 +18,16 @@ public class Hud {
 		
 		boolean isDead = false;
 		
-		if(currentHealth < 0) {
+		if(p.getHealth() < 0) {
 			isDead = true;
 		}
-		else if(currentHealth < 3 && currentHealth > -1) {
+		else if(p.getHealth() < 3 && p.getHealth() > -1) {
 			drawer.fill(255, 0, 0);
 		}
-		else if(currentHealth < 4) {
+		else if(p.getHealth() < 4) {
 			drawer.fill(255, 255, 0);
 		}
-		else if(currentHealth < 6){
+		else if(p.getHealth()< 6){
 			drawer.fill(0, 255, 0);
 		}
 		else {
@@ -34,7 +35,7 @@ public class Hud {
 			// or broken
 		}
 		if(!isDead) {
-			drawer.rect( 10, 10, (float)(200 * (double)currentHealth / 5), 50, 20);
+			drawer.rect( 10, 10, (float)(200 * (double)p.getHealth() / 5), 50, 20);
 		}
 		
 		drawer.noFill();
@@ -102,7 +103,12 @@ public class Hud {
 		if(secondaryReadyTime - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("spread", 280, 539);
-			drawer.image(icon3, 270, 490, 80, 80);
+			if(p.getType() == 1) {
+				drawer.image(icon3, 270, 490, 80, 80);
+			}
+			else {
+				drawer.image(icon5, 270, 490, 80, 80);
+			}
 			drawer.textSize(26); 
 		}
 		else {

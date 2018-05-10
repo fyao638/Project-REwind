@@ -56,8 +56,8 @@ public class Bullet extends Sprite {
 						}
 
 						timesBounced++;
-//						if(timesBounced > 3)
-//							isBouncing = false;
+						if(timesBounced > 3)
+							isBouncing = false;
 					}
 						
 				}

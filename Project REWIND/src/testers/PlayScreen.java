@@ -70,6 +70,7 @@ public class PlayScreen {
 		assets.add(drawer.loadImage("wall.png"));
 		assets.add(drawer.loadImage("wall2.png"));
 		assets.add(drawer.loadImage("particle.png"));
+		assets.add(drawer.loadImage("bounceLogo.png"));
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
@@ -117,9 +118,15 @@ public class PlayScreen {
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime -drawer.millis() <= 0) {
 				p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
-				
+				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
+				
+				//rewind cooldowns
+				shotReadyTime += 2000;
+				secondaryReadyTime += 2000;
+				shiftReadyTime += 2000;
+				
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
@@ -136,13 +143,14 @@ public class PlayScreen {
 				
 			}
 		}
-			
-		//TESTING HEALTH
-		if(drawer.isPressed(KeyEvent.VK_SPACE)) { 
-			p1.changeHealth(-1);
-			System.out.println(p1.getHealth());
+		// make the player color and hud change accordingly
+		//
+		if(drawer.isPressed(KeyEvent.VK_SPACE)) {
+			p1.changePlayerType(1);
 		}
-
+		
+		
+		
 		// Draw abilities
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
@@ -152,20 +160,22 @@ public class PlayScreen {
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
-				if(secondaryReadyTime - drawer.millis() <= 0) {
-					if(p1.getType() == 1) {
-						ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
-						for(Bullet b : fan) {
-							bullets.add(b);
+				if(p1.getType() == 1) {
+					if(secondaryReadyTime - drawer.millis() <= 0) {
+						if(p1.getType() == 1) {
+							ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
+							for(Bullet b : fan) {
+								bullets.add(b);
+							}
+							secondaryReadyTime = drawer.millis() + 7000;
 						}
-						secondaryReadyTime = drawer.millis() + 7000;
 					}
 				}
-			}
-			else if(drawer.mouseButton == PConstants.CENTER) {
-				if(secondaryReadyTime - drawer.millis() <= 0) {
-					bullets.add(p1.secondaryShoot2(assets.get(2)));
-					secondaryReadyTime = drawer.millis() + 1000;
+				else {
+					if(secondaryReadyTime - drawer.millis() <= 0) {
+						bullets.add(p1.secondaryShoot(assets.get(2)).get(0));
+						secondaryReadyTime = drawer.millis() + 7000;
+					}
 				}
 			}
 		}
@@ -199,7 +209,7 @@ public class PlayScreen {
 			}
 		}
 		
-		hud.draw(drawer, p1.getHealth(), assets.get(4), assets.get(5), assets.get(6),assets.get(7), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
+		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
 		timer++;
 	
