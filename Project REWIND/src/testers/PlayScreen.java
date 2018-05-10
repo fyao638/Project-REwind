@@ -123,9 +123,9 @@ public class PlayScreen {
 				ghostReappearTime = drawer.millis() + 2000;
 				
 				//rewind cooldowns
-				shotReadyTime += 2000;
-				secondaryReadyTime += 2000;
-				shiftReadyTime += 2000;
+				//shotReadyTime += 2000;
+				//secondaryReadyTime += 2000;
+				//shiftReadyTime += 2000;
 				
 			}
 		}
