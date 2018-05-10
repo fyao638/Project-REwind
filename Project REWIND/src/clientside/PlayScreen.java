@@ -10,6 +10,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Particle;
+import sprites.player.Assault;
 import sprites.player.Player;
 import sprites.projectile.Bullet;
 
@@ -23,7 +24,8 @@ public class PlayScreen {
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 
-	private Player p1, p1Ghost;
+	private Player p1Ghost;
+	private Player p1;
 	private ArrayList<Particle> particles;
 	
 	private ArrayList<Bullet> bullets;
@@ -53,12 +55,11 @@ public class PlayScreen {
 		ghostReappearTime = 0;
 		prevMouseLocs = new ArrayList<Point2D.Double>();
 		particles = new ArrayList<Particle>();
-		
 		abilWidth = 100;
 		abilHeight = 100;
 	}
 	public void spawnNewPlayer() {
-		p1 = new Player(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		p1 = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -144,8 +145,8 @@ public class PlayScreen {
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 					particles.add(new Particle(assets.get(10), p1.x + p1.getWidth() / 2, p1.y + p1.getHeight() / 2, 20, 20));
 				}
-				
-				p1.shiftAbility(map.getObstacles());
+				// casting this for now... But I need a better fix
+				((Assault) p1).shiftAbility(map.getObstacles());
 				
 				shiftReadyTime = drawer.millis() + 7000;
 				
@@ -171,7 +172,8 @@ public class PlayScreen {
 				if(p1.getType() == 1) {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(p1.getType() == 1) {
-							ArrayList<Bullet> fan = p1.secondaryShoot(assets.get(3));
+							// casting this for now... But I need a better fix
+							ArrayList<Bullet> fan = ((Assault)p1).secondary(assets.get(3));
 							for(Bullet b : fan) {
 								bullets.add(b);
 							}
@@ -181,7 +183,7 @@ public class PlayScreen {
 				}
 				else {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
-						bullets.add(p1.secondaryShoot(assets.get(2)).get(0));
+						bullets.add(((Assault)p1).secondary(assets.get(2)).get(0));
 						secondaryReadyTime = drawer.millis() + 7000;
 					}
 				}

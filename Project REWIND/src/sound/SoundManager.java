@@ -9,9 +9,11 @@ public class SoundManager implements JayLayerListener {
 	
 	public SoundManager() {
 		String[] songs = new String[]{"title2.mp3"};
+		String[] soundEffects = new String[] {"flash.wav"};
 		
 		 sound=new JayLayer("audio/","audio/",false);
 		  sound.addPlayList();
+		  sound.addSoundEffects(soundEffects);
 		  sound.addSongs(0,songs);
 		  sound.changePlayList(0);
 		  sound.addJayLayerListener(this);
@@ -24,6 +26,9 @@ public class SoundManager implements JayLayerListener {
 		if(sound.isPlaying()) {
 			sound.stopSong();
 		}
+	}
+	public void playFlash() {
+		sound.playSoundEffect(0);
 	}
 	
 	@Override

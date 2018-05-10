@@ -1,5 +1,6 @@
 package clientside;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import gui.MenuScreen;
@@ -14,7 +15,7 @@ import sound.SoundManager;
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
  *
  */
-public class DrawingSurface extends PApplet implements JayLayerListener {
+public class DrawingSurface extends PApplet{
 /* Ghost class ?
  * Use the obstacle class (style)
  * move the code to playScreen
@@ -63,6 +64,9 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 		else {
 			sound.stopMusic();
 			playScreen.draw(this);
+			if(isPressed(KeyEvent.VK_SHIFT)) {
+				sound.playMenuMusic();
+			}
 		}
 	}
 	
@@ -82,30 +86,6 @@ public class DrawingSurface extends PApplet implements JayLayerListener {
 
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
-	}
-
-	@Override
-	public void musicStarted() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void musicStopped() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void playlistEnded() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void songEnded() {
-		// TODO Auto-generated method stub
-		
 	}
 }
 
