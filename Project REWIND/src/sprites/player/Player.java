@@ -49,7 +49,7 @@ public class Player extends Sprite {
 
 	// METHODS
 	public Bullet shoot(PImage img) {
-		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false);
+		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
 	public ArrayList<Bullet> secondary(PImage img) {
 		return null;

@@ -18,11 +18,11 @@ public class Assault extends Player{
 	}
 	public ArrayList<Bullet> secondary(PImage img) {
 		ArrayList<Bullet> fan = new ArrayList<Bullet>();
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10, false));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10, false));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10, false));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10, false));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
 		return fan;
 	}
 	public void shiftAbility(ArrayList<Obstacle> obstacles) {
