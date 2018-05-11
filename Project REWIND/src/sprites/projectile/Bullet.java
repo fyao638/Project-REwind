@@ -18,7 +18,7 @@ public class Bullet extends Sprite {
 	private PImage img;
 
 	public static final int BULLET_WIDTH = 20;
-	public static final int BULLET_HEIGHT = 20;
+	public static final int BULLET_HEIGHT = 5;
 	public static final double PI = Math.PI;
 	
 	private double speed;
