@@ -1,4 +1,4 @@
-package sprites;
+package sprites.player;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -7,6 +7,9 @@ import java.util.*;
 import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Sprite;
+import sprites.obstacles.Obstacle;
+import sprites.projectile.Bullet;
 
 /**
  * 
@@ -46,40 +49,10 @@ public class Player extends Sprite {
 
 	// METHODS
 	public Bullet shoot(PImage img) {
-		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false);
+		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
-	public ArrayList<Bullet> secondaryShoot(PImage img) {
-		if(playerType == 1) {
-			ArrayList<Bullet> fan = new ArrayList<Bullet>();
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, false));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10, false));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10, false));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10, false));
-			fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10, false));
-			return fan;
-		}
-		else {
-			Bullet b = new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, true);
-			ArrayList<Bullet> bounce = new ArrayList<Bullet>();
-			bounce.add(b);
-			return bounce;
-		}
-	}
-	public void shiftAbility(ArrayList<Obstacle> obstacles) {
-		
-		double amountX = 110 * Math.cos(super.getDirection());
-		double amountY = 110 * Math.sin(super.getDirection());
-		
-		boolean canFlash = true;
-		
-		for(Shape s : obstacles) {
-			if(s.getBounds().intersects(new Rectangle((int)(getX() + amountX),(int)(getY() + amountY), PLAYER_WIDTH, PLAYER_HEIGHT))) {
-				canFlash = false;
-			}
-		}
-		if(canFlash) {
-			super.moveToLocation(x + amountX, y + amountY);	
-		}
+	public ArrayList<Bullet> secondary(PImage img) {
+		return null;
 	}
 	public int getType() {
 		return playerType;

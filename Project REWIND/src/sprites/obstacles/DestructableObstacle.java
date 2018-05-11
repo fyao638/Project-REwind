@@ -1,4 +1,4 @@
-package sprites;
+package sprites.obstacles;
 
 import processing.core.PImage;
 

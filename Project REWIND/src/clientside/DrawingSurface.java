@@ -1,9 +1,18 @@
 package clientside;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import com.jmr.wrapper.client.Client;
+import com.jmr.wrapper.server.Server;
+
 import gui.MenuScreen;
+import jay.jaysound.JayLayer;
+import jay.jaysound.JayLayerListener;
+import network.client.ClientStarter;
+import network.server.ServerStarter;
 import processing.core.PApplet;
+import sound.SoundManager;
 
 /**
  * 
@@ -11,7 +20,7 @@ import processing.core.PApplet;
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
  *
  */
-public class DrawingSurface extends PApplet {
+public class DrawingSurface extends PApplet{
 /* Ghost class ?
  * Use the obstacle class (style)
  * move the code to playScreen
@@ -24,6 +33,10 @@ public class DrawingSurface extends PApplet {
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
 	
+	private SoundManager sound;
+	
+	private ClientStarter c;
+	private ServerStarter s;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -34,6 +47,7 @@ public class DrawingSurface extends PApplet {
 	
 	public DrawingSurface() {
 		super();
+		sound = new SoundManager();
 		gameState = 0;
 		playScreen = new PlayScreen();
 		menuScreen = new MenuScreen();
@@ -42,6 +56,7 @@ public class DrawingSurface extends PApplet {
 	}
 
 	public void setup() {
+		sound.playMenuMusic();
 		menuScreen.setup(this);
 		playScreen.setup(this);
 	}
@@ -55,8 +70,15 @@ public class DrawingSurface extends PApplet {
 			menuScreen.draw(this);
 		}
 		else {
+			sound.stopMusic();
 			playScreen.draw(this);
 		}
+	}
+	public void startServer() {
+		s = new ServerStarter();
+	}
+	public void startClient() {
+		c = new ClientStarter();
 	}
 	
 	// 0 = menu, 1 = in game

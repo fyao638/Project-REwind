@@ -3,7 +3,7 @@ package gui;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-import sprites.Player;
+import sprites.player.Player;
 
 /**
  * 
