@@ -15,9 +15,4 @@ public class ClientStarter {
 			client.getServerConnection().sendTcp("I have connected");
 		}
 	}
-	
-	public static void main(String[] args) {
-		new ClientStarter();
-	}
-
 }

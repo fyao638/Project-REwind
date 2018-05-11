@@ -3,9 +3,14 @@ package clientside;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import com.jmr.wrapper.client.Client;
+import com.jmr.wrapper.server.Server;
+
 import gui.MenuScreen;
 import jay.jaysound.JayLayer;
 import jay.jaysound.JayLayerListener;
+import network.client.ClientStarter;
+import network.server.ServerStarter;
 import processing.core.PApplet;
 import sound.SoundManager;
 
@@ -29,6 +34,9 @@ public class DrawingSurface extends PApplet{
 	private ArrayList<Integer> keys;
 	
 	private SoundManager sound;
+	
+	private ClientStarter c;
+	private ServerStarter s;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -65,6 +73,12 @@ public class DrawingSurface extends PApplet{
 			sound.stopMusic();
 			playScreen.draw(this);
 		}
+	}
+	public void startServer() {
+		s = new ServerStarter();
+	}
+	public void startClient() {
+		c = new ClientStarter();
 	}
 	
 	// 0 = menu, 1 = in game
