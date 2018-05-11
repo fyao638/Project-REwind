@@ -46,6 +46,8 @@ public class PlayScreen {
 	
 	private float abilWidth, abilHeight;
 	
+	private GamePacket incomingPackets;
+	
 	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
@@ -97,10 +99,6 @@ public class PlayScreen {
 	public void draw(DrawingSurface drawer) {
 		
 		//NETWORKING STUFF
-		packet = new GamePacket(p1);
-		
-		
-
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
@@ -230,11 +228,25 @@ public class PlayScreen {
 		
 		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
+		
+		
 		timer++;
 	
+		if(!drawer.getIsOffline()) {
+			packet = new GamePacket(p1);
+			if(incomingPackets != null) {
+//				System.out.println((incomingPackets.getX()));
+			}
+			else {
+//				System.out.println("no data");
+			}
+		}
 	}
 	public GamePacket getPacket() {
 		return packet;
+	}
+	public void setIncomingPackets(GamePacket packets) {
+		incomingPackets = packets;
 	}
 }
 

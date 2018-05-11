@@ -15,5 +15,15 @@ public class GamePacket implements Serializable {
 		y = (int) player.getY();
 		dir = player.getDirection();
 	}
+	public int getX() {
+		return x;
+		
+	}
+	public int getY() {
+		return y;
+	}
+	public double getDir() {
+		return dir;
+	}
 	
 }

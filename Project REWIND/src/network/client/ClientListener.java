@@ -26,6 +26,7 @@ public class ClientListener implements SocketListener {
 		if(obj instanceof GamePacket) {
 			packet = (GamePacket) obj;
 			// unwrap the packet and use it to draw the other player
+			
 		}
 	}
 	public GamePacket getPacket() {

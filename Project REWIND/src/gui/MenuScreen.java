@@ -87,6 +87,7 @@ public class MenuScreen {
 	
 	  	if(drawer.mousePressed && overRect(rectX1, rectY1, rectWidth, rectHeight, drawer)) {
 	  		drawer.changeState(1);
+	  		drawer.setIsOffline(true);
 	    }
 	  	if(drawer.mousePressed && overRect(rectX2, rectY2, rectWidth, rectHeight, drawer)) {
 	  		drawer.startClient();

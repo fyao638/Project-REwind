@@ -32,11 +32,12 @@ public class DrawingSurface extends PApplet{
 	private PlayScreen playScreen;
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
+	private boolean isOffline;
 	
 	private SoundManager sound;
 	
-	private ClientStarter c;
-	private ServerStarter s;
+	private ClientStarter clientStarter;
+	private ServerStarter serverStarter;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -64,24 +65,25 @@ public class DrawingSurface extends PApplet{
 	//already an infinite loop
 	public void draw() {
 		if(gameState == 0) {
-			if(c != null) {
-				if(c.isConnected()) {
-					c.send(playScreen.getPacket());
-					
-				}
-			}
 			menuScreen.draw(this);
 		}
 		else {
 			sound.stopMusic();
-			playScreen.draw(this);
+			if(clientStarter != null) {
+				if(clientStarter.isConnected()) {
+					clientStarter.send(playScreen.getPacket());
+					playScreen.setIncomingPackets(clientStarter.getPacket());
+					
+				}
+			}
+				playScreen.draw(this);
 		}
 	}
 	public void startServer() {
-		s = new ServerStarter();
+		serverStarter = new ServerStarter();
 	}
 	public void startClient() {
-		c = new ClientStarter();
+		clientStarter = new ClientStarter();
 	}
 	
 	// 0 = menu, 1 = in game
@@ -100,6 +102,12 @@ public class DrawingSurface extends PApplet{
 
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
+	}
+	public boolean getIsOffline() {
+		return isOffline;
+	}
+	public void setIsOffline(boolean offline) {
+		this.isOffline = offline;
 	}
 }
 
