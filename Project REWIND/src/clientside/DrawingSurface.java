@@ -61,12 +61,15 @@ public class DrawingSurface extends PApplet{
 		playScreen.setup(this);
 	}
 
-	// The statements in draw() are executed until the 
-	// program is stopped. Each statement is executed in 
-	// sequence and after the last line is read, the first 
-	// line is executed again.
+	//already an infinite loop
 	public void draw() {
 		if(gameState == 0) {
+			if(c != null) {
+				if(c.isConnected()) {
+					c.send(playScreen.getPacket());
+					
+				}
+			}
 			menuScreen.draw(this);
 		}
 		else {

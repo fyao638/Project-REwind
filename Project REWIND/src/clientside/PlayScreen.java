@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
+import network.packet.GamePacket;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -34,6 +35,9 @@ public class PlayScreen {
 	
 	private ArrayList<Point2D.Double> prevLocs;
 	private ArrayList<Point2D.Double> prevMouseLocs;
+	
+	//PACKETS
+	private GamePacket packet;
 	
 	private Map map;
 	private Hud hud;
@@ -91,6 +95,11 @@ public class PlayScreen {
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
+		
+		//NETWORKING STUFF
+		packet = new GamePacket(p1);
+		
+		
 
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
 		prevLocs.add(p);
@@ -223,6 +232,9 @@ public class PlayScreen {
 		
 		timer++;
 	
+	}
+	public GamePacket getPacket() {
+		return packet;
 	}
 }
 

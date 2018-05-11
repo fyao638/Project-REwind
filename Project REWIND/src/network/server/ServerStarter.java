@@ -3,6 +3,8 @@ package network.server;
 import com.jmr.wrapper.common.exceptions.NNCantStartServer;
 import com.jmr.wrapper.server.Server;
 
+import network.packet.GamePacket;
+
 public final class ServerStarter {
 
 	private Server server;

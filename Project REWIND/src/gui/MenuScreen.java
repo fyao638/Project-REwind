@@ -90,9 +90,12 @@ public class MenuScreen {
 	    }
 	  	if(drawer.mousePressed && overRect(rectX2, rectY2, rectWidth, rectHeight, drawer)) {
 	  		drawer.startClient();
+	  		drawer.changeState(1);
 	  	}
 	  	if(drawer.mousePressed && overRect(rectX3, rectY3, rectWidth, rectHeight, drawer)) {
 	  		drawer.startServer();
+	  		drawer.startClient();
+	  		drawer.changeState(1);
 	  	}
 	}
 	
