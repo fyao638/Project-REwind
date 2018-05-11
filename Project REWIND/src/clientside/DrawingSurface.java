@@ -64,9 +64,6 @@ public class DrawingSurface extends PApplet{
 		else {
 			sound.stopMusic();
 			playScreen.draw(this);
-			if(isPressed(KeyEvent.VK_SHIFT)) {
-				sound.playMenuMusic();
-			}
 		}
 	}
 	
