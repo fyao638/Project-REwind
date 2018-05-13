@@ -20,8 +20,17 @@ public class Map { //extend sprite? NO
 	private ArrayList<Obstacle> obstacles;
 	public Map(PImage wallImage, PImage wallImage2) {
 		obstacles = new ArrayList<Obstacle>();
-		obstacles.add(new Obstacle(wallImage2,375,100,50,400));
-		obstacles.add(new Obstacle(wallImage,200,250,400,50));
+		obstacles.add(new Obstacle(wallImage2,60,60,50,200));
+		obstacles.add(new Obstacle(wallImage,60,60,200,50));
+		obstacles.add(new Obstacle(wallImage2,690,340,50,200));
+		obstacles.add(new Obstacle(wallImage,540,490,200,50));
+		obstacles.add(new Obstacle(wallImage2,690,60,50,200));
+		obstacles.add(new Obstacle(wallImage,540,60,200,50));
+		obstacles.add(new Obstacle(wallImage2,60,340,50,200));
+		obstacles.add(new Obstacle(wallImage,60,490,200,50));
+		obstacles.add(new Obstacle(wallImage2,250,200,30,200));
+		obstacles.add(new Obstacle(wallImage2,520,200,30,200));
+		obstacles.add(new Obstacle(wallImage,350,280,100,30));
 		obstacles.add(new Obstacle(wallImage,0,0,DRAWING_WIDTH,1));
 		obstacles.add(new Obstacle(wallImage,0,0,1,DRAWING_HEIGHT));
 		obstacles.add(new Obstacle(wallImage,0,DRAWING_HEIGHT,DRAWING_WIDTH,1));
