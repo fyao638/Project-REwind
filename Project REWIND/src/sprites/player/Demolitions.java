@@ -1,7 +1,10 @@
 package sprites.player;
 
+import java.util.ArrayList;
+
 import processing.core.PImage;
 import sprites.projectile.Bullet;
+import sprites.projectile.Grenade;
 
 public class Demolitions extends Player{
 	public Demolitions(PImage img, int x, int y) {
@@ -10,8 +13,11 @@ public class Demolitions extends Player{
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
 	}
-	public void secondary() {
-		
+	public ArrayList<Bullet> secondary(PImage img) {
+		ArrayList<Bullet> grenade = new ArrayList<Bullet>();
+		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+		grenade.add(g);
+		return grenade;
 	}
 	public void shiftAbility() {
 		

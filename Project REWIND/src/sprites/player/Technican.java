@@ -3,6 +3,7 @@ package sprites.player;
 import java.util.ArrayList;
 
 import processing.core.PImage;
+import sprites.projectile.BouncingBullet;
 import sprites.projectile.Bullet;
 
 public class Technican extends Player{
@@ -14,7 +15,7 @@ public class Technican extends Player{
 		return super.shoot(img);
 	}
 	public ArrayList<Bullet> secondary(PImage img) {
-		Bullet b = new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+		BouncingBullet b = new BouncingBullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		ArrayList<Bullet> bounce = new ArrayList<Bullet>();
 		bounce.add(b);
 		return bounce;

@@ -9,7 +9,7 @@ public final class ServerStarter {
 	
 	public ServerStarter() {
 		try {
-			server = new Server(1337, 1337);
+			server = new Server(4444, 4444);
 			server.setListener(new ServerListener());
 			if (server.isConnected()) {
 				System.out.println("Server has started.");

@@ -11,7 +11,9 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Particle;
 import sprites.player.Assault;
+import sprites.player.Demolitions;
 import sprites.player.Player;
+import sprites.player.Technican;
 import sprites.projectile.Bullet;
 
 /**
@@ -59,7 +61,7 @@ public class PlayScreen {
 		abilHeight = 100;
 	}
 	public void spawnNewPlayer() {
-		p1 = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		p1 = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -80,6 +82,7 @@ public class PlayScreen {
 		assets.add(drawer.loadImage("assets/wall2.png"));
 		assets.add(drawer.loadImage("assets/particle.png"));
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));
+		assets.add(drawer.loadImage("assets/grenade.png"));
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
@@ -132,9 +135,9 @@ public class PlayScreen {
 				ghostReappearTime = drawer.millis() + 2000;
 				
 				//rewind cooldowns
-				//shotReadyTime += 2000;
-				//secondaryReadyTime += 2000;
-				//shiftReadyTime += 2000;
+				shotReadyTime += 2000;
+				secondaryReadyTime += 2000;
+				shiftReadyTime += 2000;
 				
 			}
 		}
@@ -173,7 +176,7 @@ public class PlayScreen {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(p1.getType() == 1) {
 							// casting this for now... But I need a better fix
-							ArrayList<Bullet> fan = ((Assault)p1).secondary(assets.get(3));
+							ArrayList<Bullet> fan = ((Demolitions)p1).secondary(assets.get(12));
 							for(Bullet b : fan) {
 								bullets.add(b);
 							}
@@ -183,13 +186,19 @@ public class PlayScreen {
 				}
 				else {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
-						bullets.add(((Assault)p1).secondary(assets.get(2)).get(0));
+						bullets.add(((Demolitions)p1).secondary(assets.get(2)).get(0));
 						secondaryReadyTime = drawer.millis() + 7000;
 					}
 				}
 			}
 		}
 
+		
+
+		
+		drawer.fill(100);
+		map.draw(drawer);
+		
 		if (bullets.size() > 0) {
 			for(int i = 0; i < bullets.size(); i++) {
 					bullets.get(i).act();
@@ -199,10 +208,6 @@ public class PlayScreen {
 					}
 			}
 		}
-
-		
-		drawer.fill(100);
-		map.draw(drawer);
 		
 		// draw the players after the bullets so the bullets don't appear above the gun
 		if(ghostReappearTime - drawer.millis() < 0) {

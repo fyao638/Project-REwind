@@ -7,7 +7,7 @@ public class ClientStarter {
 	private Client client;
 	
 	public ClientStarter() {
-		client = new Client("localhost", 1337, 1337);
+		client = new Client("localhost", 4444, 4444);
 
 		client.connect();
 		

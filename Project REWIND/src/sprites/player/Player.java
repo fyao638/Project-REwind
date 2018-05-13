@@ -31,17 +31,15 @@ public class Player extends Sprite {
 	// 2 = "loud and proud" / demolition = red and black = burst(may be changed) / grenade
 	// 3 = "400+ IQ plays" / technician = green and grey = bounce / shield
 	//Will also determine the look?
-	private int playerType;
+	private int playerType, health;
 	
 	private Rectangle boundingRect;
 	
 	private Point2D.Double bulletPoint;
 	
-	private int health;
-	
 	public Player(PImage img, int x, int y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-		playerType = 2;
+		playerType = 1;
 		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
