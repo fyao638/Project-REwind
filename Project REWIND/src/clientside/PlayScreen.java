@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
+import network.packet.GamePacket;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -37,12 +38,17 @@ public class PlayScreen {
 	private ArrayList<Point2D.Double> prevLocs;
 	private ArrayList<Point2D.Double> prevMouseLocs;
 	
+	//PACKETS
+	private GamePacket packet;
+	
 	private Map map;
 	private Hud hud;
 
 	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
+	
+	private GamePacket incomingPackets;
 	
 	
 	public PlayScreen() {
@@ -94,7 +100,8 @@ public class PlayScreen {
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
-
+		
+		//NETWORKING STUFF
 		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
@@ -226,8 +233,25 @@ public class PlayScreen {
 		
 		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
+		
+		
 		timer++;
 	
+		if(!drawer.getIsOffline()) {
+			packet = new GamePacket(p1);
+			if(incomingPackets != null) {
+//				System.out.println((incomingPackets.getX()));
+			}
+			else {
+//				System.out.println("no data");
+			}
+		}
+	}
+	public GamePacket getPacket() {
+		return packet;
+	}
+	public void setIncomingPackets(GamePacket packets) {
+		incomingPackets = packets;
 	}
 }
 
