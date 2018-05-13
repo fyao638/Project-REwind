@@ -1,5 +1,4 @@
 package network.server;
-
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 import com.jmr.wrapper.server.ConnectionManager;
@@ -26,7 +25,7 @@ public class ServerListener implements SocketListener{
 		if(obj instanceof GamePacket) {
 			GamePacket packet = (GamePacket) obj;
 			for(Connection c : ConnectionManager.getInstance().getConnections()) {
-				c.sendTcp(packet);
+				c.sendUdp(packet);
 			}
 		}
 	}

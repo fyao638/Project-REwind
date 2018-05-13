@@ -72,7 +72,7 @@ public class DrawingSurface extends PApplet{
 			if(clientStarter != null) {
 				if(clientStarter.isConnected()) {
 					clientStarter.send(playScreen.getPacket());
-					playScreen.setIncomingPackets(clientStarter.getPacket());
+					//playScreen.setIncomingPackets(clientStarter.getPacket());
 					
 				}
 			}
