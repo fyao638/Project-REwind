@@ -53,8 +53,8 @@ public class Grenade extends Bullet{
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
 			drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)width,(int)height);
-			//if(this.speed == 0)
-				
+			if(this.speed == 0)
+				this.setVisibility(false);
 			drawer.popMatrix();
 		}
 	}
