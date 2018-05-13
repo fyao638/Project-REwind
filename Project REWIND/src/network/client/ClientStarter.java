@@ -11,7 +11,8 @@ public class ClientStarter {
 	
 	
 	public ClientStarter() {
-		client = new Client("localhost",4444, 4444);
+
+		client = new Client("localhost", 1337, 1337);
 		listener = new ClientListener();
 		
 
