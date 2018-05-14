@@ -46,6 +46,11 @@ public class Player extends Sprite {
 	}
 
 	// METHODS
+	public String toString() {
+		//TODO make it into a string
+		return "";
+	}
+	
 	public Bullet shoot(PImage img) {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}

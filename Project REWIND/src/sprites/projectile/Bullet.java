@@ -37,6 +37,12 @@ public class Bullet extends Sprite {
 		this.speed = speed;
 	}
 	
+	// METHODS
+	
+	public String toString() {
+		return "";
+	}
+	
 	public void act() {
 		moveByAmount(speed * Math.cos(getDirection()) - 0.75, speed * Math.sin(getDirection()) - 0.75);
 	}

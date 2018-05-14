@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
-import network.packet.GamePacket;
+import network.packet.PacketManager;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -39,7 +39,7 @@ public class PlayScreen {
 	private ArrayList<Point2D.Double> prevMouseLocs;
 	
 	//PACKETS
-	private GamePacket packet;
+	private PacketManager packet;
 	
 	private Map map;
 	private Hud hud;
@@ -48,7 +48,7 @@ public class PlayScreen {
 	
 	private float abilWidth, abilHeight;
 	
-	private GamePacket incomingPackets;
+	private PacketManager incomingPackets;
 	
 	
 	public PlayScreen() {
@@ -65,6 +65,8 @@ public class PlayScreen {
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
+
+		packet = new PacketManager();
 	}
 	public void spawnNewPlayer() {
 		p1 = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
@@ -237,21 +239,29 @@ public class PlayScreen {
 		
 		timer++;
 	
-		if(!drawer.getIsOffline()) {
-			packet = new GamePacket(p1);
+		if(!drawer.isOffline()) {
+			packet.fillPacket(this);
 			if(incomingPackets != null) {
-//				System.out.println((incomingPackets.getX()));
+				System.out.println((incomingPackets));
 			}
 			else {
-//				System.out.println("no data");
+				System.out.println("no data");
 			}
 		}
 	}
-	public GamePacket getPacket() {
+	public PacketManager getPacket() {
 		return packet;
 	}
-	public void setIncomingPackets(GamePacket packets) {
+	public void setIncomingPackets(PacketManager packets) {
 		incomingPackets = packets;
+	}
+	
+	// GET DATA METHODS
+	public Player getPlayer() {
+		return p1;
+	}
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
 	}
 }
 

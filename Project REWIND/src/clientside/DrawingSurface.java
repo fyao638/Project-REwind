@@ -3,17 +3,14 @@ package clientside;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.jmr.wrapper.client.Client;
-import com.jmr.wrapper.server.Server;
-
 import gui.MenuScreen;
 import jay.jaysound.JayLayer;
 import jay.jaysound.JayLayerListener;
-import network.client.ClientStarter;
-import network.server.ServerStarter;
+import network.client.ClientManager;
+import network.server.ServerManager;
 import processing.core.PApplet;
 import sound.SoundManager;
-
+import org.netbeans.swing.outline.*;
 /**
  * 
  * @author Aakarsh Anand, Frank Yao, Michael Kim
@@ -36,14 +33,14 @@ public class DrawingSurface extends PApplet{
 	
 	private SoundManager sound;
 	
-	private ClientStarter clientStarter;
-	private ServerStarter serverStarter;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
 	private int gameState;
 	
 	//Networking fields
+	private ClientManager clientStarter;
+	private ServerManager serverStarter;
 	
 	
 	public DrawingSurface() {
@@ -78,12 +75,19 @@ public class DrawingSurface extends PApplet{
 			}
 				playScreen.draw(this);
 		}
+		if (serverStarter != null)
+			serverStarter.send("Hello!");
+		if (clientStarter != null)
+			clientStarter.recieve();
 	}
 	public void startServer() {
-		serverStarter = new ServerStarter();
+		serverStarter = new ServerManager();
+		serverStarter.setUp(this);
+		
 	}
 	public void startClient() {
-		clientStarter = new ClientStarter();
+		clientStarter = new ClientManager();
+		clientStarter.setUp(this, "localhost", 1337);
 	}
 	
 	// 0 = menu, 1 = in game
@@ -103,12 +107,13 @@ public class DrawingSurface extends PApplet{
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
 	}
-	public boolean getIsOffline() {
+	public boolean isOffline() {
 		return isOffline;
 	}
 	public void setIsOffline(boolean offline) {
 		this.isOffline = offline;
 	}
+	
 }
 
 
