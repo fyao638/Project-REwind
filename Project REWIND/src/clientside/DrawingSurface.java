@@ -10,7 +10,6 @@ import network.client.ClientManager;
 import network.server.ServerManager;
 import processing.core.PApplet;
 import sound.SoundManager;
-import org.netbeans.swing.outline.*;
 /**
  * 
  * @author Aakarsh Anand, Frank Yao, Michael Kim
