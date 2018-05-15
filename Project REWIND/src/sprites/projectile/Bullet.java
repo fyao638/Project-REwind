@@ -44,7 +44,7 @@ public class Bullet extends Sprite {
 	}
 	
 	public void act() {
-		moveByAmount(speed * Math.cos(getDirection()) - 0.75, speed * Math.sin(getDirection()) - 0.75);
+		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
 	}
 	
 	// return true if it hits an obstacle, false if otherwise
