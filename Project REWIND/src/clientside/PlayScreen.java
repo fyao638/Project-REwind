@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
-import network.packet.PacketManager;
+import network.frontend.NetworkDataObject;
+import network.frontend.NetworkListener;
+import network.frontend.NetworkMessenger;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -22,7 +24,7 @@ import sprites.projectile.Bullet;
  * @author Aakarsh Anand, Frank Yao, Michael Kim
  * This class represents the screen where the actual playing occurs. It is drawn by DrawingSurface.
  */
-public class PlayScreen {
+public class PlayScreen implements NetworkListener{
 	
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
@@ -38,8 +40,9 @@ public class PlayScreen {
 	private ArrayList<Point2D.Double> prevLocs;
 	private ArrayList<Point2D.Double> prevMouseLocs;
 	
+	private NetworkMessenger nm;
+	
 	//PACKETS
-	private PacketManager packet;
 	
 	private Map map;
 	private Hud hud;
@@ -47,8 +50,6 @@ public class PlayScreen {
 	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
-	
-	private PacketManager incomingPackets;
 	
 	
 	public PlayScreen() {
@@ -66,7 +67,6 @@ public class PlayScreen {
 		abilWidth = 100;
 		abilHeight = 100;
 
-		packet = new PacketManager();
 	}
 	public void spawnNewPlayer() {
 		p1 = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
@@ -240,20 +240,8 @@ public class PlayScreen {
 		timer++;
 	
 		if(!drawer.isOffline()) {
-			packet.fillPacket(this);
-			if(incomingPackets != null) {
-				System.out.println((incomingPackets));
-			}
-			else {
-				System.out.println("no data");
-			}
+			
 		}
-	}
-	public PacketManager getPacket() {
-		return packet;
-	}
-	public void setIncomingPackets(PacketManager packets) {
-		incomingPackets = packets;
 	}
 	
 	// GET DATA METHODS
@@ -262,6 +250,16 @@ public class PlayScreen {
 	}
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
+	}
+	@Override
+	public void connectedToServer(NetworkMessenger nm) {
+		this.nm = nm;
+		
+	}
+	@Override
+	public void networkMessageReceived(NetworkDataObject ndo) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

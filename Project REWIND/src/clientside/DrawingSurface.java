@@ -1,13 +1,11 @@
 package clientside;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
 import gui.MenuScreen;
-import jay.jaysound.JayLayer;
-import jay.jaysound.JayLayerListener;
-import network.client.ClientManager;
-import network.server.ServerManager;
+import network.frontend.NetworkDataObject;
+import network.frontend.NetworkListener;
+import network.frontend.NetworkManagementPanel;
+import network.frontend.NetworkMessenger;
 import processing.core.PApplet;
 import sound.SoundManager;
 /**
@@ -16,19 +14,15 @@ import sound.SoundManager;
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
  *
  */
-public class DrawingSurface extends PApplet{
-/* Ghost class ?
- * Use the obstacle class (style)
- * move the code to playScreen
- * make a main menu
- * player should be the one shooting and rewinding (style)
- * 
+public class DrawingSurface extends PApplet implements NetworkListener{
+/* 
  * 
  */
 	private PlayScreen playScreen;
 	private MenuScreen menuScreen;
 	private ArrayList<Integer> keys;
 	private boolean isOffline;
+	private NetworkMessenger nm;
 	
 	private SoundManager sound;
 	
@@ -37,9 +31,6 @@ public class DrawingSurface extends PApplet{
 	// 1 = playScreen
 	private int gameState;
 	
-	//Networking fields
-	private ClientManager clientStarter;
-	private ServerManager serverStarter;
 	
 	
 	public DrawingSurface() {
@@ -65,28 +56,12 @@ public class DrawingSurface extends PApplet{
 		}
 		else {
 			sound.stopMusic();
-			if(clientStarter != null) {
-				if(clientStarter.isConnected()) {
-					clientStarter.send(playScreen.getPacket());
-					//playScreen.setIncomingPackets(clientStarter.getPacket());
-					
-				}
-			}
-				playScreen.draw(this);
+			playScreen.draw(this);
 		}
-		if (serverStarter != null)
-			serverStarter.send("Hello!");
-		if (clientStarter != null)
-			clientStarter.recieve();
-	}
-	public void startServer() {
-		serverStarter = new ServerManager();
-		serverStarter.setUp(this);
 		
 	}
-	public void startClient() {
-		clientStarter = new ClientManager();
-		clientStarter.setUp(this, "localhost", 1337);
+	public void openNetworkingPanel() {
+		NetworkManagementPanel nmp = new NetworkManagementPanel("SwingChat", 20, this);  
 	}
 	
 	// 0 = menu, 1 = in game
@@ -111,6 +86,14 @@ public class DrawingSurface extends PApplet{
 	}
 	public void setIsOffline(boolean offline) {
 		this.isOffline = offline;
+	}
+	@Override
+	public void connectedToServer(NetworkMessenger nm) {
+		this.nm = nm;
+	}
+	@Override
+	public void networkMessageReceived(NetworkDataObject ndo) {
+		// TODO Auto-generated method stub
 	}
 	
 }
