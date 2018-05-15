@@ -37,7 +37,7 @@ public class Player extends Sprite {
 	
 	private Point2D.Double bulletPoint;
 	
-	public Player(PImage img, int x, int y) {
+	public Player(PImage img, double x, double y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		playerType = 1;
 		health = 5;

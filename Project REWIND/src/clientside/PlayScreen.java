@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
+import network.backend.Packet;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkMessenger;
@@ -32,8 +33,9 @@ public class PlayScreen implements NetworkListener{
 	private Player p1Ghost;
 	private Player p1;
 	private ArrayList<Particle> particles;
-	
+
 	private ArrayList<Bullet> bullets;
+	private ArrayList<Bullet> otherBullets;
 	
 	private ArrayList<PImage> assets;
 	
@@ -41,6 +43,9 @@ public class PlayScreen implements NetworkListener{
 	private ArrayList<Point2D.Double> prevMouseLocs;
 	
 	private NetworkMessenger nm;
+	//private ArrayList<Player> otherPlayers;
+	
+	private Packet packet;
 	
 	//PACKETS
 	
@@ -54,6 +59,8 @@ public class PlayScreen implements NetworkListener{
 	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
+		//otherPlayers = new ArrayList<Player>();
+		otherBullets = new ArrayList<Bullet>();
 		bullets = new ArrayList<Bullet>();
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
@@ -66,7 +73,6 @@ public class PlayScreen implements NetworkListener{
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
-
 	}
 	public void spawnNewPlayer() {
 		p1 = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
@@ -99,6 +105,7 @@ public class PlayScreen implements NetworkListener{
 		prevLocs.add(p);
 		
 		spawnNewGhost();
+		packet = new Packet(p1, bullets);
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
@@ -208,8 +215,6 @@ public class PlayScreen implements NetworkListener{
 		}
 
 		
-
-		
 		drawer.fill(100);
 		map.draw(drawer);
 		
@@ -241,12 +246,33 @@ public class PlayScreen implements NetworkListener{
 		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
 		
-		
 		timer++;
-	
+		
 		if(!drawer.isOffline()) {
+			packet.update(p1);
+			if (!bullets.isEmpty()) {
+				packet.update(bullets);
+			}
+			
+			Packet dPacket = drawer.getPacket();
+			
+			if (dPacket != null) {
+				Player otherPlayer = new Player(assets.get(0), dPacket.getPlayerX(), dPacket.getPlayerY());
+				ArrayList<Point2D.Double> otherBulletsCoords = dPacket.getBullets();
+				for (int i = 0; i < otherBullets.size(); i++) {
+					Point2D.Double coords = otherBulletsCoords.get(i);
+					Bullet b = new Bullet(assets.get(2), coords.getX(), coords.getY(), dPacket.getBulletsDir().get(i), 10);
+					otherBullets.add(b);
+					b.draw(drawer);
+				}
+				
+				otherPlayer.draw(drawer);
+			}
+			
 			
 		}
+		
+		
 	}
 	
 	// GET DATA METHODS
@@ -265,6 +291,10 @@ public class PlayScreen implements NetworkListener{
 	public void networkMessageReceived(NetworkDataObject ndo) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Packet getPacket() {
+		return packet;
 	}
 }
 

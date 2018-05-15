@@ -2,6 +2,7 @@ package clientside;
 
 import java.util.ArrayList;
 import gui.MenuScreen;
+import network.backend.Packet;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkManagementPanel;
@@ -25,6 +26,8 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private NetworkMessenger nm;
 	
 	private SoundManager sound;
+	
+	private Packet packet;
 	
 	//States:
 	// 0 = main menu
@@ -59,6 +62,13 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			playScreen.draw(this);
 		}
 		
+		if (!isOffline && nm != null) {
+			nm.sendMessage(NetworkDataObject.MESSAGE, playScreen.getPacket());
+		}
+		else {
+			if (nm == null)
+				System.out.println("NULL");
+		}
 	}
 	public void openNetworkingPanel() {
 		NetworkManagementPanel nmp = new NetworkManagementPanel("SwingChat", 20, this);  
@@ -96,9 +106,13 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	}
 	@Override
 	public void networkMessageReceived(NetworkDataObject ndo) {
-		// TODO Auto-generated method stub
+		packet = (Packet) ndo.message[0];
+		
 	}
 	
+	public Packet getPacket() {
+		return packet;
+	}
 }
 
 
