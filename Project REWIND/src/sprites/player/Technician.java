@@ -6,9 +6,9 @@ import processing.core.PImage;
 import sprites.projectile.BouncingBullet;
 import sprites.projectile.Bullet;
 
-public class Technican extends Player{
+public class Technician extends Player{
 
-	public Technican(PImage img, int x, int y) {
+	public Technician(PImage img, int x, int y) {
 		super(img, x, y);
 	}
 	public Bullet shoot(PImage img) {

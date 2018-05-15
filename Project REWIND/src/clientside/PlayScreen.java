@@ -16,7 +16,7 @@ import sprites.Particle;
 import sprites.player.Assault;
 import sprites.player.Demolitions;
 import sprites.player.Player;
-import sprites.player.Technican;
+import sprites.player.Technician;
 import sprites.projectile.Bullet;
 
 /**
@@ -69,7 +69,7 @@ public class PlayScreen implements NetworkListener{
 
 	}
 	public void spawnNewPlayer() {
-		p1 = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		p1 = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -128,8 +128,12 @@ public class PlayScreen implements NetworkListener{
 		p1.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
 		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
-		if(drawer.isPressed(KeyEvent.VK_A))
+		if(drawer.isPressed(KeyEvent.VK_A)) {
 			p1.walk(-1, 0, map.getObstacles());
+			if(drawer.getNetM() != null){
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, 1738);
+			}
+		}
 		if (drawer.isPressed(KeyEvent.VK_D))
 			p1.walk(1, 0, map.getObstacles());
 		if (drawer.isPressed(KeyEvent.VK_W))
@@ -164,11 +168,12 @@ public class PlayScreen implements NetworkListener{
 				
 			}
 		}
-		// make the player color and hud change accordingly
+		// 
 		//
-		if(drawer.isPressed(KeyEvent.VK_SPACE)) {
-			p1.changePlayerType(1);
-		}
+		//Testing
+		//if(drawer.isPressed(KeyEvent.VK_SPACE)) {
+		//	p1.changePlayerType(1);
+		//}
 		
 		
 		
@@ -185,7 +190,7 @@ public class PlayScreen implements NetworkListener{
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(p1.getType() == 1) {
 							// casting this for now... But I need a better fix
-							ArrayList<Bullet> fan = ((Demolitions)p1).secondary(assets.get(12));
+							ArrayList<Bullet> fan = ((Assault)p1).secondary(assets.get(3));
 							for(Bullet b : fan) {
 								bullets.add(b);
 							}
@@ -232,7 +237,7 @@ public class PlayScreen implements NetworkListener{
 					}
 			}
 		}
-		
+		//assets dont change, so dont take the in draw
 		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
 		
