@@ -44,14 +44,14 @@ public class Bullet extends Sprite {
 	}
 	
 	public void act() {
-		moveByAmount(speed * Math.cos(getDirection()) - 0.75, speed * Math.sin(getDirection()) - 0.75);
+		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
 	}
 	
 	// return true if it hits an obstacle, false if otherwise
 	public boolean checkObstacles(ArrayList<Obstacle> obstacles) {
 		for(Obstacle s : obstacles) {
 			for(int i = 0; i < 4; i++) {
-				if(s.getLineComposition()[i].intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				if(s.intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
 					return true;
 						
 				}
