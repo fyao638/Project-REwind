@@ -23,7 +23,6 @@ public class Player extends Sprite {
 	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
 	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.225 / 2;
 	
-	
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
 	// num = name = color scheme = secondary fire / shift ability

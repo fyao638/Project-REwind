@@ -10,14 +10,13 @@ import network.backend.Packet;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkMessenger;
-import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Particle;
+import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
 import sprites.player.Demolitions;
 import sprites.player.Player;
-import sprites.player.Technician;
 import sprites.projectile.Bullet;
 
 /**
@@ -31,7 +30,7 @@ public class PlayScreen implements NetworkListener{
 	public static final int DRAWING_HEIGHT = 600;
 
 	private Player p1Ghost;
-	private Player p1;
+	private Player clientPlayer, enemyPlayer;
 	private ArrayList<Particle> particles;
 
 	private ArrayList<Bullet> bullets;
@@ -42,10 +41,13 @@ public class PlayScreen implements NetworkListener{
 	private ArrayList<Point2D.Double> prevLocs;
 	private ArrayList<Point2D.Double> prevMouseLocs;
 	
-	private NetworkMessenger nm;
+	private static final String messageTypeMove = "MOVE";
+	private static final String messageTypeTurn = "TURN";
+	private static final String messageTypeRewind = "REWIND";
+	private static final String messageTypeShoot = "SHOOT";
+	private static final String messageTypeSecondary = "SECONDARY";
+	private static final String messageTypeFlash = "FLASH";
 	//private ArrayList<Player> otherPlayers;
-	
-	private Packet packet;
 	
 	//PACKETS
 	
@@ -56,6 +58,11 @@ public class PlayScreen implements NetworkListener{
 	
 	private float abilWidth, abilHeight;
 	
+	/*Make rewind a method for player
+	 * 
+	 * 
+	 * 
+	 */
 	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
@@ -75,7 +82,8 @@ public class PlayScreen implements NetworkListener{
 		abilHeight = 100;
 	}
 	public void spawnNewPlayer() {
-		p1 = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -101,17 +109,16 @@ public class PlayScreen implements NetworkListener{
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
 		
-		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
+		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevLocs.add(p);
 		
 		spawnNewGhost();
-		packet = new Packet(p1, bullets);
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
 		
-		//NETWORKING STUFF
-		Point2D.Double p = new Point2D.Double(p1.getX(), p1.getY());
+		
+		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevLocs.add(p);
 		if (prevLocs.size() > 120)
 			prevLocs.remove(0);
@@ -132,24 +139,28 @@ public class PlayScreen implements NetworkListener{
 
 		drawer.scale(ratioX, ratioY);
 		
-		p1.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
+		clientPlayer.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
 		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
 
 		if(drawer.isPressed(KeyEvent.VK_A)) {
-			p1.walk(-1, 0, map.getObstacles());
-			if(drawer.getNetM() != null){
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, 1738);
-			}
+			clientPlayer.walk(-1, 0, map.getObstacles());
+			drawer.getNetM().sendMessage(messageTypeMove, -1, 0);
 		}
-		if (drawer.isPressed(KeyEvent.VK_D))
-			p1.walk(1, 0, map.getObstacles());
-		if (drawer.isPressed(KeyEvent.VK_W))
-			p1.walk(0, -1, map.getObstacles());
-		if (drawer.isPressed(KeyEvent.VK_S))
-			p1.walk(0, 1, map.getObstacles());
+		if (drawer.isPressed(KeyEvent.VK_D)) {
+			clientPlayer.walk(1, 0, map.getObstacles());
+			drawer.getNetM().sendMessage(messageTypeMove, 1, 0);
+		}
+		if (drawer.isPressed(KeyEvent.VK_W)) {
+			clientPlayer.walk(0, -1, map.getObstacles());
+			drawer.getNetM().sendMessage(messageTypeMove, 0, -1);
+		}
+		if (drawer.isPressed(KeyEvent.VK_S)) {
+			clientPlayer.walk(0, 1, map.getObstacles());
+			drawer.getNetM().sendMessage(messageTypeMove, 0, 1);
+		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime -drawer.millis() <= 0) {
-				p1.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				clientPlayer.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
@@ -166,10 +177,10 @@ public class PlayScreen implements NetworkListener{
 				
 				// create particles, maybe find a cleaner way to do this later
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-					particles.add(new Particle(assets.get(10), p1.x + p1.getWidth() / 2, p1.y + p1.getHeight() / 2, 20, 20));
+					particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
 				}
 				// casting this for now... But I need a better fix
-				((Assault) p1).shiftAbility(map.getObstacles());
+				((Assault) clientPlayer).shiftAbility(map.getObstacles());
 				
 				shiftReadyTime = drawer.millis() + 7000;
 				
@@ -188,16 +199,16 @@ public class PlayScreen implements NetworkListener{
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
 				if(shotReadyTime - drawer.millis() <= 0) {
-					bullets.add(p1.shoot(assets.get(2)));
+					bullets.add(clientPlayer.shoot(assets.get(2)));
 					shotReadyTime = drawer.millis() + 1000;
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
-				if(p1.getType() == 1) {
+				if(clientPlayer.getType() == 1) {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
-						if(p1.getType() == 1) {
+						if(clientPlayer.getType() == 1) {
 							// casting this for now... But I need a better fix
-							ArrayList<Bullet> fan = ((Assault)p1).secondary(assets.get(3));
+							ArrayList<Bullet> fan = ((Assault)clientPlayer).secondary(assets.get(3));
 							for(Bullet b : fan) {
 								bullets.add(b);
 							}
@@ -205,12 +216,14 @@ public class PlayScreen implements NetworkListener{
 						}
 					}
 				}
+				/*
 				else {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
-						bullets.add(((Demolitions)p1).secondary(assets.get(2)).get(0));
+						bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
 						secondaryReadyTime = drawer.millis() + 7000;
 					}
 				}
+				*/
 			}
 		}
 
@@ -232,7 +245,9 @@ public class PlayScreen implements NetworkListener{
 		if(ghostReappearTime - drawer.millis() < 0) {
 			p1Ghost.draw(drawer);
 		}
-		p1.draw(drawer);
+		
+		clientPlayer.draw(drawer);
+		enemyPlayer.draw(drawer);
 		
 		if (particles.size() > 0) {
 			for(int i = 0; i < particles.size(); i++) {
@@ -243,11 +258,14 @@ public class PlayScreen implements NetworkListener{
 			}
 		}
 		//assets dont change, so dont take the in draw
-		hud.draw(drawer, p1, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
+		hud.draw(drawer, clientPlayer, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
 		
 		
 		timer++;
 		
+		
+		//Im not sure how useful this is
+		/*
 		if(!drawer.isOffline()) {
 			packet.update(p1);
 			if (!bullets.isEmpty()) {
@@ -271,20 +289,26 @@ public class PlayScreen implements NetworkListener{
 			
 			
 		}
+		*/
 		
 		
 	}
 	
 	// GET DATA METHODS
-	public Player getPlayer() {
-		return p1;
+	public Player getClientPlayer() {
+		return (Assault)clientPlayer;
+	}
+	public Player getEnemyPlayer() {
+		return (Assault)enemyPlayer;
+	}
+	public ArrayList<Obstacle> getObstacles(){
+		return map.getObstacles();
 	}
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
 	}
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
-		this.nm = nm;
 		
 	}
 	@Override
@@ -292,9 +316,8 @@ public class PlayScreen implements NetworkListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public Packet getPacket() {
-		return packet;
+	public ArrayList<PImage> getAssets(){
+		return assets;
 	}
 }
 
