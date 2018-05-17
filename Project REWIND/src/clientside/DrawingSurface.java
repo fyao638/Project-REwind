@@ -94,7 +94,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
 				if (ndo.message[0].equals(messageTypeMove)) {
 					p.walk((Integer)ndo.message[1],(Integer)ndo.message[2], playScreen.getObstacles());
-					System.out.println("recieved");
+					
 					//move the player
 				}
 				else if (ndo.message[0].equals(messageTypeTurn)) {
@@ -115,14 +115,14 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					//player uses flash
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
-					//player uses rewind
 					//PLAYER DOESNT HAVE A REWIND METHOD
 				}
 				else {
 					System.out.println("Its not detecting it");
 				}
-
-
+			}
+			else {
+				System.out.println("Its not a message?");
 			}
 		}
 	}

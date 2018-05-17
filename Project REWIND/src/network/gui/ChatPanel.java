@@ -79,8 +79,7 @@ public class ChatPanel extends JPanel implements ActionListener, NetworkListener
 		}
 		
 		Queue<NetworkDataObject> queue = nm.getQueuedMessages();
-		queue.remove(ndo);
-		
+		queue.remove(ndo);		
 	}
 
 	@Override

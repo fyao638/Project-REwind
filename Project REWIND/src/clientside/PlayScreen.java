@@ -24,7 +24,7 @@ import sprites.projectile.Bullet;
  * @author Aakarsh Anand, Frank Yao, Michael Kim
  * This class represents the screen where the actual playing occurs. It is drawn by DrawingSurface.
  */
-public class PlayScreen implements NetworkListener{
+public class PlayScreen{
 	
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
@@ -144,19 +144,19 @@ public class PlayScreen implements NetworkListener{
 
 		if(drawer.isPressed(KeyEvent.VK_A)) {
 			clientPlayer.walk(-1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(messageTypeMove, -1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_D)) {
 			clientPlayer.walk(1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(messageTypeMove, 1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_W)) {
 			clientPlayer.walk(0, -1, map.getObstacles());
-			drawer.getNetM().sendMessage(messageTypeMove, 0, -1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_S)) {
 			clientPlayer.walk(0, 1, map.getObstacles());
-			drawer.getNetM().sendMessage(messageTypeMove, 0, 1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime -drawer.millis() <= 0) {
@@ -306,15 +306,6 @@ public class PlayScreen implements NetworkListener{
 	}
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
-	}
-	@Override
-	public void connectedToServer(NetworkMessenger nm) {
-		
-	}
-	@Override
-	public void networkMessageReceived(NetworkDataObject ndo) {
-		// TODO Auto-generated method stub
-		
 	}
 	public ArrayList<PImage> getAssets(){
 		return assets;
