@@ -214,10 +214,10 @@ public class PlayScreen{
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
 							
-							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
+							//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 							
 							// casting this for now... But I need a better fix
-							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
+							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(3));
 
 							for(Projectile b : fan) {
 								bullets.add(b);

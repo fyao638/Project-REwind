@@ -75,10 +75,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		}
 	}
 	public void processNetworkMessages() {
-		if (nm == null) {
-			System.out.println("NULL");
+		if (nm == null)
 			return;
-		}
+		
 		Queue<NetworkDataObject> queue = nm.getQueuedMessages();
 		
 		while (!queue.isEmpty()) {
@@ -106,11 +105,13 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					//player uses secondary
-					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(12));
+					
+					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(3));
 
 					for(Projectile b : fan) {
 						playScreen.getOtherBullets().add(b);
 					}
+					
 					
 				}
 				else if (ndo.message[0].equals(messageTypeFlash)) {
