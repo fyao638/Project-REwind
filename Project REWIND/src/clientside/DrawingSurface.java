@@ -128,7 +128,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		}
 	}
 	public void openNetworkingPanel() {
-		NetworkManagementPanel nmp = new NetworkManagementPanel("SwingChat", 20, this);  
+		NetworkManagementPanel nmp = new NetworkManagementPanel("REwind", 2, this);  
 	}
 	
 	// 0 = menu, 1 = in game
