@@ -87,6 +87,10 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void setIsOffline(boolean offline) {
 		this.isOffline = offline;
 	}
+	
+	public NetworkMessenger getNetM() {
+		return nm;
+	}
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
 		this.nm = nm;

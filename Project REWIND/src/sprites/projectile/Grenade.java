@@ -13,19 +13,19 @@ import sprites.obstacles.Obstacle;
  * This class represents the grenade shot by Demolitions.
  *
  */
-public class Grenade extends Bullet{
+public class Grenade extends Projectile{
 	
 	private PImage img;
 
-	public static final int GRENADE_WIDTH = 20;
-	public static final int GRENADE_HEIGHT = 5;
+	public static final int GRENADE_WIDTH = 40;
+	public static final int GRENADE_HEIGHT = 40;
 	public static final double PI = Math.PI;
 	
 	private double speed;
 	
 	
 	public Grenade(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT);
+		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
 		
 //		double i = Math.random();
 //		if (i < 0.5)
@@ -58,7 +58,7 @@ public class Grenade extends Bullet{
 			drawer.pushMatrix();
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
-			drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)width,(int)height);
+			drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			if(this.speed == 0)
 				this.setVisibility(false);
 			drawer.popMatrix();

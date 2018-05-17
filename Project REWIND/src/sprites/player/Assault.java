@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import processing.core.PImage;
 import sprites.obstacles.Obstacle;
 import sprites.projectile.Bullet;
+import sprites.projectile.Projectile;
 
 /**
  * 
@@ -22,8 +23,8 @@ public class Assault extends Player{
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Bullet> secondary(PImage img) {
-		ArrayList<Bullet> fan = new ArrayList<Bullet>();
+	public ArrayList<Projectile> secondary(PImage img) {
+		ArrayList<Projectile> fan = new ArrayList<Projectile>();
 		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
 		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
 		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
@@ -46,4 +47,8 @@ public class Assault extends Player{
 			super.moveToLocation(x + amountX, y + amountY);	
 		}
 	}
+	
+//	public int getType() {
+//		return 1;
+//	}
 }

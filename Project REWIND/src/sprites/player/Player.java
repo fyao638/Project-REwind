@@ -10,6 +10,7 @@ import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
 import sprites.projectile.Bullet;
+import sprites.projectile.Projectile;
 
 /**
  * 
@@ -22,7 +23,6 @@ public class Player extends Sprite {
 	public static final int PLAYER_HEIGHT = 40;
 	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
 	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.225 / 2;
-	
 	
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
@@ -37,7 +37,7 @@ public class Player extends Sprite {
 	
 	private Point2D.Double bulletPoint;
 	
-	public Player(PImage img, int x, int y) {
+	public Player(PImage img, double x, double y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		playerType = 1;
 		health = 5;
@@ -54,7 +54,7 @@ public class Player extends Sprite {
 	public Bullet shoot(PImage img) {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
-	public ArrayList<Bullet> secondary(PImage img) {
+	public ArrayList<Projectile> secondary(PImage img) {
 		return null;
 	}
 	public int getType() {

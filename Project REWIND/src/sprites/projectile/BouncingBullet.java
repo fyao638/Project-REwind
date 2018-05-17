@@ -11,7 +11,7 @@ import sprites.obstacles.Obstacle;
  * This class represents the bouncing bullet shot by Technician.
  *
  */
-public class BouncingBullet extends Bullet {
+public class BouncingBullet extends Bullet{
 	private int timesBounced;
 	
 	public BouncingBullet(PImage image, double x, double y, double dir, double speed) {
@@ -34,7 +34,7 @@ public class BouncingBullet extends Bullet {
 						turn((Math.PI/2) - incidence);
 					}
 					timesBounced++;
-					if(timesBounced > 3)
+					if(timesBounced > 4)
 						return true;
 					}
 				}

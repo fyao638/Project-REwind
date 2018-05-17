@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import processing.core.PImage;
 import sprites.projectile.Bullet;
 import sprites.projectile.Grenade;
+import sprites.projectile.Projectile;
 
 /**
  * 
@@ -13,14 +14,15 @@ import sprites.projectile.Grenade;
  *
  */
 public class Demolitions extends Player{
+
 	public Demolitions(PImage img, int x, int y) {
 		super(img, x, y);
 	}
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Bullet> secondary(PImage img) {
-		ArrayList<Bullet> grenade = new ArrayList<Bullet>();
+	public ArrayList<Projectile> secondary(PImage img) {
+		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
 		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
 		return grenade;
@@ -31,4 +33,8 @@ public class Demolitions extends Player{
 	public void rewind() {
 		
 	}
+	
+//	public int getType() {
+//		return playerType;
+//	}
 }
