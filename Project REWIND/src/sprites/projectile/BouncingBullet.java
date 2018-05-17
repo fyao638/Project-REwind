@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import processing.core.PImage;
 import sprites.obstacles.Obstacle;
 
+/**
+ * 
+ * @author Aakarsh Anand
+ * This class represents the bouncing bullet shot by Technician.
+ *
+ */
 public class BouncingBullet extends Bullet {
 	private int timesBounced;
 	

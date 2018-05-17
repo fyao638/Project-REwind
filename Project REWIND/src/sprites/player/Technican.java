@@ -6,6 +6,12 @@ import processing.core.PImage;
 import sprites.projectile.BouncingBullet;
 import sprites.projectile.Bullet;
 
+/**
+ * 
+ * @author Aakarsh Anand
+ * This class represents one of the player classes, technician.
+ *
+ */
 public class Technican extends Player{
 
 	public Technican(PImage img, int x, int y) {

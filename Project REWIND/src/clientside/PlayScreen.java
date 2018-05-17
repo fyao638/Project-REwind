@@ -69,7 +69,7 @@ public class PlayScreen implements NetworkListener{
 
 	}
 	public void spawnNewPlayer() {
-		p1 = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		p1 = new Technican(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -185,7 +185,7 @@ public class PlayScreen implements NetworkListener{
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(p1.getType() == 1) {
 							// casting this for now... But I need a better fix
-							ArrayList<Bullet> fan = ((Demolitions)p1).secondary(assets.get(12));
+							ArrayList<Bullet> fan = ((Technican)p1).secondary(assets.get(3));
 							for(Bullet b : fan) {
 								bullets.add(b);
 							}

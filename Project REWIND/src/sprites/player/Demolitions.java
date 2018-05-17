@@ -6,6 +6,12 @@ import processing.core.PImage;
 import sprites.projectile.Bullet;
 import sprites.projectile.Grenade;
 
+/**
+ * 
+ * @author Aakarsh Anand
+ * This class represents one of the player classes, demolitions.
+ *
+ */
 public class Demolitions extends Player{
 	public Demolitions(PImage img, int x, int y) {
 		super(img, x, y);

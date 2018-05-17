@@ -7,6 +7,12 @@ import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
 
+/**
+ * 
+ * @author Aakarsh Anand
+ * This class represents the grenade shot by Demolitions.
+ *
+ */
 public class Grenade extends Bullet{
 	
 	private PImage img;

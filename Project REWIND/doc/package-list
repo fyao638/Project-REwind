@@ -1,4 +1,12 @@
+
 clientside
 gui
 maps
+network.backend
+network.frontend
+network.gui
+sound
 sprites
+sprites.obstacles
+sprites.player
+sprites.projectile

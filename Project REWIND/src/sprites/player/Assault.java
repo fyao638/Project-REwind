@@ -8,6 +8,12 @@ import processing.core.PImage;
 import sprites.obstacles.Obstacle;
 import sprites.projectile.Bullet;
 
+/**
+ * 
+ * @author Frank Yao
+ * This class represents one of the player classes, assault.
+ *
+ */
 public class Assault extends Player{
 
 	public Assault(PImage img, int x, int y) {
