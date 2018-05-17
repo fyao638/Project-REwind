@@ -32,7 +32,7 @@ public class Assault extends Player{
 		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
 		return fan;
 	}
-	public void shiftAbility(ArrayList<Obstacle> obstacles) {
+	public boolean shiftAbility(ArrayList<Obstacle> obstacles) {
 		double amountX = 110 * Math.cos(super.getDirection());
 		double amountY = 110 * Math.sin(super.getDirection());
 		
@@ -45,7 +45,9 @@ public class Assault extends Player{
 		}
 		if(canFlash) {
 			super.moveToLocation(x + amountX, y + amountY);	
+			return true;
 		}
+		return false;
 	}
 	
 //	public int getType() {

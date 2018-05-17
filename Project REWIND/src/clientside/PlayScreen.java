@@ -94,19 +94,19 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));//0
-		assets.add(drawer.loadImage("assets/ghost.png"));//1
-		assets.add(drawer.loadImage("assets/bullet.png"));//2
-		assets.add(drawer.loadImage("assets/star.png"));//3
-		assets.add(drawer.loadImage("assets/crosshair.png"));//4
-		assets.add(drawer.loadImage("assets/time.png"));//5
-		assets.add(drawer.loadImage("assets/starIcon.png"));//6
-		assets.add(drawer.loadImage("assets/flash.png"));//7
-		assets.add(drawer.loadImage("assets/wall.png"));//8
-		assets.add(drawer.loadImage("assets/wall2.png"));//9
-		assets.add(drawer.loadImage("assets/particle.png"));//10
-		assets.add(drawer.loadImage("assets/bounceLogo.png"));//11
-		assets.add(drawer.loadImage("assets/grenade.png"));//12
+		assets.add(drawer.loadImage("assets/player.png"));			//0
+		assets.add(drawer.loadImage("assets/ghost.png"));			//1
+		assets.add(drawer.loadImage("assets/bullet.png"));			//2
+		assets.add(drawer.loadImage("assets/star.png"));			//3
+		assets.add(drawer.loadImage("assets/crosshair.png"));		//4
+		assets.add(drawer.loadImage("assets/time.png"));			//5
+		assets.add(drawer.loadImage("assets/starIcon.png"));		//6
+		assets.add(drawer.loadImage("assets/flash.png"));			//7
+		assets.add(drawer.loadImage("assets/wall.png"));			//8
+		assets.add(drawer.loadImage("assets/wall2.png"));			//9
+		assets.add(drawer.loadImage("assets/particle.png"));     	//10
+		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
+		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
@@ -163,6 +163,7 @@ public class PlayScreen{
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime -drawer.millis() <= 0) {
 				clientPlayer.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
@@ -172,15 +173,13 @@ public class PlayScreen{
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
-			if(shiftReadyTime - drawer.millis() <= 0) {
-				//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash, map.getObstacles());
+			if(shiftReadyTime - drawer.millis() <= 0 && ((Assault) clientPlayer).shiftAbility(map.getObstacles())) {
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash, map.getObstacles());
 				
 				// create particles, maybe find a cleaner way to do this later
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 					particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
 				}
-				// casting this for now... But I need a better fix
-				((Assault) clientPlayer).shiftAbility(map.getObstacles());
 				
 				shiftReadyTime = drawer.millis() + 7000;
 				

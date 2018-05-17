@@ -31,10 +31,10 @@ public class Map { //extend sprite? NO
 		obstacles.add(new Obstacle(wallImage2,250,200,30,200));
 		obstacles.add(new Obstacle(wallImage2,520,200,30,200));
 		obstacles.add(new Obstacle(wallImage,350,280,100,30));
-		obstacles.add(new Obstacle(wallImage,0,0,DRAWING_WIDTH,1));
-		obstacles.add(new Obstacle(wallImage,0,0,1,DRAWING_HEIGHT));
-		obstacles.add(new Obstacle(wallImage,0,DRAWING_HEIGHT,DRAWING_WIDTH,1));
-		obstacles.add(new Obstacle(wallImage,DRAWING_WIDTH,0,1,DRAWING_HEIGHT));
+		obstacles.add(new Obstacle(wallImage,0,-100,DRAWING_WIDTH,100));
+		obstacles.add(new Obstacle(wallImage,-100,0,100,DRAWING_HEIGHT));
+		obstacles.add(new Obstacle(wallImage,0,DRAWING_HEIGHT,DRAWING_WIDTH,100));
+		obstacles.add(new Obstacle(wallImage,DRAWING_WIDTH,0,100,DRAWING_HEIGHT));
 	}
 	public void draw(PApplet d) {
 		for(Obstacle s : obstacles) {
