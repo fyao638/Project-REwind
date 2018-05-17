@@ -166,6 +166,9 @@ public class PlayScreen{
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
+
+				
+				
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
