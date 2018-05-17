@@ -51,7 +51,7 @@ public class Bullet extends Projectile{
 	public boolean checkObstacles(ArrayList<Obstacle> obstacles) {
 		for(Obstacle s : obstacles) {
 			for(int i = 0; i < 4; i++) {
-				if(s.intersects(this.getCenterX(),this.getCenterY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				if(s.intersects(this.getX(),this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
 					return true;
 						
 				}
