@@ -16,7 +16,8 @@ public class Hud {
 	}
 	public void draw(PApplet drawer, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
-		
+		// Draw the health bar
+		drawer.fill(255, 100);
 		drawer.stroke(255);
 		drawer.strokeWeight(2);
 		drawer.rect( 10, 10, 200, 50, 20);
@@ -27,13 +28,13 @@ public class Hud {
 			isDead = true;
 		}
 		else if(p.getHealth() < 3 && p.getHealth() > -1) {
-			drawer.fill(255, 0, 0);
+			drawer.fill(255, 0, 0, 100);
 		}
 		else if(p.getHealth() < 4) {
-			drawer.fill(255, 255, 0);
+			drawer.fill(255, 255, 0, 100);
 		}
 		else if(p.getHealth()< 6){
-			drawer.fill(0, 255, 0);
+			drawer.fill(0, 255, 0, 100);
 		}
 		else {
 			isDead = true;
