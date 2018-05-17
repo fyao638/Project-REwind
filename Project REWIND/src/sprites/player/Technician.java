@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import processing.core.PImage;
 import sprites.projectile.BouncingBullet;
 import sprites.projectile.Bullet;
+import sprites.projectile.Projectile;
 
 public class Technician extends Player{
 
@@ -14,9 +15,9 @@ public class Technician extends Player{
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Bullet> secondary(PImage img) {
-		BouncingBullet b = new BouncingBullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
-		ArrayList<Bullet> bounce = new ArrayList<Bullet>();
+	public ArrayList<Projectile> secondary(PImage img) {
+		BouncingBullet b = new BouncingBullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 9.25);
+		ArrayList<Projectile> bounce = new ArrayList<Projectile>();
 		bounce.add(b);
 		return bounce;
 	}
@@ -26,5 +27,9 @@ public class Technician extends Player{
 	public void rewind() {
 		
 	}
+	
+//	public int getType() {
+//		return 3;
+//	}
 
 }

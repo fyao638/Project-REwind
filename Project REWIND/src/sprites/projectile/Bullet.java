@@ -13,19 +13,19 @@ import sprites.obstacles.Obstacle;
  * @author Aakarsh Anand, Frank Yao, Michael Kim
  * This class represents the bullets that are shot from weapons in the game.
  */
-public class Bullet extends Sprite {
+public class Bullet extends Projectile{
 	
 	private PImage img;
 
-	public static final int BULLET_WIDTH = 20;
-	public static final int BULLET_HEIGHT = 5;
+	public static final double BULLET_WIDTH = 20;
+	public static final double BULLET_HEIGHT = 5;
 	public static final double PI = Math.PI;
 	
 	private double speed;
 	
 	
 	public Bullet(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT);
+		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT, dir, speed);
 		
 //		double i = Math.random();
 //		if (i < 0.5)
@@ -67,7 +67,7 @@ public class Bullet extends Sprite {
 			drawer.pushMatrix();
 			drawer.translate((float) (x + BULLET_WIDTH / 2), (float) (y + BULLET_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
-			drawer.image(getImage(),(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)width,(int)height);
+			drawer.image(getImage(),(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)BULLET_WIDTH,(int)BULLET_HEIGHT);
 			drawer.popMatrix();
 		}
 	}

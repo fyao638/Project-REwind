@@ -10,6 +10,7 @@ import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
 import sprites.projectile.Bullet;
+import sprites.projectile.Projectile;
 
 /**
  * 
@@ -53,7 +54,7 @@ public class Player extends Sprite {
 	public Bullet shoot(PImage img) {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 	}
-	public ArrayList<Bullet> secondary(PImage img) {
+	public ArrayList<Projectile> secondary(PImage img) {
 		return null;
 	}
 	public int getType() {

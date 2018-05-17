@@ -1,6 +1,5 @@
 package clientside;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -39,8 +38,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	
 	
 	private SoundManager sound;
-	
-	private Packet packet;
 	
 	//States:
 	// 0 = main menu
@@ -153,6 +150,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void setIsOffline(boolean offline) {
 		this.isOffline = offline;
 	}
+	
 	public NetworkMessenger getNetM() {
 		return nm;
 	}
@@ -162,15 +160,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	}
 	@Override
 	public void networkMessageReceived(NetworkDataObject ndo) {
-		if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
-			
-		}
-			//do something with the message
+		// TODO Auto-generated method stub
 	}
 	
-	public Packet getPacket() {
-		return packet;
-	}
 }
 
 

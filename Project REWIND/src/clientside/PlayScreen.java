@@ -17,7 +17,9 @@ import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
 import sprites.player.Demolitions;
 import sprites.player.Player;
+import sprites.player.Technician;
 import sprites.projectile.Bullet;
+import sprites.projectile.Projectile;
 
 /**
  * 
@@ -33,7 +35,7 @@ public class PlayScreen{
 	private Player clientPlayer, enemyPlayer;
 	private ArrayList<Particle> particles;
 
-	private ArrayList<Bullet> bullets;
+	private ArrayList<Projectile> bullets;
 	private ArrayList<Bullet> otherBullets;
 	
 	private ArrayList<PImage> assets;
@@ -68,7 +70,7 @@ public class PlayScreen{
 		assets = new ArrayList<PImage>();
 		//otherPlayers = new ArrayList<Player>();
 		otherBullets = new ArrayList<Bullet>();
-		bullets = new ArrayList<Bullet>();
+		bullets = new ArrayList<Projectile>();
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
@@ -82,7 +84,7 @@ public class PlayScreen{
 		abilHeight = 100;
 	}
 	public void spawnNewPlayer() {
-		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
@@ -92,19 +94,19 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));
-		assets.add(drawer.loadImage("assets/ghost.png"));
-		assets.add(drawer.loadImage("assets/bullet.png"));
-		assets.add(drawer.loadImage("assets/star.png"));
-		assets.add(drawer.loadImage("assets/crosshair.png"));
-		assets.add(drawer.loadImage("assets/time.png"));
-		assets.add(drawer.loadImage("assets/starIcon.png"));
-		assets.add(drawer.loadImage("assets/flash.png"));
-		assets.add(drawer.loadImage("assets/wall.png"));
-		assets.add(drawer.loadImage("assets/wall2.png"));
-		assets.add(drawer.loadImage("assets/particle.png"));
-		assets.add(drawer.loadImage("assets/bounceLogo.png"));
-		assets.add(drawer.loadImage("assets/grenade.png"));
+		assets.add(drawer.loadImage("assets/player.png"));//0
+		assets.add(drawer.loadImage("assets/ghost.png"));//1
+		assets.add(drawer.loadImage("assets/bullet.png"));//2
+		assets.add(drawer.loadImage("assets/star.png"));//3
+		assets.add(drawer.loadImage("assets/crosshair.png"));//4
+		assets.add(drawer.loadImage("assets/time.png"));//5
+		assets.add(drawer.loadImage("assets/starIcon.png"));//6
+		assets.add(drawer.loadImage("assets/flash.png"));//7
+		assets.add(drawer.loadImage("assets/wall.png"));//8
+		assets.add(drawer.loadImage("assets/wall2.png"));//9
+		assets.add(drawer.loadImage("assets/particle.png"));//10
+		assets.add(drawer.loadImage("assets/bounceLogo.png"));//11
+		assets.add(drawer.loadImage("assets/grenade.png"));//12
 		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
@@ -208,12 +210,24 @@ public class PlayScreen{
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
 							// casting this for now... But I need a better fix
-							ArrayList<Bullet> fan = ((Assault)clientPlayer).secondary(assets.get(3));
-							for(Bullet b : fan) {
+							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
+
+							for(Projectile b : fan) {
 								bullets.add(b);
 							}
 							secondaryReadyTime = drawer.millis() + 7000;
 						}
+//						else if(clientPlayer.getType() == 2) {
+//							// casting this for now... But I need a better fix
+//							System.out.println("help");
+//							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
+//
+//							for(Projectile b : fan) {
+//								bullets.add(b);
+//							}
+//							secondaryReadyTime = drawer.millis() + 7000;
+//							
+//						}
 					}
 				}
 				/*
@@ -304,7 +318,7 @@ public class PlayScreen{
 	public ArrayList<Obstacle> getObstacles(){
 		return map.getObstacles();
 	}
-	public ArrayList<Bullet> getBullets() {
+	public ArrayList<Projectile> getBullets() {
 		return bullets;
 	}
 	public ArrayList<PImage> getAssets(){

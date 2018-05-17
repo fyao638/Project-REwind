@@ -3,6 +3,12 @@ package sound;
 import jay.jaysound.JayLayer;
 import jay.jaysound.JayLayerListener;
 
+/**
+ * 
+ * @author Frank Yao
+ * This class manages sounds in the game.
+ *
+ */
 public class SoundManager implements JayLayerListener {
 
 	JayLayer sound;
