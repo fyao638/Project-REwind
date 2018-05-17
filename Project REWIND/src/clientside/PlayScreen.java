@@ -36,7 +36,7 @@ public class PlayScreen{
 	private ArrayList<Particle> particles;
 
 	private ArrayList<Projectile> bullets;
-	private ArrayList<Bullet> otherBullets;
+	private ArrayList<Projectile> otherBullets;
 	
 	private ArrayList<PImage> assets;
 	
@@ -69,7 +69,7 @@ public class PlayScreen{
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
 		//otherPlayers = new ArrayList<Player>();
-		otherBullets = new ArrayList<Bullet>();
+		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
@@ -84,7 +84,7 @@ public class PlayScreen{
 		abilHeight = 100;
 	}
 	public void spawnNewPlayer() {
-		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
@@ -176,6 +176,7 @@ public class PlayScreen{
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
 			if(shiftReadyTime - drawer.millis() <= 0) {
+				//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash, map.getObstacles());
 				
 				// create particles, maybe find a cleaner way to do this later
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
@@ -201,6 +202,9 @@ public class PlayScreen{
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
 				if(shotReadyTime - drawer.millis() <= 0) {
+					
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
+					
 					bullets.add(clientPlayer.shoot(assets.get(2)));
 					shotReadyTime = drawer.millis() + 1000;
 				}
@@ -209,6 +213,9 @@ public class PlayScreen{
 				if(clientPlayer.getType() == 1) {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
+							
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
+							
 							// casting this for now... But I need a better fix
 							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
 
@@ -255,6 +262,15 @@ public class PlayScreen{
 			}
 		}
 		
+		if (otherBullets.size() > 0) {
+			for(int i = 0; i < otherBullets.size(); i++) {
+					otherBullets.get(i).act();
+					otherBullets.get(i).draw(drawer);
+					if (otherBullets.get(i).checkObstacles(map.getObstacles())) {
+						otherBullets.remove(i);
+					}
+			}
+		}
 		// draw the players after the bullets so the bullets don't appear above the gun
 		if(ghostReappearTime - drawer.millis() < 0) {
 			p1Ghost.draw(drawer);
@@ -262,6 +278,10 @@ public class PlayScreen{
 		
 		clientPlayer.draw(drawer);
 		enemyPlayer.draw(drawer);
+		
+		if(drawer.getNetM() != null) {
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeTurn, drawer.mouseX, drawer.mouseY);
+		}
 		
 		if (particles.size() > 0) {
 			for(int i = 0; i < particles.size(); i++) {
@@ -314,6 +334,9 @@ public class PlayScreen{
 	}
 	public Player getEnemyPlayer() {
 		return (Assault)enemyPlayer;
+	}
+	public ArrayList<Projectile> getOtherBullets(){
+		return otherBullets;
 	}
 	public ArrayList<Obstacle> getObstacles(){
 		return map.getObstacles();

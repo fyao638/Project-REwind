@@ -13,6 +13,7 @@ import processing.core.PApplet;
 import sound.SoundManager;
 import sprites.player.Assault;
 import sprites.player.Player;
+import sprites.projectile.Projectile;
 /**
  * 
  * @author Aakarsh Anand, Frank Yao, Michael Kim
@@ -101,11 +102,16 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeShoot)) {
 					//player shoots
-					p.shoot(playScreen.getAssets().get(2));
+					playScreen.getOtherBullets().add(p.shoot(playScreen.getAssets().get(2)));
 				}
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					//player uses secondary
-					p.secondary(playScreen.getAssets().get(3));
+					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(12));
+
+					for(Projectile b : fan) {
+						playScreen.getOtherBullets().add(b);
+					}
+					
 				}
 				else if (ndo.message[0].equals(messageTypeFlash)) {
 					p.shiftAbility(playScreen.getObstacles());
@@ -117,9 +123,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else {
 					System.out.println("Its not detecting it");
 				}
-			}
-			else {
-				System.out.println("Its not a message?");
 			}
 		}
 	}
