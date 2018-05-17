@@ -119,7 +119,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					//player uses flash
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
-					p.moveToLocation((int) ndo.message[1], (int) ndo.message[2]);
+					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
 					//PLAYER DOESNT HAVE A REWIND METHOD
 				}
 				else {

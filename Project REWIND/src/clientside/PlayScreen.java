@@ -161,9 +161,9 @@ public class PlayScreen{
 			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
-			if(rewindReadyTime -drawer.millis() <= 0) {
+			if(rewindReadyTime - drawer.millis() <= 0) {
 				clientPlayer.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
