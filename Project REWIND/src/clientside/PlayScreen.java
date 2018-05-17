@@ -166,12 +166,6 @@ public class PlayScreen{
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
-				
-				//rewind cooldowns
-				shotReadyTime += 2000;
-				secondaryReadyTime += 2000;
-				shiftReadyTime += 2000;
-				
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
@@ -214,7 +208,7 @@ public class PlayScreen{
 					if(secondaryReadyTime - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
 							
-							//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 							
 							// casting this for now... But I need a better fix
 							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(3));
