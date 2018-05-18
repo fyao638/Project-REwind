@@ -6,19 +6,14 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
-import network.backend.Packet;
 import network.frontend.NetworkDataObject;
-import network.frontend.NetworkListener;
-import network.frontend.NetworkMessenger;
 import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Particle;
 import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
-import sprites.player.Demolitions;
 import sprites.player.Player;
 import sprites.player.Technician;
-import sprites.projectile.Bullet;
 import sprites.projectile.Projectile;
 
 /**
@@ -59,12 +54,6 @@ public class PlayScreen{
 	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
-	
-	/*Make rewind a method for player
-	 * 
-	 * 
-	 * 
-	 */
 	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
@@ -292,34 +281,6 @@ public class PlayScreen{
 		
 		
 		timer++;
-		
-		
-		//Im not sure how useful this is
-		/*
-		if(!drawer.isOffline()) {
-			packet.update(p1);
-			if (!bullets.isEmpty()) {
-				packet.update(bullets);
-			}
-			
-			Packet dPacket = drawer.getPacket();
-			
-			if (dPacket != null) {
-				Player otherPlayer = new Player(assets.get(0), dPacket.getPlayerX(), dPacket.getPlayerY());
-				ArrayList<Point2D.Double> otherBulletsCoords = dPacket.getBullets();
-				for (int i = 0; i < otherBullets.size(); i++) {
-					Point2D.Double coords = otherBulletsCoords.get(i);
-					Bullet b = new Bullet(assets.get(2), coords.getX(), coords.getY(), dPacket.getBulletsDir().get(i), 10);
-					otherBullets.add(b);
-					b.draw(drawer);
-				}
-				
-				otherPlayer.draw(drawer);
-			}
-			
-			
-		}
-		*/
 		
 		
 	}
