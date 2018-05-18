@@ -6,6 +6,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
+import sprites.player.Player;
 
 /**
  * 
@@ -52,6 +53,9 @@ public class Grenade extends Projectile{
 		return false;
 	}
 		
+	public boolean checkPlayer(Player player) {
+		return false;
+	}
 	
 	public void draw(PApplet drawer) {
 		if(this.visible()) {

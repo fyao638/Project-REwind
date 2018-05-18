@@ -7,6 +7,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
+import sprites.player.Player;
 
 /**
  * 
@@ -51,12 +52,22 @@ public class Bullet extends Projectile{
 	public boolean checkObstacles(ArrayList<Obstacle> obstacles) {
 		for(Obstacle s : obstacles) {
 			for(int i = 0; i < 4; i++) {
-				if(s.intersects(this.getX(),this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				if(s.intersects(this.getX() ,this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
 					return true;
 						
 				}
 			}
 			
+		}
+		return false;
+	}
+	
+	public boolean checkPlayer(Player player) {
+		for(int i = 0; i < 4; i++) {
+			if(player.intersects(this.getX(),this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				return true;
+						
+			}
 		}
 		return false;
 	}

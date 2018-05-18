@@ -6,6 +6,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
+import sprites.player.Player;
 
 public abstract class Projectile extends Sprite{
 	
@@ -32,6 +33,8 @@ public abstract class Projectile extends Sprite{
 	
 	// return true if it hits an obstacle, false if otherwise
 	public abstract boolean checkObstacles(ArrayList<Obstacle> obstacles);
+	
+	public abstract boolean checkPlayer(Player player);
 		
 	
 	public void draw(PApplet drawer) {

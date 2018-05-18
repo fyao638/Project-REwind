@@ -37,7 +37,7 @@ public class PlayScreen{
 
 	private ArrayList<Projectile> bullets;
 	private ArrayList<Projectile> otherBullets;
-	
+	private ArrayList<Player> players;
 	private ArrayList<PImage> assets;
 	
 	private ArrayList<Point2D.Double> prevLocs;
@@ -71,6 +71,7 @@ public class PlayScreen{
 		//otherPlayers = new ArrayList<Player>();
 		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
+		players = new ArrayList<Player>();
 		hud = new Hud();
 		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
@@ -85,7 +86,7 @@ public class PlayScreen{
 	}
 	public void spawnNewPlayer() {
 		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 	}
 	
 	public void spawnNewGhost() {
@@ -108,8 +109,14 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));//11
 		assets.add(drawer.loadImage("assets/grenade.png"));//12
 		
+		
+		//System.out.println(players);
+		
 		map = new Map(assets.get(8), assets.get(9));
 		spawnNewPlayer();
+		
+		players.add(clientPlayer);
+		players.add(enemyPlayer);
 		
 		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevLocs.add(p);
@@ -146,19 +153,19 @@ public class PlayScreen{
 
 		if(drawer.isPressed(KeyEvent.VK_A)) {
 			clientPlayer.walk(-1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_D)) {
 			clientPlayer.walk(1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_W)) {
 			clientPlayer.walk(0, -1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_S)) {
 			clientPlayer.walk(0, 1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime -drawer.millis() <= 0) {
@@ -256,6 +263,10 @@ public class PlayScreen{
 					if (bullets.get(i).checkObstacles(map.getObstacles())) {
 						bullets.remove(i);
 					}
+					else if (bullets.get(i).checkPlayer(enemyPlayer)) {
+						bullets.remove(i);
+						enemyPlayer.changeHealth(-1);
+					}
 			}
 		}
 		
@@ -265,6 +276,10 @@ public class PlayScreen{
 					otherBullets.get(i).draw(drawer);
 					if (otherBullets.get(i).checkObstacles(map.getObstacles())) {
 						otherBullets.remove(i);
+					}
+					else if (otherBullets.get(i).checkPlayer(clientPlayer)) {
+						otherBullets.remove(i);
+						clientPlayer.changeHealth(-1);
 					}
 			}
 		}
