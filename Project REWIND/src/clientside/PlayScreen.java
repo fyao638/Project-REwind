@@ -1,6 +1,7 @@
 package clientside;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -40,8 +41,10 @@ public class PlayScreen{
 	private ArrayList<Player> players;
 	private ArrayList<PImage> assets;
 	
-	private ArrayList<Point2D.Double> prevLocs;
-	private ArrayList<Point2D.Double> prevMouseLocs;
+	private ArrayList<Point2D.Double> prevClientLocs;
+	private ArrayList<Point2D.Double> prevClientMouseLocs;
+	private ArrayList<Point2D.Double> prevEnemyLocs;
+	private ArrayList<Point2D.Double> prevEnemyMouseLocs;
 	
 	private static final String messageTypeMove = "MOVE";
 	private static final String messageTypeTurn = "TURN";
@@ -73,13 +76,15 @@ public class PlayScreen{
 		bullets = new ArrayList<Projectile>();
 		players = new ArrayList<Player>();
 		hud = new Hud();
-		prevLocs = new ArrayList<Point2D.Double>();
 		shotReadyTime = 0;
 		rewindReadyTime = 0;
 		secondaryReadyTime = 0;
 		shiftReadyTime = 0;
 		ghostReappearTime = 0;
-		prevMouseLocs = new ArrayList<Point2D.Double>();
+		prevClientLocs = new ArrayList<Point2D.Double>();
+		prevClientMouseLocs = new ArrayList<Point2D.Double>();
+		prevEnemyLocs = new ArrayList<Point2D.Double>();
+		prevEnemyLocs = new ArrayList<Point2D.Double>();
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
@@ -90,7 +95,7 @@ public class PlayScreen{
 	}
 	
 	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevLocs.get(0).getX(), (int)prevLocs.get(0).getY());
+		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY());
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -119,7 +124,9 @@ public class PlayScreen{
 		players.add(enemyPlayer);
 		
 		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		prevLocs.add(p);
+		Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+		prevClientLocs.add(p);
+		prevEnemyLocs.add(p2);
 		
 		spawnNewGhost();
 	}
@@ -128,18 +135,23 @@ public class PlayScreen{
 		
 		
 		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		prevLocs.add(p);
-		if (prevLocs.size() > 120)
-			prevLocs.remove(0);
+		prevClientLocs.add(p);
+		if (prevClientLocs.size() > 120)
+			prevClientLocs.remove(0);
+		
+		Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+		prevEnemyLocs.add(p2);
+		if (prevEnemyLocs.size() > 120)
+			prevEnemyLocs.remove(0);
 		
 
 		Point2D.Double pMouse = new Point2D.Double(drawer.mouseX, drawer.mouseY);
-		prevMouseLocs.add(pMouse);
-		if (prevMouseLocs.size() > 120)
-			prevMouseLocs.remove(0);
+		prevClientMouseLocs.add(pMouse);
+		if (prevClientMouseLocs.size() > 120)
+			prevClientMouseLocs.remove(0);
 		
-		p1Ghost.setX((int)prevLocs.get(0).getX());
-		p1Ghost.setY((int)prevLocs.get(0).getY());
+		p1Ghost.setX((int)prevClientLocs.get(0).getX());
+		p1Ghost.setY((int)prevClientLocs.get(0).getY());
 		
 		drawer.background(128,128,128);  
 
@@ -149,7 +161,8 @@ public class PlayScreen{
 		drawer.scale(ratioX, ratioY);
 		
 		clientPlayer.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
-		p1Ghost.turnToward((float)prevMouseLocs.get(0).getX() / ratioX, (float)prevMouseLocs.get(0).getY() / ratioY);
+
+		p1Ghost.turnToward((float)prevClientMouseLocs.get(0).getX() / ratioX, (float)prevClientMouseLocs.get(0).getY() / ratioY);
 
 		if(drawer.isPressed(KeyEvent.VK_A)) {
 			clientPlayer.walk(-1, 0, map.getObstacles());
@@ -169,8 +182,8 @@ public class PlayScreen{
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime - drawer.millis() <= 0) {
-				clientPlayer.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				clientPlayer.moveToLocation(prevClientLocs.get(0).getX(), prevClientLocs.get(0).getY());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevEnemyLocs.get(0).getX(), prevEnemyLocs.get(0).getY());
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
@@ -333,7 +346,7 @@ public class PlayScreen{
 			
 		}
 		*/
-		
+	
 		
 	}
 	
