@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 import gui.MenuScreen;
-import network.backend.Packet;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkManagementPanel;
 import network.frontend.NetworkMessenger;
 import processing.core.PApplet;
 import sound.SoundManager;
+import sprites.Particle;
 import sprites.player.Assault;
-import sprites.player.Player;
 import sprites.projectile.Projectile;
 /**
  * 
@@ -111,16 +110,17 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					for(Projectile b : fan) {
 						playScreen.getOtherBullets().add(b);
 					}
-					
-					
 				}
 				else if (ndo.message[0].equals(messageTypeFlash)) {
+					for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
+						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20));
+					}
 					p.shiftAbility(playScreen.getObstacles());
+					
 					//player uses flash
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
-					//PLAYER DOESNT HAVE A REWIND METHOD
 				}
 				else {
 					System.out.println("Its not detecting it");
@@ -158,6 +158,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	
 	public NetworkMessenger getNetM() {
 		return nm;
+	}
+	public SoundManager getSoundM() {
+		return sound;
 	}
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
