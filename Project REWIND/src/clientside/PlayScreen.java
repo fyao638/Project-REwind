@@ -191,17 +191,19 @@ public class PlayScreen{
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
-			if(shiftReadyTime - drawer.millis() <= 0 && ((Assault) clientPlayer).shiftAbility(map.getObstacles())) {
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash, map.getObstacles());
-				
-				// create particles, maybe find a cleaner way to do this later
+			if(shiftReadyTime - drawer.millis() <= 0) {
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 					particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
 				}
-				
-				shiftReadyTime = drawer.millis() + 7000;
-				
+				if(((Assault) clientPlayer).shiftAbility(map.getObstacles())) {
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
+					
+					shiftReadyTime = drawer.millis() + 7000;
+				}
 			}
+		}
+		if(drawer.isPressed(KeyEvent.VK_F)) {
+			drawer.getSoundM().laugh();
 		}
 		// Test this plz
 		//
@@ -368,6 +370,9 @@ public class PlayScreen{
 	}
 	public ArrayList<PImage> getAssets(){
 		return assets;
+	}
+	public ArrayList<Particle> getParticles(){
+		return particles;
 	}
 }
 

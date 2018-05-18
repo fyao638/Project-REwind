@@ -14,8 +14,9 @@ public class SoundManager implements JayLayerListener {
 	JayLayer sound;
 	
 	public SoundManager() {
+		//badnames
 		String[] songs = new String[]{"title2.mp3"};
-		String[] soundEffects = new String[] {"flash.wav"};
+		String[] soundEffects = new String[] {"laugh.mp3"};
 		
 		 sound=new JayLayer("audio/","audio/",false);
 		  sound.addPlayList();
@@ -33,7 +34,7 @@ public class SoundManager implements JayLayerListener {
 			sound.stopSong();
 		}
 	}
-	public void playFlash() {
+	public void laugh() {
 		sound.playSoundEffect(0);
 	}
 	
@@ -58,7 +59,6 @@ public class SoundManager implements JayLayerListener {
 	@Override
 	public void songEnded() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
