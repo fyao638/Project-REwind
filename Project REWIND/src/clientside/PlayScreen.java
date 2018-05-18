@@ -94,9 +94,9 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));			//0
+		assets.add(drawer.loadImage("assets/player.png"));		//0
 		assets.add(drawer.loadImage("assets/ghost.png"));			//1
-		assets.add(drawer.loadImage("assets/bullet.png"));			//2
+		assets.add(drawer.loadImage("assets/bullet.png"));		//2
 		assets.add(drawer.loadImage("assets/star.png"));			//3
 		assets.add(drawer.loadImage("assets/crosshair.png"));		//4
 		assets.add(drawer.loadImage("assets/time.png"));			//5
@@ -163,12 +163,10 @@ public class PlayScreen{
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime - drawer.millis() <= 0) {
 				clientPlayer.moveToLocation(prevLocs.get(0).getX(), prevLocs.get(0).getY());
-				//drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevLocs.get(0).getX(), prevLocs.get(0).getY());
 				//set cooldowns
 				rewindReadyTime = drawer.millis() + 15000;
 				ghostReappearTime = drawer.millis() + 2000;
-
-				
 				
 			}
 		}
