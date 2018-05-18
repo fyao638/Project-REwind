@@ -1,5 +1,6 @@
 package clientside;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -36,7 +37,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeFlash = "FLASH";
 	
-	
+	private int clientCount = 0;
 	private SoundManager sound;
 	
 	//States:
@@ -125,13 +126,23 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else {
 					System.out.println("Its not detecting it");
 				}
+			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
+				/*
+				for (int i = 0; i < ndo.message.length; i++) {
+					InetAddress address = (InetAddress)ndo.message[i];
+					
+				}
+				*/
+				clientCount = ndo.message.length;
+				
+				
+				
 			}
 		}
 	}
 	public void openNetworkingPanel() {
 		NetworkManagementPanel nmp = new NetworkManagementPanel("REwind", 2, this);  
 	}
-	
 	// 0 = menu, 1 = in game
 	public void changeState(int newState) {
 		gameState = newState;
@@ -158,6 +169,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	
 	public NetworkMessenger getNetM() {
 		return nm;
+	}
+	public int getClientCount() {
+		return clientCount;
 	}
 	public SoundManager getSoundM() {
 		return sound;

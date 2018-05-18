@@ -7,19 +7,14 @@ import java.util.ArrayList;
 
 import gui.Hud;
 import maps.Map;
-import network.backend.Packet;
 import network.frontend.NetworkDataObject;
-import network.frontend.NetworkListener;
-import network.frontend.NetworkMessenger;
 import processing.core.PConstants;
 import processing.core.PImage;
 import sprites.Particle;
 import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
-import sprites.player.Demolitions;
 import sprites.player.Player;
 import sprites.player.Technician;
-import sprites.projectile.Bullet;
 import sprites.projectile.Projectile;
 
 /**
@@ -63,15 +58,8 @@ public class PlayScreen{
 	
 	private float abilWidth, abilHeight;
 	
-	/*Make rewind a method for player
-	 * 
-	 * 
-	 * 
-	 */
-	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
-		//otherPlayers = new ArrayList<Player>();
 		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
 		players = new ArrayList<Player>();
@@ -89,9 +77,14 @@ public class PlayScreen{
 		abilWidth = 100;
 		abilHeight = 100;
 	}
-	public void spawnNewPlayer() {
+	public void spawnNewHost() {
 		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+	}
+	
+	public void spawnNewClient() {
+		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -100,9 +93,9 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));		//0
+		assets.add(drawer.loadImage("assets/player.png"));			//0
 		assets.add(drawer.loadImage("assets/ghost.png"));			//1
-		assets.add(drawer.loadImage("assets/bullet.png"));		//2
+		assets.add(drawer.loadImage("assets/bullet.png"));			//2
 		assets.add(drawer.loadImage("assets/star.png"));			//3
 		assets.add(drawer.loadImage("assets/crosshair.png"));		//4
 		assets.add(drawer.loadImage("assets/time.png"));			//5
@@ -118,8 +111,12 @@ public class PlayScreen{
 		//System.out.println(players);
 		
 		map = new Map(assets.get(8), assets.get(9));
-		spawnNewPlayer();
-		
+		if(drawer.getClientCount() == 0) {
+			spawnNewHost();
+		}
+		else {
+			spawnNewClient();
+		}
 		players.add(clientPlayer);
 		players.add(enemyPlayer);
 		
@@ -166,19 +163,19 @@ public class PlayScreen{
 
 		if(drawer.isPressed(KeyEvent.VK_A)) {
 			clientPlayer.walk(-1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_D)) {
 			clientPlayer.walk(1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
 		}
 		if (drawer.isPressed(KeyEvent.VK_W)) {
 			clientPlayer.walk(0, -1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_S)) {
 			clientPlayer.walk(0, 1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
 			if(rewindReadyTime - drawer.millis() <= 0) {
@@ -320,35 +317,6 @@ public class PlayScreen{
 		
 		
 		timer++;
-		
-		
-		//Im not sure how useful this is
-		/*
-		if(!drawer.isOffline()) {
-			packet.update(p1);
-			if (!bullets.isEmpty()) {
-				packet.update(bullets);
-			}
-			
-			Packet dPacket = drawer.getPacket();
-			
-			if (dPacket != null) {
-				Player otherPlayer = new Player(assets.get(0), dPacket.getPlayerX(), dPacket.getPlayerY());
-				ArrayList<Point2D.Double> otherBulletsCoords = dPacket.getBullets();
-				for (int i = 0; i < otherBullets.size(); i++) {
-					Point2D.Double coords = otherBulletsCoords.get(i);
-					Bullet b = new Bullet(assets.get(2), coords.getX(), coords.getY(), dPacket.getBulletsDir().get(i), 10);
-					otherBullets.add(b);
-					b.draw(drawer);
-				}
-				
-				otherPlayer.draw(drawer);
-			}
-			
-			
-		}
-		*/
-	
 		
 	}
 	
