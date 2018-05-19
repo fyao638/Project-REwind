@@ -88,7 +88,7 @@ public class PlayScreen{
 	}
 	
 	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY());
+		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY(), 1);
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -189,10 +189,11 @@ public class PlayScreen{
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
 			if(shiftReadyTime - drawer.millis() <= 0) {
-				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-					particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
-				}
-				if(((Assault) clientPlayer).shiftAbility(map.getObstacles())) {
+				if(((Assault) clientPlayer).canShift(map.getObstacles())) {
+					for (int i = 0; i < (int) (50 + Math.random() * 10); i++) {
+						particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
+					}
+					((Assault) clientPlayer).shiftAbility(map.getObstacles());
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
 					
 					shiftReadyTime = drawer.millis() + 7000;

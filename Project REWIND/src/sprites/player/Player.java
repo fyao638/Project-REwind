@@ -34,15 +34,17 @@ public class Player extends Sprite {
 	private int playerType, health;
 	
 	private Rectangle boundingRect;
+	private Rectangle hitBox;
 	
 	private Point2D.Double bulletPoint;
 	
-	public Player(PImage img, double x, double y) {
+	public Player(PImage img, double x, double y, int type) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-		playerType = 1;
+		playerType = type;
 		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
+		hitBox = new Rectangle();
 	}
 
 	// METHODS
@@ -81,19 +83,37 @@ public class Player extends Sprite {
 		drawer.translate((float) (x + PLAYER_WIDTH / 2), (float) (y + PLAYER_HEIGHT / 2));
 		drawer.rotate((float) angle);
 		drawer.image(getImage(), (float) (- PLAYER_WIDTH / 3), (float) (- PLAYER_HEIGHT / (1.4)),(float)width,(float)height);
+		/* Described below in Draw the hitbox section
+		drawer.noFill();
+		drawer.stroke(0);
+		drawer.rectMode(PApplet.CORNER);
+		hitBox = getHitBox(drawer);
+		drawer.rect((float)(hitBox.getX() - (x + PLAYER_WIDTH / 2)), (float)(hitBox.getY() - (y + PLAYER_HEIGHT / 2)), (float)hitBox.getWidth(), (float)hitBox.getHeight());
+		*/
 		drawer.popMatrix();
 		//the point you see kind of inside the gun (also visible on the ghost is where the bullet spawns
 			//the bullet doesn't always seem to spawn there but I don't know the issue to that.
-		drawer.point((float) (bulletPoint.getX()), (float) bulletPoint.getY());
+		// drawer.point((float) (bulletPoint.getX()), (float) bulletPoint.getY());
 		
 		
 		// Drawing the bounding rectangle
-		/*
 		drawer.noFill();
+		drawer.stroke(0);
 		drawer.rectMode(PApplet.CORNER);
 		boundingRect = getBoundRect();
 		drawer.rect((float)boundingRect.getX(), (float)boundingRect.getY(), (float)boundingRect.getWidth(), (float)boundingRect.getHeight());
-		*/
+		
+		// Draw the hitbox
+			// if moved into the draw the  player section, works properly, but the hitBox 
+			// variable probably contains a non-rotated rectangle (currently commented out)
+		drawer.noFill();
+		drawer.stroke(0);
+		drawer.rectMode(PApplet.CORNER);
+		hitBox = getHitBox(drawer);
+		drawer.rect((float)(hitBox.getX()), (float)(hitBox.getY()), (float)hitBox.getWidth(), (float)hitBox.getHeight());
+	
+		
+
 	}
 	
 	public void walk(int xDir, int yDir, ArrayList<Obstacle> obstacles) {
@@ -167,7 +187,17 @@ public class Player extends Sprite {
 	
 	//method that gets the bounding rectangle of just the guy, not including the gun
 	private Rectangle getBoundRect() {
-		Rectangle rect = new Rectangle((int) x + PLAYER_WIDTH / 12, (int) y - PLAYER_WIDTH / 12, PLAYER_WIDTH * 5/7, PLAYER_WIDTH * 5/7);
+		Rectangle rect = new Rectangle((int) x + PLAYER_WIDTH / 6, (int) y - PLAYER_WIDTH / 15, PLAYER_WIDTH * 5/7, PLAYER_WIDTH * 5/7);
+		return rect;
+	}
+	
+	// does not rotate properly, not sure why
+	private Rectangle getHitBox(PApplet drawer) {
+		drawer.pushMatrix();
+		drawer.translate((float) (x + PLAYER_WIDTH / 2), (float) (y + PLAYER_HEIGHT / 2));
+		drawer.rotate((float) getDirection());//doesn't work
+		Rectangle rect = new Rectangle((int) x + PLAYER_WIDTH / 4, (int) y, PLAYER_WIDTH * 5/7, PLAYER_HEIGHT * 5/7);
+		drawer.popMatrix();
 		return rect;
 	}
 	
