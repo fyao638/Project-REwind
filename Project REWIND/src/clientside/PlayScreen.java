@@ -166,6 +166,7 @@ public class PlayScreen{
 				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 			}
+
 		}
 		if(enemyPlayer.getHealth() == 0) {
 			enemyPlayer.changeHealth(-5);
