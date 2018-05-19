@@ -25,6 +25,7 @@ public class Demolitions extends Player{
 		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
 		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
+		
 		return grenade;
 	}
 	public void shiftAbility() {

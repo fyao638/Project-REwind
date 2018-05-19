@@ -13,6 +13,7 @@ import processing.core.PApplet;
 import sound.SoundManager;
 import sprites.Particle;
 import sprites.player.Assault;
+import sprites.player.Demolitions;
 import sprites.projectile.Projectile;
 /**
  * 
@@ -85,7 +86,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			String host = ndo.getSourceIP();
 			
-			Assault p = (Assault) playScreen.getEnemyPlayer();
+			Demolitions p = (Demolitions) playScreen.getEnemyPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -106,7 +107,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					//player uses secondary
 					
-					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(3));
+					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(12));
 
 					for(Projectile b : fan) {
 						playScreen.getOtherBullets().add(b);
@@ -116,7 +117,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20));
 					}
-					p.shiftAbility(playScreen.getObstacles());
+					//p.shiftAbility(playScreen.getObstacles());
 					
 					//player uses flash
 				}

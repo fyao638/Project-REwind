@@ -13,6 +13,7 @@ import processing.core.PImage;
 import sprites.Particle;
 import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
+import sprites.player.Demolitions;
 import sprites.player.Player;
 import sprites.player.Technician;
 import sprites.projectile.Projectile;
@@ -78,13 +79,13 @@ public class PlayScreen{
 		abilHeight = 100;
 	}
 	public void spawnNewHost() {
-		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 	}
 	
 	public void spawnNewClient() {
-		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+		enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 	}
 	
 	public void spawnNewGhost() {
@@ -107,11 +108,10 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
 		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
 		
-		
 		//System.out.println(players);
 		
 		map = new Map(assets.get(8), assets.get(9));
-		if(drawer.getClientCount() == 0) {
+		if(drawer.getClientCount() == 1) {
 			spawnNewHost();
 		}
 		else {
@@ -230,7 +230,7 @@ public class PlayScreen{
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 							
 							// casting this for now... But I need a better fix
-							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(3));
+							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
 
 							for(Projectile b : fan) {
 								bullets.add(b);
@@ -273,8 +273,10 @@ public class PlayScreen{
 						bullets.remove(i);
 					}
 					else if (bullets.get(i).checkPlayer(enemyPlayer)) {
-						bullets.remove(i);
-						enemyPlayer.changeHealth(-1);
+						if(bullets.remove(i).getType() == 1)
+							enemyPlayer.changeHealth(-1);
+						else
+							enemyPlayer.changeHealth(-2);
 					}
 			}
 		}
@@ -322,10 +324,10 @@ public class PlayScreen{
 	
 	// GET DATA METHODS
 	public Player getClientPlayer() {
-		return (Assault)clientPlayer;
+		return (Demolitions)clientPlayer;
 	}
 	public Player getEnemyPlayer() {
-		return (Assault)enemyPlayer;
+		return (Demolitions)enemyPlayer;
 	}
 	public ArrayList<Projectile> getOtherBullets(){
 		return otherBullets;
