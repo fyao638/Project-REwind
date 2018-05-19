@@ -41,6 +41,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private int clientCount = 0;
 	private SoundManager sound;
 	
+	private boolean isConnected;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -50,6 +51,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	
 	public DrawingSurface() {
 		super();
+		isConnected = false;
 		sound = new SoundManager();
 		gameState = 0;
 		playScreen = new PlayScreen();
@@ -61,18 +63,40 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void setup() {
 		sound.playMenuMusic();
 		menuScreen.setup(this);
-		playScreen.setup(this);
 	}
 
 	//already an infinite loop
+	public void checkConnection() {
+		
+		if(clientCount > 0) {
+			gameState = 1;
+			playScreen.setup(this);
+			if(clientCount == 1) {
+				playScreen.spawnNewHost();
+				System.out.println("HOST");
+				isConnected = true;
+			}
+			else {
+				playScreen.spawnNewClient();
+				System.out.println("CLIENT");
+				isConnected = true;
+			}
+		}
+	}
 	public void draw() {
+		
+		
+		if(!isConnected) {
+			checkConnection();
+			processNetworkMessages();
+		}
 		if(gameState == 0) {
 			menuScreen.draw(this);
 		}
 		else {
 			sound.stopMusic();
-			playScreen.draw(this);
 			processNetworkMessages();
+			playScreen.draw(this);
 		}
 	}
 	public void processNetworkMessages() {

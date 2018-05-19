@@ -79,13 +79,37 @@ public class PlayScreen{
 		abilHeight = 100;
 	}
 	public void spawnNewHost() {
-		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-		enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+		if(clientPlayer == null) {
+			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			
+			players.add(clientPlayer);
+			players.add(enemyPlayer);
+			
+			Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			prevClientLocs.add(p);
+			prevEnemyLocs.add(p2);
+			
+			spawnNewGhost();
+		}
 	}
 	
 	public void spawnNewClient() {
-		clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-		enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		if(clientPlayer == null) {
+			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			
+			players.add(clientPlayer);
+			players.add(enemyPlayer);
+			
+			Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			prevClientLocs.add(p);
+			prevEnemyLocs.add(p2);
+			
+			spawnNewGhost();
+		}
 	}
 	
 	public void spawnNewGhost() {
@@ -111,21 +135,7 @@ public class PlayScreen{
 		//System.out.println(players);
 		
 		map = new Map(assets.get(8), assets.get(9));
-		if(drawer.getClientCount() == 1) {
-			spawnNewHost();
-		}
-		else {
-			spawnNewClient();
-		}
-		players.add(clientPlayer);
-		players.add(enemyPlayer);
 		
-		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		prevClientLocs.add(p);
-		prevEnemyLocs.add(p2);
-		
-		spawnNewGhost();
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
