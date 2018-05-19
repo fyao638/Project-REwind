@@ -15,7 +15,7 @@ public class Hud {
 	
 	public Hud() {
 	}
-	public void draw(PApplet drawer, PlayScreen play, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(PApplet drawer, PlayScreen play, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
 		// Draw the health bar
 		drawer.fill(255, 100);
@@ -57,28 +57,28 @@ public class Hud {
 		drawer.textSize(26); 
 		
 		drawer.fill(0,255,0);
-		drawer.text(play.getClientScore() + " vs " + play.getEnemyScore(), 720, 40);
+		drawer.text(play.getClientPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(), 720, 40);
 		
 		drawer.fill(0, 102, 153, 128);
 		
-		if(shotReadyTime - currentTime > 0) {
+		if(p.getCooldowns()[0] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(20, 580, abilWidth + 20, 580 - 100 * (shotReadyTime - currentTime) / 1000, 20);
+			drawer.rect(20, 580, abilWidth + 20, 580 - 100 * (p.getCooldowns()[0] - currentTime) / 1000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
-		if(rewindReadyTime - currentTime > 0) {
+		if(p.getCooldowns()[2] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(140, 580, 140 + abilWidth, 580 - 100 * (rewindReadyTime - currentTime) / 15000, 20);
+			drawer.rect(140, 580, 140 + abilWidth, 580 - 100 * (p.getCooldowns()[2] - currentTime) / 15000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
-		if(secondaryReadyTime - currentTime > 0) {
+		if(p.getCooldowns()[1] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (secondaryReadyTime - currentTime) / 7000, 20);
+			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 7000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
-		if(shiftReadyTime - currentTime > 0) {
+		if(p.getCooldowns()[3] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (shiftReadyTime - currentTime) / 7000, 20);
+			drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (p.getCooldowns()[3] - currentTime) / 7000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
 		
@@ -88,7 +88,7 @@ public class Hud {
 		drawer.textSize(26); 
 		drawer.fill(0, 102, 153);
 		
-		if(shotReadyTime - currentTime <= 0) {
+		if(p.getCooldowns()[0] - currentTime <= 0) {
 			drawer.textSize(26); 
 			//drawer.text("SHOT", 37, 540);
 			drawer.image(icon1, 30, 490, 80, 80);
@@ -96,10 +96,10 @@ public class Hud {
 		}
 		else {
 			drawer.fill(255, 255, 255);
-			drawer.text("0." + Math.round((double)(shotReadyTime - currentTime) * 10) / 1000 + "sec", 30, 540);
+			drawer.text("0." + Math.round((double)(p.getCooldowns()[0] - currentTime) * 10) / 1000 + "sec", 30, 540);
 			drawer.fill(0, 102, 153);
 		}
-		if(rewindReadyTime - currentTime <= 0) {
+		if(p.getCooldowns()[2] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("REwind", 155, 539);
 			drawer.image(icon2, 150, 490, 80, 80);
@@ -107,10 +107,10 @@ public class Hud {
 		}
 		else {
 			drawer.fill(255, 255, 255);
-			drawer.text(Math.round((double)(rewindReadyTime - currentTime) * 10) / 10000 + "sec", 150, 540);
+			drawer.text(Math.round((double)(p.getCooldowns()[2] - currentTime) * 10) / 10000 + "sec", 150, 540);
 			drawer.fill(0, 102, 153);
 		}
-		if(secondaryReadyTime - currentTime <= 0) {
+		if(p.getCooldowns()[1] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("spread", 280, 539);
 			if(p.getType() == 1) {
@@ -123,10 +123,10 @@ public class Hud {
 		}
 		else {
 			drawer.fill(255, 255, 255);
-			drawer.text(Math.round((double)(secondaryReadyTime - currentTime) * 10) / 10000 + "sec", 280, 540);
+			drawer.text(Math.round((double)(p.getCooldowns()[1] - currentTime) * 10) / 10000 + "sec", 280, 540);
 			drawer.fill(0, 102, 153);
 		}
-		if(shiftReadyTime - currentTime <= 0) {
+		if(p.getCooldowns()[3] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("FLASH", 400, 539);
 			drawer.image(icon4, 390, 490, 80, 80);
@@ -134,7 +134,7 @@ public class Hud {
 		}
 		else {
 			drawer.fill(255, 255, 255);
-			drawer.text(Math.round((double)(shiftReadyTime - currentTime) * 10) / 10000 + "sec", 400, 540);
+			drawer.text(Math.round((double)(p.getCooldowns()[3] - currentTime) * 10) / 10000 + "sec", 400, 540);
 			drawer.fill(0, 102, 153);
 		}
 		

@@ -14,6 +14,7 @@ import sound.SoundManager;
 import sprites.Particle;
 import sprites.player.Assault;
 import sprites.player.Demolitions;
+import sprites.player.Player;
 import sprites.projectile.Projectile;
 /**
  * 
@@ -114,6 +115,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			String host = ndo.getSourceIP();
 			
 			Demolitions p = (Demolitions) playScreen.getEnemyPlayer();
+			Demolitions p2 = (Demolitions) playScreen.getClientPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -150,6 +152,28 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
+				}
+				else if(ndo.message[0].equals(messageTypeReset)) {
+					
+					p2.setCooldowns(0, 0);
+					p2.setCooldowns(1, 0);
+					p2.setCooldowns(2, 0);
+					p2.setCooldowns(3, 0);
+					p2.setCooldowns(4, 0);
+					if((Boolean)ndo.message[1]) {
+						//isHost
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p2.win();
+						
+					}
+					else {
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p2.win();
+					}
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
 				/*

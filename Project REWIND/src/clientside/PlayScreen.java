@@ -55,28 +55,18 @@ public class PlayScreen{
 	
 	private Map map;
 	private Hud hud;
-
-	private long shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	
 	private float abilWidth, abilHeight;
 	
-	private int clientScore, enemyScore;
 	private boolean isHost;
 	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
 		isHost = false;
-		clientScore = 0;
-		enemyScore = 0;
 		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
 		players = new ArrayList<Player>();
 		hud = new Hud();
-		shotReadyTime = 0;
-		rewindReadyTime = 0;
-		secondaryReadyTime = 0;
-		shiftReadyTime = 0;
-		ghostReappearTime = 0;
 		prevClientLocs = new ArrayList<Point2D.Double>();
 		prevClientMouseLocs = new ArrayList<Point2D.Double>();
 		prevEnemyLocs = new ArrayList<Point2D.Double>();
@@ -150,43 +140,27 @@ public class PlayScreen{
 	
 	public void reset(DrawingSurface drawer) {
 		if(clientPlayer.getHealth() == 0) {
-			enemyPlayer.changeHealth(-5);
-			clientPlayer.changeHealth(-5);
-			enemyScore++;
-			shotReadyTime = drawer.millis();
-			rewindReadyTime = drawer.millis();
-			secondaryReadyTime = drawer.millis();
-			shiftReadyTime = drawer.millis();
-			ghostReappearTime = drawer.millis();
+			clientPlayer.changeHealth(5);
+			enemyPlayer.win();
+			clientPlayer.setCooldowns(0, 0);
+			clientPlayer.setCooldowns(1, 0);
+			clientPlayer.setCooldowns(2, 0);
+			clientPlayer.setCooldowns(3, 0);
+			clientPlayer.setCooldowns(4, 0);
 			if(isHost) {
 				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+				
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, true);
 			}
 			else {
 				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+				
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, false);
 			}
 
 		}
-		if(enemyPlayer.getHealth() == 0) {
-			enemyPlayer.changeHealth(-5);
-			clientPlayer.changeHealth(-5);
-			clientScore++;
-			shotReadyTime = drawer.millis();
-			rewindReadyTime = drawer.millis();
-			secondaryReadyTime = drawer.millis();
-			shiftReadyTime = drawer.millis();
-			ghostReappearTime = drawer.millis();
-			if(isHost) {
-				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-			}
-			else {
-				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-			}
-		}
-		
 	}
 	
 	public void draw(DrawingSurface drawer) {
@@ -242,29 +216,26 @@ public class PlayScreen{
 			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
-			if(rewindReadyTime - drawer.millis() <= 0) {
+			if(clientPlayer.getCooldowns()[2] - drawer.millis() <= 0) {
 				clientPlayer.moveToLocation(prevClientLocs.get(0).getX(), prevClientLocs.get(0).getY());
 				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevEnemyLocs.get(0).getX(), prevEnemyLocs.get(0).getY());
 				//set cooldowns
-				rewindReadyTime = drawer.millis() + 15000;
-				ghostReappearTime = drawer.millis() + 2000;
+				clientPlayer.getCooldowns()[2] = drawer.millis() + 15000;
+				clientPlayer.getCooldowns()[4] = drawer.millis() + 2000;
 				
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
-			if(shiftReadyTime - drawer.millis() <= 0) {
+			if(clientPlayer.getCooldowns()[3] - drawer.millis() <= 0) {
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 					particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
 				}
 				if(((Assault) clientPlayer).shiftAbility(map.getObstacles())) {
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
 					
-					shiftReadyTime = drawer.millis() + 7000;
+					clientPlayer.setCooldowns(3, drawer.millis() + 7000);
 				}
 			}
-		}
-		if(drawer.isPressed(KeyEvent.VK_F)) {
-			drawer.getSoundM().laugh();
 		}
 		// Test this plz
 		//
@@ -278,17 +249,17 @@ public class PlayScreen{
 		// Draw abilities
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
-				if(shotReadyTime - drawer.millis() <= 0) {
+				if(clientPlayer.getCooldowns()[0] - drawer.millis() <= 0) {
 					
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
 					
 					bullets.add(clientPlayer.shoot(assets.get(2)));
-					shotReadyTime = drawer.millis() + 1000;
+					clientPlayer.setCooldowns(0,drawer.millis() + 1000);
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
 				if(clientPlayer.getType() == 1) {
-					if(secondaryReadyTime - drawer.millis() <= 0) {
+					if(clientPlayer.getCooldowns()[1] - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
 							
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
@@ -299,7 +270,7 @@ public class PlayScreen{
 							for(Projectile b : fan) {
 								bullets.add(b);
 							}
-							secondaryReadyTime = drawer.millis() + 7000;
+							clientPlayer.setCooldowns(1,drawer.millis() + 7000);
 						}
 					}
 				}
@@ -338,7 +309,7 @@ public class PlayScreen{
 			}
 		}
 		// draw the players after the bullets so the bullets don't appear above the gun
-		if(ghostReappearTime - drawer.millis() < 0) {
+		if(clientPlayer.getCooldowns()[4]- drawer.millis() < 0) {
 			p1Ghost.draw(drawer);
 		}
 		
@@ -358,7 +329,7 @@ public class PlayScreen{
 			}
 		}
 		//assets dont change, so dont take the in draw
-		hud.draw(drawer, this, clientPlayer, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
+		hud.draw(drawer, this, clientPlayer, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), drawer.millis(), abilWidth, abilHeight);
 		
 		
 		timer++;
@@ -371,6 +342,9 @@ public class PlayScreen{
 	}
 	public Player getEnemyPlayer() {
 		return (Demolitions)enemyPlayer;
+	}
+	public boolean getIsHost() {
+		return isHost;
 	}
 	public ArrayList<Projectile> getOtherBullets(){
 		return otherBullets;
@@ -386,12 +360,6 @@ public class PlayScreen{
 	}
 	public ArrayList<Particle> getParticles(){
 		return particles;
-	}
-	public int getClientScore() {
-		return clientScore;
-	}
-	public int getEnemyScore() {
-		return enemyScore;
 	}
 }
 
