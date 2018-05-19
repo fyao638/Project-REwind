@@ -37,6 +37,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private static final String messageTypeShoot = "SHOOT";
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeFlash = "FLASH";
+	private static final String messageTypeReset = "RESET";
 	
 	private int clientCount = 0;
 	private SoundManager sound;
@@ -72,19 +73,22 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			gameState = 1;
 			playScreen.setup(this);
 			if(clientCount == 1) {
+				sound.stopMusic();
 				playScreen.spawnNewHost();
-				System.out.println("HOST");
 				isConnected = true;
 			}
 			else {
+				sound.stopMusic();
 				playScreen.spawnNewClient();
-				System.out.println("CLIENT");
 				isConnected = true;
 			}
 		}
 	}
 	public void draw() {
 		
+		if(clientCount == 0) {
+			isConnected = false;
+		}
 		
 		if(!isConnected) {
 			checkConnection();
@@ -94,7 +98,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			menuScreen.draw(this);
 		}
 		else {
-			sound.stopMusic();
 			processNetworkMessages();
 			playScreen.draw(this);
 		}
@@ -147,9 +150,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
-				}
-				else {
-					System.out.println("Its not detecting it");
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
 				/*

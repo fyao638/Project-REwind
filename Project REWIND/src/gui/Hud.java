@@ -1,5 +1,6 @@
 package gui;
 
+import clientside.PlayScreen;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -14,7 +15,7 @@ public class Hud {
 	
 	public Hud() {
 	}
-	public void draw(PApplet drawer, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(PApplet drawer, PlayScreen play, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long shotReadyTime, long rewindReadyTime, long secondaryReadyTime, long shiftReadyTime, long currentTime, float abilWidth, float abilHeight) {
 		drawer.noFill();
 		// Draw the health bar
 		drawer.fill(255, 100);
@@ -53,9 +54,12 @@ public class Hud {
 		drawer.rect(260, 480, abilWidth, abilHeight, 20);
 		drawer.rect(380, 480, abilWidth, abilHeight, 20);
 		
-		drawer.fill(0, 102, 153, 128);
 		drawer.textSize(26); 
 		
+		drawer.fill(0,255,0);
+		drawer.text(play.getClientScore() + " vs " + play.getEnemyScore(), 720, 40);
+		
+		drawer.fill(0, 102, 153, 128);
 		
 		if(shotReadyTime - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
