@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 import gui.MenuScreen;
+import gui.SelectionScreen;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkManagementPanel;
@@ -27,6 +28,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
  */
 	private PlayScreen playScreen;
 	private MenuScreen menuScreen;
+	private SelectionScreen selectionScreen;
 	private ArrayList<Integer> keys;
 	private boolean isOffline;
 	private NetworkMessenger nm;
@@ -56,6 +58,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		gameState = 0;
 		playScreen = new PlayScreen();
 		menuScreen = new MenuScreen();
+		selectionScreen = new SelectionScreen();
 		keys = new ArrayList<Integer>();
 		
 	}
@@ -63,6 +66,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void setup() {
 		sound.playMenuMusic();
 		menuScreen.setup(this);
+		selectionScreen.setup(this);
 	}
 
 	//already an infinite loop
@@ -93,9 +97,14 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		if(gameState == 0) {
 			menuScreen.draw(this);
 		}
+		else if(gameState == 1) {
+			selectionScreen.draw(this);
+		}
 		else {
 			sound.stopMusic();
+			System.out.println(selectionScreen.getType());
 			processNetworkMessages();
+			playScreen.setClientType(selectionScreen.getType());
 			playScreen.draw(this);
 		}
 	}

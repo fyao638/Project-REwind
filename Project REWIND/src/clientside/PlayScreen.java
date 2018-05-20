@@ -30,17 +30,18 @@ public class PlayScreen{
 
 	private Player p1Ghost;
 	private Player clientPlayer, enemyPlayer;
+	
 	private ArrayList<Particle> particles;
-
 	private ArrayList<Projectile> bullets;
 	private ArrayList<Projectile> otherBullets;
 	private ArrayList<Player> players;
 	private ArrayList<PImage> assets;
 	
+	private int clientType, enemyType;
+	
 	private ArrayList<Point2D.Double> prevClientLocs;
 	private ArrayList<Point2D.Double> prevClientMouseLocs;
 	private ArrayList<Point2D.Double> prevEnemyLocs;
-	private ArrayList<Point2D.Double> prevEnemyMouseLocs;
 	
 	private static final String messageTypeMove = "MOVE";
 	private static final String messageTypeTurn = "TURN";
@@ -70,17 +71,24 @@ public class PlayScreen{
 		secondaryReadyTime = 0;
 		shiftReadyTime = 0;
 		ghostReappearTime = 0;
+		enemyType = 0;
 		prevClientLocs = new ArrayList<Point2D.Double>();
 		prevClientMouseLocs = new ArrayList<Point2D.Double>();
-		prevEnemyLocs = new ArrayList<Point2D.Double>();
 		prevEnemyLocs = new ArrayList<Point2D.Double>();
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
+		System.out.println(clientType);
 	}
 	public void spawnNewHost() {
+		
 		if(clientPlayer == null) {
-			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			if(clientType == 1)
+				clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			else if(clientType == 2)
+				clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			else
+				clientPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 			
 			players.add(clientPlayer);
@@ -97,7 +105,12 @@ public class PlayScreen{
 	
 	public void spawnNewClient() {
 		if(clientPlayer == null) {
-			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			if(clientType == 1)
+				clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			else if(clientType == 2)
+				clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			else
+				clientPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 			
 			players.add(clientPlayer);
@@ -139,7 +152,6 @@ public class PlayScreen{
 	}
 	int timer = 0;
 	public void draw(DrawingSurface drawer) {
-		
 		
 		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevClientLocs.add(p);
@@ -233,33 +245,31 @@ public class PlayScreen{
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
-				if(clientPlayer.getType() == 1) {
-					if(secondaryReadyTime - drawer.millis() <= 0) {
-						if(clientPlayer.getType() == 1) {
-							
-							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
-							
-							// casting this for now... But I need a better fix
-							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
-
+				if(secondaryReadyTime - drawer.millis() <= 0) {
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
+					if(clientType == 1) {
+						ArrayList<Projectile> fan = clientPlayer.secondary(assets.get(3));
 							for(Projectile b : fan) {
 								bullets.add(b);
 							}
 							secondaryReadyTime = drawer.millis() + 7000;
-						}
-//						else if(clientPlayer.getType() == 2) {
-//							// casting this for now... But I need a better fix
-//							System.out.println("help");
-//							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
-//
-//							for(Projectile b : fan) {
-//								bullets.add(b);
-//							}
-//							secondaryReadyTime = drawer.millis() + 7000;
-//							
-//						}
 					}
+					else if(clientType == 2) {
+						ArrayList<Projectile> fan = clientPlayer.secondary(assets.get(12));
+						for(Projectile b : fan) {
+							bullets.add(b);
+						}
+						secondaryReadyTime = drawer.millis() + 7000;
+					}
+					else {
+						ArrayList<Projectile> fan = clientPlayer.secondary(assets.get(2));
+						for(Projectile b : fan) {
+							bullets.add(b);
+						}
+						secondaryReadyTime = drawer.millis() + 7000;
+					}							
 				}
+				
 				/*
 				else {
 					if(secondaryReadyTime - drawer.millis() <= 0) {
@@ -332,6 +342,12 @@ public class PlayScreen{
 		
 	}
 	
+	public void setClientType(int clientType) {
+		this.clientType = clientType;
+	}
+	public void setEnemyType(int enemyType) {
+		this.enemyType = enemyType;
+	}
 	// GET DATA METHODS
 	public Player getClientPlayer() {
 		return (Demolitions)clientPlayer;
