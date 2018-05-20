@@ -13,6 +13,7 @@ import processing.core.PImage;
 import sprites.Particle;
 import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
+import sprites.player.Demolitions;
 import sprites.player.Player;
 import sprites.player.Technician;
 import sprites.projectile.Projectile;
@@ -47,6 +48,7 @@ public class PlayScreen{
 	private static final String messageTypeShoot = "SHOOT";
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeFlash = "FLASH";
+	private static final String messageTypeReset = "RESET";
 	//private ArrayList<Player> otherPlayers;
 	
 	//PACKETS
@@ -58,17 +60,15 @@ public class PlayScreen{
 	
 	private float abilWidth, abilHeight;
 	
+	private boolean isHost;
+	
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
+		isHost = false;
 		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
 		players = new ArrayList<Player>();
 		hud = new Hud();
-		shotReadyTime = 0;
-		rewindReadyTime = 0;
-		secondaryReadyTime = 0;
-		shiftReadyTime = 0;
-		ghostReappearTime = 0;
 		prevClientLocs = new ArrayList<Point2D.Double>();
 		prevClientMouseLocs = new ArrayList<Point2D.Double>();
 		prevEnemyLocs = new ArrayList<Point2D.Double>();
@@ -78,17 +78,43 @@ public class PlayScreen{
 		abilHeight = 100;
 	}
 	public void spawnNewHost() {
-		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+		if(clientPlayer == null) {
+			isHost = true;
+			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			
+			players.add(clientPlayer);
+			players.add(enemyPlayer);
+			
+			Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			prevClientLocs.add(p);
+			prevEnemyLocs.add(p2);
+			
+			spawnNewGhost();
+		}
 	}
 	
 	public void spawnNewClient() {
-		clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-		enemyPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		if(clientPlayer == null) {
+			isHost = false;
+			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			enemyPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			
+			players.add(clientPlayer);
+			players.add(enemyPlayer);
+			
+			Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
+			prevClientLocs.add(p);
+			prevEnemyLocs.add(p2);
+			
+			spawnNewGhost();
+		}
 	}
 	
 	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY(), 1);
+		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY(), 0);
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -111,25 +137,40 @@ public class PlayScreen{
 		//System.out.println(players);
 		
 		map = new Map(assets.get(8), assets.get(9));
-		if(drawer.getClientCount() == 0) {
-			spawnNewHost();
-		}
-		else {
-			spawnNewClient();
-		}
-		players.add(clientPlayer);
-		players.add(enemyPlayer);
 		
-		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
-		prevClientLocs.add(p);
-		prevEnemyLocs.add(p2);
-		
-		spawnNewGhost();
 	}
 	int timer = 0;
+	
+	public void reset(DrawingSurface drawer) {
+		if(clientPlayer.getHealth() == 0) {
+			clientPlayer.changeHealth(5);
+			enemyPlayer.win();
+			clientPlayer.setCooldowns(0, 0);
+			clientPlayer.setCooldowns(1, 0);
+			clientPlayer.setCooldowns(2, 0);
+			clientPlayer.setCooldowns(3, 0);
+			clientPlayer.setCooldowns(4, 0);
+			if(isHost) {
+				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+				
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, true);
+			}
+			else {
+				clientPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+				enemyPlayer.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+				
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, false);
+			}
+
+		}
+	}
+	
 	public void draw(DrawingSurface drawer) {
 		
+		if(clientPlayer.getHealth() == 0 || enemyPlayer.getHealth() == 0) {
+			reset(drawer);
+		}
 		
 		Point2D.Double p = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevClientLocs.add(p);
@@ -178,17 +219,17 @@ public class PlayScreen{
 			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
 		}
 		if (drawer.isPressed(KeyEvent.VK_R)) {
-			if(rewindReadyTime - drawer.millis() <= 0) {
+			if(clientPlayer.getCooldowns()[2] - drawer.millis() <= 0) {
 				clientPlayer.moveToLocation(prevClientLocs.get(0).getX(), prevClientLocs.get(0).getY());
 				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevEnemyLocs.get(0).getX(), prevEnemyLocs.get(0).getY());
 				//set cooldowns
-				rewindReadyTime = drawer.millis() + 15000;
-				ghostReappearTime = drawer.millis() + 2000;
+				clientPlayer.getCooldowns()[2] = drawer.millis() + 15000;
+				clientPlayer.getCooldowns()[4] = drawer.millis() + 2000;
 				
 			}
 		}
 		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
-			if(shiftReadyTime - drawer.millis() <= 0) {
+			if(clientPlayer.getCooldowns()[3] - drawer.millis() <= 0 && clientPlayer.getType() == 1) {
 				if(((Assault) clientPlayer).canShift(map.getObstacles())) {
 					for (int i = 0; i < (int) (50 + Math.random() * 10); i++) {
 						particles.add(new Particle(assets.get(10), clientPlayer.x + clientPlayer.getWidth() / 2, clientPlayer.y + clientPlayer.getHeight() / 2, 20, 20));
@@ -196,12 +237,9 @@ public class PlayScreen{
 					((Assault) clientPlayer).shiftAbility(map.getObstacles());
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
 					
-					shiftReadyTime = drawer.millis() + 7000;
+					clientPlayer.setCooldowns(3, drawer.millis() + 7000);
 				}
 			}
-		}
-		if(drawer.isPressed(KeyEvent.VK_F)) {
-			drawer.getSoundM().laugh();
 		}
 		// Test this plz
 		//
@@ -215,54 +253,33 @@ public class PlayScreen{
 		// Draw abilities
 		if(drawer.mousePressed) {
 			if(drawer.mouseButton == PConstants.LEFT) {
-				if(shotReadyTime - drawer.millis() <= 0) {
+				if(clientPlayer.getCooldowns()[0] - drawer.millis() <= 0) {
 					
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
 					
 					bullets.add(clientPlayer.shoot(assets.get(2)));
-					shotReadyTime = drawer.millis() + 1000;
+					clientPlayer.setCooldowns(0,drawer.millis() + 1000);
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
 				if(clientPlayer.getType() == 1) {
-					if(secondaryReadyTime - drawer.millis() <= 0) {
+					if(clientPlayer.getCooldowns()[1] - drawer.millis() <= 0) {
 						if(clientPlayer.getType() == 1) {
 							
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 							
 							// casting this for now... But I need a better fix
-							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(3));
+							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
 
 							for(Projectile b : fan) {
 								bullets.add(b);
 							}
-							secondaryReadyTime = drawer.millis() + 7000;
+							clientPlayer.setCooldowns(1,drawer.millis() + 7000);
 						}
-//						else if(clientPlayer.getType() == 2) {
-//							// casting this for now... But I need a better fix
-//							System.out.println("help");
-//							ArrayList<Projectile> fan = (clientPlayer).secondary(assets.get(12));
-//
-//							for(Projectile b : fan) {
-//								bullets.add(b);
-//							}
-//							secondaryReadyTime = drawer.millis() + 7000;
-//							
-//						}
 					}
 				}
-				/*
-				else {
-					if(secondaryReadyTime - drawer.millis() <= 0) {
-						bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
-						secondaryReadyTime = drawer.millis() + 7000;
-					}
-				}
-				*/
 			}
 		}
-
-		
 		drawer.fill(100);
 		map.draw(drawer);
 		
@@ -274,8 +291,10 @@ public class PlayScreen{
 						bullets.remove(i);
 					}
 					else if (bullets.get(i).checkPlayer(enemyPlayer)) {
-						bullets.remove(i);
-						enemyPlayer.changeHealth(-1);
+						if(bullets.remove(i).getType() == 1)
+							enemyPlayer.changeHealth(-1);
+						else
+							enemyPlayer.changeHealth(-2);
 					}
 			}
 		}
@@ -294,7 +313,7 @@ public class PlayScreen{
 			}
 		}
 		// draw the players after the bullets so the bullets don't appear above the gun
-		if(ghostReappearTime - drawer.millis() < 0) {
+		if(clientPlayer.getCooldowns()[4]- drawer.millis() < 0) {
 			p1Ghost.draw(drawer);
 		}
 		
@@ -314,7 +333,7 @@ public class PlayScreen{
 			}
 		}
 		//assets dont change, so dont take the in draw
-		hud.draw(drawer, clientPlayer, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, drawer.millis(), abilWidth, abilHeight);
+		hud.draw(drawer, this, clientPlayer, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), drawer.millis(), abilWidth, abilHeight);
 		
 		
 		timer++;
@@ -323,10 +342,13 @@ public class PlayScreen{
 	
 	// GET DATA METHODS
 	public Player getClientPlayer() {
-		return (Assault)clientPlayer;
+		return (Demolitions)clientPlayer;
 	}
 	public Player getEnemyPlayer() {
-		return (Assault)enemyPlayer;
+		return (Demolitions)enemyPlayer;
+	}
+	public boolean getIsHost() {
+		return isHost;
 	}
 	public ArrayList<Projectile> getOtherBullets(){
 		return otherBullets;

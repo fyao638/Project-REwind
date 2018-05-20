@@ -23,6 +23,10 @@ public class Player extends Sprite {
 	public static final int PLAYER_HEIGHT = 40;
 	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
 	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.0 / 2;
+	private int shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
+	private int[] cooldowns;
+	
+	private int score;
 	
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
@@ -40,11 +44,19 @@ public class Player extends Sprite {
 	
 	public Player(PImage img, double x, double y, int type) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
+		cooldowns = new int[]{0,0,0,0,0};
+		score = 0;
 		playerType = type;
 		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
 		hitBox = new Rectangle();
+	}
+	public void setCooldowns(int index, int newVal) {
+		cooldowns[index] = newVal;
+	}
+	public int[] getCooldowns() { 
+		return cooldowns;
 	}
 
 	// METHODS
@@ -55,6 +67,12 @@ public class Player extends Sprite {
 	
 	public Bullet shoot(PImage img) {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+	}
+	public void win() {
+		score++;
+	}
+	public int getScore() {
+		return score;
 	}
 	public ArrayList<Projectile> secondary(PImage img) {
 		return null;
@@ -97,21 +115,23 @@ public class Player extends Sprite {
 		
 		
 		// Drawing the bounding rectangle
+		/*
 		drawer.noFill();
 		drawer.stroke(0);
 		drawer.rectMode(PApplet.CORNER);
 		boundingRect = getBoundRect();
 		drawer.rect((float)boundingRect.getX(), (float)boundingRect.getY(), (float)boundingRect.getWidth(), (float)boundingRect.getHeight());
-		
+		*/
 		// Draw the hitbox
 			// if moved into the draw the  player section, works properly, but the hitBox 
 			// variable probably contains a non-rotated rectangle (currently commented out)
+		/*
 		drawer.noFill();
 		drawer.stroke(0);
 		drawer.rectMode(PApplet.CORNER);
 		hitBox = getHitBox(drawer);
 		drawer.rect((float)(hitBox.getX()), (float)(hitBox.getY()), (float)hitBox.getWidth(), (float)hitBox.getHeight());
-	
+		*/
 		
 
 	}

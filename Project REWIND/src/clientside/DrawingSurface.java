@@ -13,6 +13,8 @@ import processing.core.PApplet;
 import sound.SoundManager;
 import sprites.Particle;
 import sprites.player.Assault;
+import sprites.player.Demolitions;
+import sprites.player.Player;
 import sprites.projectile.Projectile;
 /**
  * 
@@ -36,10 +38,12 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private static final String messageTypeShoot = "SHOOT";
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeFlash = "FLASH";
+	private static final String messageTypeReset = "RESET";
 	
 	private int clientCount = 0;
 	private SoundManager sound;
 	
+	private boolean isConnected;
 	//States:
 	// 0 = main menu
 	// 1 = playScreen
@@ -49,6 +53,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	
 	public DrawingSurface() {
 		super();
+		isConnected = false;
 		sound = new SoundManager();
 		gameState = 0;
 		playScreen = new PlayScreen();
@@ -60,18 +65,42 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void setup() {
 		sound.playMenuMusic();
 		menuScreen.setup(this);
-		playScreen.setup(this);
 	}
 
 	//already an infinite loop
+	public void checkConnection() {
+		
+		if(clientCount > 0) {
+			gameState = 1;
+			playScreen.setup(this);
+			if(clientCount == 1) {
+				sound.stopMusic();
+				playScreen.spawnNewHost();
+				isConnected = true;
+			}
+			else {
+				sound.stopMusic();
+				playScreen.spawnNewClient();
+				isConnected = true;
+			}
+		}
+	}
 	public void draw() {
+		
+		if(clientCount == 0) {
+			isConnected = false;
+		}
+		
+		if(!isConnected) {
+			checkConnection();
+			processNetworkMessages();
+		}
 		if(gameState == 0) {
 			menuScreen.draw(this);
 		}
 		else {
-			sound.stopMusic();
-			playScreen.draw(this);
 			processNetworkMessages();
+			playScreen.draw(this);
 		}
 	}
 	public void processNetworkMessages() {
@@ -85,7 +114,8 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			String host = ndo.getSourceIP();
 			
-			Assault p = (Assault) playScreen.getEnemyPlayer();
+			Demolitions p = (Demolitions) playScreen.getEnemyPlayer();
+			Demolitions p2 = (Demolitions) playScreen.getClientPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -106,7 +136,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					//player uses secondary
 					
-					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(3));
+					ArrayList<Projectile> fan = p.secondary(playScreen.getAssets().get(12));
 
 					for(Projectile b : fan) {
 						playScreen.getOtherBullets().add(b);
@@ -116,15 +146,34 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20));
 					}
-					p.shiftAbility(playScreen.getObstacles());
+					//p.shiftAbility(playScreen.getObstacles());
 					
 					//player uses flash
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
 				}
-				else {
-					System.out.println("Its not detecting it");
+				else if(ndo.message[0].equals(messageTypeReset)) {
+					
+					p2.setCooldowns(0, 0);
+					p2.setCooldowns(1, 0);
+					p2.setCooldowns(2, 0);
+					p2.setCooldowns(3, 0);
+					p2.setCooldowns(4, 0);
+					if((Boolean)ndo.message[1]) {
+						//isHost
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p2.win();
+						
+					}
+					else {
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p2.win();
+					}
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
 				/*

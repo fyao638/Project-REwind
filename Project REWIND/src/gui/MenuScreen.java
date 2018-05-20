@@ -79,7 +79,6 @@ public class MenuScreen implements NetworkListener{
 	    }
 	  	if(drawer.mousePressed && overRect(rectX2, rectY2, rectWidth, rectHeight, drawer)) {
 	  		drawer.openNetworkingPanel();
-	  		drawer.changeState(1);
 	  	}
 	}
 	

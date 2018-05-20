@@ -11,13 +11,14 @@ import sprites.player.Player;
 public abstract class Projectile extends Sprite{
 	
 	private double width, height, speed;
+	private int type;
 	
 	
 	public Projectile(PImage image, double x, double y, double width, double height, double dir, double speed) {
 		super(image, x, y, width, height);
 		
 		turn(dir);
-		
+		type = 2;
 		this.speed = speed;
 	}
 	
@@ -45,6 +46,10 @@ public abstract class Projectile extends Sprite{
 			drawer.image(getImage(),(int) - width / 3,(int) - height/ 2,(int)width,(int)height);
 			drawer.popMatrix();
 		}
+	}
+	
+	public int getType() {
+		return type;
 	}
 
 }

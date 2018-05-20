@@ -2,6 +2,7 @@ package sprites.projectile;
 
 import java.util.ArrayList;
 
+import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
@@ -24,10 +25,17 @@ public class Grenade extends Projectile{
 	
 	private double speed;
 	
+	private ArrayList<PImage> explosions;
+	private int explosionFrame, times, cycles, drawn;
+	
 	
 	public Grenade(PImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
-		
+		explosions = new ArrayList<PImage>();
+		explosionFrame = 0;
+		times = 0;
+		cycles = 0;
+		drawn = 0;
 //		double i = Math.random();
 //		if (i < 0.5)
 //			turn(dir + (Math.random()/50.0));
@@ -36,6 +44,17 @@ public class Grenade extends Projectile{
 		turn(dir);
 		
 		this.speed = speed;
+		
+		
+	}
+	
+	public void setup(DrawingSurface drawer) {
+		System.out.println("i");
+		explosions.add(drawer.loadImage("explosionGif/frame_0_delay-s.gif"));
+		explosions.add(drawer.loadImage("explosionGif/frame_1_delay-s.gif"));
+		explosions.add(drawer.loadImage("explosionGif/frame_2_delay-s.gif"));
+		explosions.add(drawer.loadImage("explosionGif/frame_3_delay-s.gif"));
+		explosions.add(drawer.loadImage("explosionGif/frame_4_delay-s.gif"));
 	}
 	
 	public void act() {
@@ -54,18 +73,45 @@ public class Grenade extends Projectile{
 	}
 		
 	public boolean checkPlayer(Player player) {
+		for(int i = 0; i < 4; i++) {
+			if(player.intersects(this.getX(),this.getY(), GRENADE_WIDTH,  GRENADE_HEIGHT) && this.speed == 0) {
+				return true;
+						
+			}
+		}
 		return false;
 	}
 	
 	public void draw(PApplet drawer) {
+		if(drawn == 0) {
+			explosions.add(drawer.loadImage("explosionGif/frame_0_delay-s.gif"));
+			explosions.add(drawer.loadImage("explosionGif/frame_1_delay-s.gif"));
+			explosions.add(drawer.loadImage("explosionGif/frame_2_delay-s.gif"));
+			explosions.add(drawer.loadImage("explosionGif/frame_3_delay-s.gif"));
+			explosions.add(drawer.loadImage("explosionGif/frame_4_delay-s.gif"));
+		}
 		if(this.visible()) {
 			drawer.pushMatrix();
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
-			drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
-			if(this.speed == 0)
+			if(this.speed != 0) {
+				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+			}
+			else if (cycles != 5) {
+				drawer.image(explosions.get(explosionFrame),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+				times++;
+				if(times == 3) {
+					times = 0;
+					cycles++;
+					explosionFrame++;
+				}
+				if(explosionFrame == 5)
+					explosionFrame = 0;
+			}
+			else
 				this.setVisibility(false);
 			drawer.popMatrix();
 		}
+		drawn++;
 	}
 }
