@@ -82,17 +82,17 @@ public class SelectionScreen {
 	
 	  	if(drawer.mousePressed && overRect(rectX1, rectY1, rectWidth, rectHeight, drawer)) {
 	  		type = 1;
-	  		drawer.changeState(2);
+	  		//drawer.changeState(2);
 	  		drawer.openNetworkingPanel();
 	    }
 	  	if(drawer.mousePressed && overRect(rectX2, rectY2, rectWidth, rectHeight, drawer)) {
 	  		type = 2;
-	  		drawer.changeState(2);
+	  		//drawer.changeState(2);
 	  		drawer.openNetworkingPanel();
 	  	}
 	  	if(drawer.mousePressed && overRect(rectX3, rectY3, rectWidth, rectHeight, drawer)) {
 	  		type = 3;
-	  		drawer.changeState(2);
+	  		//drawer.changeState(2);
 	  		drawer.openNetworkingPanel();
 	  	}
 	}

@@ -57,7 +57,7 @@ public class Hud {
 		drawer.textSize(26); 
 		
 		drawer.fill(0,255,0);
-		drawer.text(play.getClientPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(), 720, 40);
+		drawer.text(play.getHostPlayer().getScore() + " vs " + play.getClientPlayer().getScore(), 720, 40);
 		
 		drawer.fill(0, 102, 153, 128);
 		

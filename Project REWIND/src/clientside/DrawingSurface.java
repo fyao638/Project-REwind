@@ -73,16 +73,18 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 	//already an infinite loop
 	public void checkConnection() {
-		
+		//System.out.println("hello world");
 		if(clientCount > 0) {
-			gameState = 1;
+			gameState = 2;
 			playScreen.setup(this);
 			if(clientCount == 1) {
+				playScreen.setHostType(selectionScreen.getType());
 				playScreen.spawnNewHost();
 				System.out.println("HOST");
 				isConnected = true;
 			}
 			else {
+				playScreen.setClientType(selectionScreen.getType());
 				playScreen.spawnNewClient();
 				System.out.println("CLIENT");
 				isConnected = true;
@@ -96,6 +98,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		}
 		
 		if(!isConnected) {
+			//System.out.println("hello world");
 			checkConnection();
 			processNetworkMessages();
 		}
@@ -103,13 +106,14 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			menuScreen.draw(this);
 		}
 		else if(gameState == 1) {
+			//playScreen.setHostType(selectionScreen.getType());
 			selectionScreen.draw(this);
 		}
 		else {
 			sound.stopMusic();
-			System.out.println(selectionScreen.getType());
+			//System.out.println(selectionScreen.getType());
 			processNetworkMessages();
-			playScreen.setHostType(selectionScreen.getType());
+			
 			playScreen.draw(this);
 		}
 		
@@ -125,7 +129,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			String host = ndo.getSourceIP();
 			
-			Demolitions p = (Demolitions) playScreen.getEnemyPlayer();
+			Player p = playScreen.getClientPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -173,8 +177,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					
 				}
 				*/
+				//System.out.println("HELLO");
 				clientCount = ndo.message.length;
-				
+				//System.out.println(clientCount);
 				
 				
 			}

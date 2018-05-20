@@ -37,6 +37,7 @@ public class PlayScreen{
 	private ArrayList<PImage> assets;
 	
 	private int hostType, clientType;
+	private boolean hostSpawned, clientSpawned;
 	
 	private ArrayList<Point2D.Double> prevClientLocs;
 	private ArrayList<Point2D.Double> prevClientMouseLocs;
@@ -76,54 +77,88 @@ public class PlayScreen{
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
+		hostSpawned = false;
+		clientSpawned = false;
 	}
 	public void spawnNewHost() {
+		System.out.println("Type:" + hostType);
+		System.out.println("Type:" + clientType);
 		
-//		if(hostPlayer == null && hostType != 0) {
-//			if(hostType == 1)
-//				hostPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-//			else if(hostType == 2)
-//				hostPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-//			else
-//				hostPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		if(hostPlayer == null && hostType != 0) {
+			if(hostType == 1) {
+				System.out.println("a");
+				hostPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			}
+			else if(hostType == 2) {
+				System.out.println("b");
+				hostPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			}
+			else {
+				System.out.println("c");
+				hostPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			}
+			hostSpawned = true;
 			
-			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-			hostPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 			
-			players.add(hostPlayer);
-			players.add(clientPlayer);
+			//players.add(hostPlayer);
+			//players.add(clientPlayer);
 			
 			Point2D.Double p = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
-			Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
+			//Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
 			prevClientLocs.add(p);
-			prevEnemyLocs.add(p2);
+			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
-		}
-	//}
+			}
+	}
 	
 	public void spawnNewClient() {
-//		if(clientPlayer == null && clientType != 0) {
-//			if(clientType == 1)
-//				clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-//			else if(hostType == 2)
-//				clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-//			else
-//				clientPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
-			clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
-			hostPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+		System.out.println("Type:" + clientType);
+		if(clientPlayer == null && clientType != 0) {
 			
-			players.add(hostPlayer);
-			players.add(clientPlayer);
+			if(clientType == 1) {
+				System.out.println("a");
+				clientPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			}
+			else if(clientType == 2) {
+				System.out.println("b");
+				clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			}
+			else {
+				System.out.println("c");
+				clientPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			}
+			
+			clientSpawned = true;
+			
+			hostPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			//clientPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+//			if(hostPlayer == null && hostType != 0) {
+//				if(hostType == 1) {
+//					System.out.println("a");
+//					hostPlayer = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+//				}
+//				else if(hostType == 2) {
+//					System.out.println("b");
+//					hostPlayer = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+//				}
+//				else {
+//					System.out.println("c");
+//					hostPlayer = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+//				}
+			
+			//players.add(hostPlayer);
+			//players.add(clientPlayer);
 			
 			Point2D.Double p = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
-			Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
+			//Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
 			prevClientLocs.add(p);
-			prevEnemyLocs.add(p2);
+			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
 		}
-//}
+	}
 	
 	public void spawnNewGhost() {
 		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY());
@@ -188,7 +223,7 @@ public class PlayScreen{
 		if (prevClientLocs.size() > 120)
 			prevClientLocs.remove(0);
 		
-		Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
+		Point2D.Double p2 = new Point2D.Double(clientPlayer.getX(), clientPlayer.getY());
 		prevEnemyLocs.add(p2);
 		if (prevEnemyLocs.size() > 120)
 			prevEnemyLocs.remove(0);
@@ -370,19 +405,19 @@ public class PlayScreen{
 		
 	}
 	
-	public void setHostType(int clientType) {
-		this.hostType = clientType;
-		System.out.println(this.hostType);
+	public void setHostType(int hostType) {
+		this.hostType = hostType;
+		//System.out.println(this.hostType);
 	}
-	public void setClientType(int enemyType) {
-		this.clientType = enemyType;
+	public void setClientType(int clientType) {
+		this.clientType = clientType;
 	}
 	// GET DATA METHODS
-	public Player getClientPlayer() {
-		return (Demolitions)hostPlayer;
+	public Player getHostPlayer() {
+		return hostPlayer;
 	}
-	public Player getEnemyPlayer() {
-		return (Demolitions)clientPlayer;
+	public Player getClientPlayer() {
+		return clientPlayer;
 	}
 	public boolean getIsHost() {
 		return isHost;

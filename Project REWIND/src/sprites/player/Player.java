@@ -44,7 +44,7 @@ public class Player extends Sprite {
 	
 	public Player(PImage img, double x, double y) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-		System.out.println("CONSTRUCTION");
+		//System.out.println("CONSTRUCTION");
 		cooldowns = new int[]{0,0,0,0,0};
 		score = 0;
 		health = 5;
