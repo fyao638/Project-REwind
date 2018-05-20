@@ -42,15 +42,21 @@ public class Player extends Sprite {
 	
 	private Point2D.Double bulletPoint;
 	
-	public Player(PImage img, double x, double y) {
+	public Player(PImage img, double x, double y, int type) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		//System.out.println("CONSTRUCTION");
+		/*0 - primary fire
+		1 - secondary fire
+		2 - rewind
+		3 - shift
+		4 - ghost respawn time*/
 		cooldowns = new int[]{0,0,0,0,0};
 		score = 0;
 		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
 		hitBox = new Rectangle();
+		playerType = type;
 	}
 	public void setCooldowns(int index, int newVal) {
 		cooldowns[index] = newVal;

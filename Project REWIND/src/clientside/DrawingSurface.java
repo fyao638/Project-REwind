@@ -158,7 +158,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeFlash)) {
 					for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20));
+						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20, 1));
 					}
 					//p.shiftAbility(playScreen.getObstacles());
 					

@@ -16,7 +16,8 @@ public class Technician extends Player {
 	// timer for the shield
 	private int shieldTimer;
 	public Technician(PImage img, int x, int y) {
-		super(img, x, y);
+		super(img, x, y, 3);
+		shieldTimer = 1000;
 		hasShield = false;
 	}
 	public Bullet shoot(PImage img) {
@@ -29,18 +30,24 @@ public class Technician extends Player {
 		return bounce;
 	}
 	public void draw(PApplet drawer) {
-		shieldTimer++;
 		super.draw(drawer);
-		// 5000 very much subject to change
-		if (shieldTimer > 5000) {
-			hasShield = false;
-		}
-		else {
+		// 500 very much subject to change
+		
+		if (shieldTimer < 100) {
+			shieldTimer++;
 			// draw an ellipse that shields the player
 			Rectangle shieldRect = getShield();drawer.pushMatrix();
 			drawer.translate((float) (x + PLAYER_WIDTH / 2), (float) (y + PLAYER_HEIGHT / 2));
-			drawer.ellipse(shieldRect.x, shieldRect.y, shieldRect.width, shieldRect.height);
+			drawer.fill(0, 255, 255, 50);
+			drawer.strokeWeight(5);
+			drawer.stroke(0, 255, 255);
+			drawer.ellipseMode(drawer.CORNER);
+			drawer.ellipse((float) (shieldRect.x - (x + PLAYER_WIDTH / 2)), (float) (shieldRect.y - (y + PLAYER_HEIGHT / 2)),
+					shieldRect.width, shieldRect.height);
 			drawer.popMatrix();
+		}
+		else {
+			hasShield = false;
 		}
 	}
 	// shield ability
@@ -48,14 +55,14 @@ public class Technician extends Player {
 		hasShield = true;
 		shieldTimer = 0;
 	}
-	public void rewind() {
-		
+	public boolean hasShield() {
+		return hasShield;
 	}
 	
 	// return a rectangle with the appropriate variables needed for a shield
 	// doesn't use Ellipse because I'm not familiar with Ellipse2D and it's nice to have 
 		//a sort of 'bounding' rectangle for shield
-	private Rectangle getShield() {
+	public Rectangle getShield() {
 		Rectangle rect = new Rectangle((int) x, (int) y - PLAYER_WIDTH / 5, PLAYER_WIDTH, PLAYER_WIDTH);
 		return rect;
 	}

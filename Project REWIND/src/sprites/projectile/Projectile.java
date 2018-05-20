@@ -46,6 +46,7 @@ public abstract class Projectile extends Sprite{
 			drawer.image(getImage(),(int) - width / 3,(int) - height/ 2,(int)width,(int)height);
 			drawer.popMatrix();
 		}
+		
 	}
 	
 	public int getType() {

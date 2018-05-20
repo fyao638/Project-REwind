@@ -28,6 +28,15 @@ public class Sprite extends Rectangle2D.Double {
 		isVisible = true;
 	}
 	
+	public Sprite(PImage image, double w, double h) {
+		super(0,0,w,h);
+		this.img = image;
+		dir = 0;
+		xVel = 0;
+		yVel = 0;
+		isVisible = true;
+	}
+	
 	// METHODS
 		public void moveToLocation(double x, double y) {
 			super.x = x;

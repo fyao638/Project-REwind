@@ -1,7 +1,9 @@
 package clientside;
 
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -52,8 +54,6 @@ public class PlayScreen{
 	private static final String messageTypeReset = "RESET";
 	//private ArrayList<Player> otherPlayers;
 	
-	//PACKETS
-	
 	private Map map;
 	private Hud hud;
 
@@ -63,7 +63,11 @@ public class PlayScreen{
 	
 	private boolean isHost;
 	
-	public PlayScreen() {
+	private int timer;
+	
+	
+	
+	public PlayScreen() {	
 		assets = new ArrayList<PImage>();
 		isHost = false;
 		otherBullets = new ArrayList<Projectile>();
@@ -79,6 +83,7 @@ public class PlayScreen{
 		abilHeight = 100;
 		hostSpawned = false;
 		clientSpawned = false;
+		timer = 0;
 	}
 	public void spawnNewHost() {
 		System.out.println("Type:" + hostType);
@@ -161,7 +166,7 @@ public class PlayScreen{
 	}
 	
 	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY());
+		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY(), 0);
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -186,7 +191,6 @@ public class PlayScreen{
 		map = new Map(assets.get(8), assets.get(9));
 		
 	}
-	int timer = 0;
 	
 	public void reset(DrawingSurface drawer) {
 		if(hostPlayer.getHealth() == 0) {
@@ -237,7 +241,7 @@ public class PlayScreen{
 		p1Ghost.setX((int)prevClientLocs.get(0).getX());
 		p1Ghost.setY((int)prevClientLocs.get(0).getY());
 		
-		drawer.background(128,128,128);  
+		drawer.background(128,128,128);
 
 		float ratioX = (float)drawer.width/DRAWING_WIDTH;
 		float ratioY = (float)drawer.height/DRAWING_HEIGHT;
@@ -278,15 +282,41 @@ public class PlayScreen{
 			if(hostPlayer.getCooldowns()[3] - drawer.millis() <= 0 && hostPlayer.getType() == 1) {
 				if(((Assault) hostPlayer).canShift(map.getObstacles())) {
 					for (int i = 0; i < (int) (50 + Math.random() * 10); i++) {
-						particles.add(new Particle(assets.get(10), hostPlayer.x + hostPlayer.getWidth() / 2, hostPlayer.y + hostPlayer.getHeight() / 2, 20, 20));
+						particles.add(new Particle(assets.get(10), hostPlayer.x + hostPlayer.getWidth() / 2, hostPlayer.y + hostPlayer.getHeight() / 2, 20, 20, 1));
 					}
 					((Assault) hostPlayer).shiftAbility(map.getObstacles());
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
 					
-					hostPlayer.setCooldowns(3, drawer.millis() + 7000);
 				}
 			}
+			else if(hostPlayer.getCooldowns()[3] - drawer.millis() <= 0 && hostPlayer.getType() == 2) {
+				
+				ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(12));
+				for(Projectile b : fan) {
+					bullets.add(b);
+				}
+				hostPlayer.setCooldowns(3, drawer.millis() + 7000);
+			}
+			else if(hostPlayer.getCooldowns()[3] - drawer.millis() <= 0) {
+				
+				((Technician) hostPlayer).shiftAbility();
+				
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
+				
+				hostPlayer.setCooldowns(3, drawer.millis() + 7000);
+			}
 		}
+		
+		// Particles for when technician has shield up
+		if (hostPlayer.getType() == 3 && ((Technician) hostPlayer).hasShield()) {
+			Rectangle rect = ((Technician) hostPlayer).getShield();
+			particles.add(new Particle(assets.get(10), hostPlayer.x + 10, hostPlayer.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
+			
+		}
+		
+		// Particles for when grenade active
+		
+		
 		// Test this plz
 		//
 		//Testing
@@ -318,11 +348,7 @@ public class PlayScreen{
 							secondaryReadyTime = drawer.millis() + 7000;
 					}
 					else if(hostType == 2) {
-						ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(12));
-						for(Projectile b : fan) {
-							bullets.add(b);
-						}
-						secondaryReadyTime = drawer.millis() + 7000;
+						// TODO add new ability
 					}
 					else {
 						ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(2));

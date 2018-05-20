@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import clientside.DrawingSurface;
 import processing.core.PApplet;
 import processing.core.PImage;
+import sprites.Particle;
 import sprites.Sprite;
 import sprites.obstacles.Obstacle;
 import sprites.player.Player;
@@ -28,10 +29,12 @@ public class Grenade extends Projectile{
 	private ArrayList<PImage> explosions;
 	private int explosionFrame, times, cycles, drawn;
 	
+	private ArrayList<Particle> particles;
 	
 	public Grenade(PImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
 		explosions = new ArrayList<PImage>();
+		particles = new ArrayList<Particle>();
 		explosionFrame = 0;
 		times = 0;
 		cycles = 0;
@@ -59,6 +62,7 @@ public class Grenade extends Projectile{
 	
 	public void act() {
 		moveByAmount(speed * Math.cos(getDirection()), speed * Math.sin(getDirection()));
+
 	}
 	
 	// return true if it hits an obstacle, false if otherwise
@@ -90,7 +94,18 @@ public class Grenade extends Projectile{
 			explosions.add(drawer.loadImage("explosionGif/frame_3_delay-s.gif"));
 			explosions.add(drawer.loadImage("explosionGif/frame_4_delay-s.gif"));
 		}
+		if (particles.size() > 0) {
+			for(int i = 0; i < particles.size(); i++) {
+					particles.get(i).draw(drawer);
+					if (!particles.get(i).act()) {
+						particles.remove(i);
+					}
+			}
+		}
+		
 		if(this.visible()) {
+
+			particles.add(new Particle(getImage(), x + getWidth() / 2, y + getHeight() / 2, 5, 5, 2));
 			drawer.pushMatrix();
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());

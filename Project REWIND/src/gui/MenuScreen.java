@@ -15,9 +15,9 @@ import processing.core.PImage;
  */
 public class MenuScreen{
 	
-	int rectX1, rectY1;   // Position of square button
-	int rectWidth = 400;
-	int rectHeight = 100;
+	float rectX1, rectY1;   // Position of square button
+	float rectWidth;
+	float rectHeight;
 	boolean rectOver1;
 	PImage logo;
 	
@@ -27,6 +27,8 @@ public class MenuScreen{
 		rectOver1 = false;
 		rectX1 = 200;
 		rectY1= 180;
+		rectWidth = 290;
+		rectHeight = 100;
 	}
 
 	public void setup(PApplet drawer) {
@@ -44,6 +46,8 @@ public class MenuScreen{
 		else {
 			drawer.fill(0, 0, 255);
 		}
+		
+		rectX1 = (float) (drawer.width / 2.0 - rectWidth / 2.0);
 		
 		drawer.stroke(0);
 		drawer.rect(rectX1, rectY1, rectWidth, rectHeight, 30);
@@ -69,7 +73,7 @@ public class MenuScreen{
 			rectOver1 = false;
 		}
 	}
-	boolean overRect(int x, int y, int width, int height, PApplet drawer)  {
+	boolean overRect(float x, float y, float width, float height, PApplet drawer)  {
 		if (drawer.mouseX >= x && drawer.mouseX <= x+width && drawer.mouseY >= y && drawer.mouseY <= y+height) {
 			return true;
 	    } 

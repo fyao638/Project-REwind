@@ -18,7 +18,7 @@ import sprites.projectile.Projectile;
 public class Assault extends Player{
 
 	public Assault(PImage img, int x, int y) {
-		super(img, x, y);
+		super(img, x, y, 1);
 	}
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
