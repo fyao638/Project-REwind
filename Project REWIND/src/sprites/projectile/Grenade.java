@@ -94,6 +94,7 @@ public class Grenade extends Projectile{
 			explosions.add(drawer.loadImage("explosionGif/frame_3_delay-s.gif"));
 			explosions.add(drawer.loadImage("explosionGif/frame_4_delay-s.gif"));
 		}
+		
 		if (particles.size() > 0) {
 			for(int i = 0; i < particles.size(); i++) {
 					particles.get(i).draw(drawer);
