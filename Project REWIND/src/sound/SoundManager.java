@@ -35,6 +35,7 @@ public class SoundManager implements JayLayerListener {
 		}
 	}
 	public void laugh() {
+		System.out.println("Heheh");
 		sound.playSoundEffect(0);
 	}
 	

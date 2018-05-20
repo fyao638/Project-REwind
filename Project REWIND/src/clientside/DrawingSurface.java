@@ -15,6 +15,7 @@ import sound.SoundManager;
 import sprites.Particle;
 import sprites.player.Assault;
 import sprites.player.Demolitions;
+import sprites.player.Player;
 import sprites.projectile.Projectile;
 /**
  * 
@@ -39,6 +40,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private static final String messageTypeShoot = "SHOOT";
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeFlash = "FLASH";
+	private static final String messageTypeReset = "RESET";
 	
 	private int clientCount = 0;
 	private SoundManager sound;
@@ -89,6 +91,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	}
 	public void draw() {
 		
+		if(clientCount == 0) {
+			isConnected = false;
+		}
 		
 		if(!isConnected) {
 			checkConnection();
@@ -104,9 +109,10 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			sound.stopMusic();
 			System.out.println(selectionScreen.getType());
 			processNetworkMessages();
-			playScreen.setClientType(selectionScreen.getType());
+			playScreen.setHostType(selectionScreen.getType());
 			playScreen.draw(this);
 		}
+		
 	}
 	public void processNetworkMessages() {
 		if (nm == null)
