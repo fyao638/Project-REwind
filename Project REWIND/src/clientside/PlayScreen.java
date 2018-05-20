@@ -349,24 +349,11 @@ public class PlayScreen{
 							hostPlayer.setCooldowns(1,drawer.millis() + 5000);
 					}
 					else if(hostType == 2) {
-						int startTime = drawer.millis();
-						int timesAdded = 0;
-						ArrayList<Projectile> burst = hostPlayer.secondary(assets.get(2));
-						for(int i = 0; i < burst.size(); i++) {
-							Projectile proj = burst.get(i);
-							int currentTime = drawer.millis();
-							if(currentTime - startTime > 500 * timesAdded) {
-								bullets.add(proj);
-								timesAdded++;
-							}
-							else
-								i--;
-							
-							if(timesAdded == burst.size())
-								break;
-							
+						ArrayList<Projectile> molotov = ((Demolitions) hostPlayer).secondary(assets.get(12));
+						for(Projectile b : molotov) {
+							bullets.add(b);
 						}
-						secondaryReadyTime = drawer.millis() + 7000;
+						hostPlayer.setCooldowns(1,drawer.millis() + 5000);
 					}
 					else {
 						ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(2));
@@ -447,6 +434,10 @@ public class PlayScreen{
 		
 		timer++;
 		
+	}
+	
+	public int getTimer() {
+		return timer;
 	}
 	
 	public void setHostType(int hostType) {

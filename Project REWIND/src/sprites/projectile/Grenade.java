@@ -114,7 +114,7 @@ public class Grenade extends Projectile{
 				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
 			else if (cycles != 5) {
-				drawer.image(explosions.get(explosionFrame),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+				drawer.image(explosions.get(explosionFrame),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100);
 				times++;
 				if(times == 3) {
 					times = 0;
@@ -124,8 +124,7 @@ public class Grenade extends Projectile{
 				if(explosionFrame == 5)
 					explosionFrame = 0;
 			}
-			else
-				this.setVisibility(false);
+
 			drawer.popMatrix();
 		}
 		drawn++;
