@@ -73,7 +73,7 @@ public class Hud {
 		}
 		if(p.getCooldowns()[1] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 7000, 20);
+			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 5000, 20);
 			drawer.rectMode(PApplet.CORNER);
 		}
 		if(p.getCooldowns()[3] - currentTime > 0) {

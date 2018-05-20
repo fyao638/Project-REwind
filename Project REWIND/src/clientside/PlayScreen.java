@@ -339,14 +339,14 @@ public class PlayScreen{
 				}
 			}
 			else if(drawer.mouseButton == PConstants.RIGHT) {
-				if(secondaryReadyTime - drawer.millis() <= 0) {
+				if(hostPlayer.getCooldowns()[1] - drawer.millis() <= 0) {
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 					if(hostType == 1) {
 						ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(3));
 							for(Projectile b : fan) {
 								bullets.add(b);
 							}
-							secondaryReadyTime = drawer.millis() + 7000;
+							hostPlayer.setCooldowns(1,drawer.millis() + 5000);
 					}
 					else if(hostType == 2) {
 						int startTime = drawer.millis();
@@ -373,7 +373,7 @@ public class PlayScreen{
 						for(Projectile b : fan) {
 							bullets.add(b);
 						}
-						secondaryReadyTime = drawer.millis() + 7000;
+						hostPlayer.setCooldowns(1,drawer.millis() + 5000);
 					}							
 				}
 				

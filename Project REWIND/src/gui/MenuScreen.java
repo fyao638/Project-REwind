@@ -15,7 +15,7 @@ import processing.core.PImage;
  */
 public class MenuScreen{
 	
-	float rectX1, rectY1;   // Position of square button
+	float rectX, rectY;   // Position of square button
 	float rectWidth;
 	float rectHeight;
 	boolean rectOver1;
@@ -25,8 +25,8 @@ public class MenuScreen{
 	
 	public MenuScreen() {
 		rectOver1 = false;
-		rectX1 = 200;
-		rectY1= 180;
+		rectX = 200;
+		rectY = 180;
 		rectWidth = 290;
 		rectHeight = 100;
 	}
@@ -47,26 +47,27 @@ public class MenuScreen{
 			drawer.fill(0, 0, 255);
 		}
 		
-		rectX1 = (float) (drawer.width / 2.0 - rectWidth / 2.0);
+		rectX = (float) (drawer.width / 2.0 - rectWidth / 2.0);
+		
 		
 		drawer.stroke(0);
-		drawer.rect(rectX1, rectY1, rectWidth, rectHeight, 30);
+		drawer.rect(rectX, rectY, rectWidth, rectHeight, 30);
 		drawer.textSize(80);
 		drawer.fill(0);
-		drawer.text("PLAY", rectX1 + 45, rectY1 + rectHeight - 20);
+		drawer.text("PLAY", rectX + 45, rectY + rectHeight - 20);
 		
-		drawer.image(logo, 100 , 50, 600, 100);
+		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 130, 600, 100);
 		
 		
 		
 	
-	  	if(drawer.mousePressed && overRect(rectX1, rectY1, rectWidth, rectHeight, drawer)) {
+	  	if(drawer.mousePressed && overRect(rectX, rectY, rectWidth, rectHeight, drawer)) {
 	  		drawer.changeState(1);
 	    }
 	}
 	
 	void update(int x, int y, PApplet drawer) {
-		if ( overRect(rectX1, rectY1, rectWidth, rectHeight, drawer) ) {
+		if ( overRect(rectX, rectY, rectWidth, rectHeight, drawer) ) {
 			rectOver1 = true;
 		} 
 		else {
