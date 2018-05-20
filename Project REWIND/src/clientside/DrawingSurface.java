@@ -78,13 +78,13 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			gameState = 2;
 			playScreen.setup(this);
 			if(clientCount == 1) {
-				playScreen.setHostType(selectionScreen.getType());
+				playScreen.setYouType(selectionScreen.getType());
 				playScreen.spawnNewHost();
 				System.out.println("HOST");
 				isConnected = true;
 			}
 			else {
-				playScreen.setClientType(selectionScreen.getType());
+				playScreen.setYouType(selectionScreen.getType());
 				playScreen.spawnNewClient();
 				System.out.println("CLIENT");
 				isConnected = true;
@@ -98,7 +98,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 		}
 		
 		if(!isConnected) {
-			//System.out.println("hello world");
 			checkConnection();
 			processNetworkMessages();
 		}
@@ -129,7 +128,8 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			String host = ndo.getSourceIP();
 			
-			Player p = playScreen.getClientPlayer();
+			Player p = playScreen.getEnemyPlayer();
+			Player p2 = playScreen.getYouPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -166,6 +166,28 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
+				}
+				else if(ndo.message[0].equals(messageTypeReset)) {
+								
+					p2.setCooldowns(0, 0);
+					p2.setCooldowns(1, 0);
+					p2.setCooldowns(2, 0);
+					p2.setCooldowns(3, 0);
+					p2.setCooldowns(4, 0);
+					if((Boolean)ndo.message[1]) {
+						//isHost
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p2.win();
+						
+					}
+					else {
+						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						p.changeHealth(5);
+						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						p2.win();
+					}
 				}
 				else {
 					System.out.println("Its not detecting it");
