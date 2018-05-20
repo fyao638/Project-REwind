@@ -28,14 +28,15 @@ public class Demolitions extends Player{
 		
 		return grenade;
 	}
-	public void secondary() {
-		
+	public ArrayList<Projectile> secondary(PImage img) {
+		ArrayList<Projectile> burst = new ArrayList<Projectile>();
+		burst.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
+		burst.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
+		burst.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
+		return burst;
 	}
 	public void rewind() {
 		
 	}
 	
-//	public int getType() {
-//		return playerType;
-//	}
 }

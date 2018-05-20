@@ -349,7 +349,24 @@ public class PlayScreen{
 							secondaryReadyTime = drawer.millis() + 7000;
 					}
 					else if(hostType == 2) {
-						// TODO add new ability
+						int startTime = drawer.millis();
+						int timesAdded = 0;
+						ArrayList<Projectile> burst = hostPlayer.secondary(assets.get(2));
+						for(int i = 0; i < burst.size(); i++) {
+							Projectile proj = burst.get(i);
+							int currentTime = drawer.millis();
+							if(currentTime - startTime > 500 * timesAdded) {
+								bullets.add(proj);
+								timesAdded++;
+							}
+							else
+								i--;
+							
+							if(timesAdded == burst.size())
+								break;
+							
+						}
+						secondaryReadyTime = drawer.millis() + 7000;
 					}
 					else {
 						ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(2));
