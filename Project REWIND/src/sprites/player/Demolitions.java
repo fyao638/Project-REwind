@@ -21,14 +21,14 @@ public class Demolitions extends Player{
 	public Bullet shoot(PImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Projectile> secondary(PImage img) {
+	public ArrayList<Projectile> shiftAbility(PImage img) {
 		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
 		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
 		
 		return grenade;
 	}
-	public void shiftAbility() {
+	public void secondary() {
 		
 	}
 	public void rewind() {

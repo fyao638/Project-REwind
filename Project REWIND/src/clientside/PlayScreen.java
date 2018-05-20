@@ -286,12 +286,13 @@ public class PlayScreen{
 					}
 					((Assault) hostPlayer).shiftAbility(map.getObstacles());
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
-					
+
+					hostPlayer.setCooldowns(3, drawer.millis() + 7000);
 				}
 			}
 			else if(hostPlayer.getCooldowns()[3] - drawer.millis() <= 0 && hostPlayer.getType() == 2) {
 				
-				ArrayList<Projectile> fan = hostPlayer.secondary(assets.get(12));
+				ArrayList<Projectile> fan = ((Demolitions) hostPlayer).shiftAbility(assets.get(12));
 				for(Projectile b : fan) {
 					bullets.add(b);
 				}
