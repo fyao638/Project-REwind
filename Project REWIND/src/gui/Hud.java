@@ -1,5 +1,6 @@
 package gui;
 
+import clientside.DrawingSurface;
 import clientside.PlayScreen;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -15,7 +16,14 @@ public class Hud {
 	
 	public Hud() {
 	}
-	public void draw(PApplet drawer, PlayScreen play, Player p, PImage icon1, PImage icon2, PImage icon3, PImage icon4, PImage icon5, long currentTime, float abilWidth, float abilHeight) {
+	public void draw(DrawingSurface drawer, PlayScreen play, Player p, long currentTime, float abilWidth, float abilHeight) {
+		
+		PImage icon1 = play.getAssets().get(4);
+		PImage icon2 = play.getAssets().get(5);
+		PImage icon3 = play.getAssets().get(6);
+		PImage icon4 = play.getAssets().get(7);
+		PImage icon5 = play.getAssets().get(11);
+		
 		drawer.noFill();
 		// Draw the health bar
 		drawer.fill(255, 100);

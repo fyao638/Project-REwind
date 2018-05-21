@@ -96,6 +96,9 @@ public class Player extends Sprite {
 	public void changeHealth(int amount) {
 		health += amount;
 	}
+	public void setHealth(int amount) {
+		health = amount;
+	}
 	
 	public void draw(PApplet drawer) {
 		// change where the bullet hole is
