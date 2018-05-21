@@ -51,6 +51,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeShift = "SHIFT";
 	private static final String messageTypeReset = "RESET";
+	private static final String messageTypePType = "PTYPE";
 	
 	private int clientCount = 0;
 	private SoundManager sound;
@@ -95,6 +96,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			}
 			else {
 				playScreen.setYouType(selectionScreen.getType());
+				this.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypePType, selectionScreen.getType());
 				playScreen.spawnNewClient();
 				System.out.println("CLIENT");
 				isConnected = true;
@@ -144,7 +146,13 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
-				if (ndo.message[0].equals(messageTypeMove)) {
+				if (ndo.message[0].equals(messageTypePType)) {
+					playScreen.updateEnemy(this, (Integer) ndo.message[1]);
+					if(playScreen.getIsHost()) {
+						this.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypePType, selectionScreen.getType());
+					}
+					
+				} else if (ndo.message[0].equals(messageTypeMove)) {
 					p.walk((Integer)ndo.message[1],(Integer)ndo.message[2], playScreen.getObstacles());
 					
 					//move the player
@@ -159,23 +167,37 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					//player shoots
 					playScreen.getOtherBullets().add(p.shoot(playScreen.getAssets().get(2)));
 				}
+				//player uses secondary
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
-					//player uses secondary
-					
-					ArrayList<Projectile> fan = ((Assault)(p)).secondary(playScreen.getAssets().get(12));
+					if((Integer)ndo.message[1] == 1) {
 
-					for(Projectile b : fan) {
-						playScreen.getOtherBullets().add(b);
+						ArrayList<Projectile> fan = ((Assault)(p)).secondary(playScreen.getAssets().get(12));
+
+						for(Projectile b : fan) {
+							playScreen.getOtherBullets().add(b);
+						}
+					}
+					else if((Integer)ndo.message[1] == 2) {
+						ArrayList<Projectile> fan = ((Demolitions) p).secondary(playScreen.getAssets().get(13));
+						for(Projectile b : fan) {
+							playScreen.getOtherBullets().add(b);
+						}
+					}
+					else {
+						ArrayList<Projectile> fan = ((Technician) p).secondary(playScreen.getAssets().get(2));
+						for(Projectile b : fan) {
+							playScreen.getOtherBullets().add(b);
+						}
 					}
 				}
 				else if (ndo.message[0].equals(messageTypeShift)) {
 					if((Integer)ndo.message[1] == 1) {
-					for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-						playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20, 1));
-					}
-					((Assault)p).shiftAbility(playScreen.getObstacles());
-					
-					//player uses flash
+						for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
+							playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20, 1));
+						}
+						((Assault)p).shiftAbility(playScreen.getObstacles());
+						
+						//player uses flash
 					}
 					else if((Integer)ndo.message[1] == 2) {
 						ArrayList<Projectile> fan = ((Demolitions)(p)).shiftAbility(playScreen.getAssets().get(12));

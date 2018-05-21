@@ -53,7 +53,7 @@ public class PlayScreen{
 	
 	private Map map;
 	private Hud hud;
-
+	
 	
 	private float abilWidth, abilHeight;
 	
@@ -63,7 +63,7 @@ public class PlayScreen{
 	
 	
 	
-	public PlayScreen() {	
+	public PlayScreen() {
 		assets = new ArrayList<PImage>();
 		isHost = false;
 		otherBullets = new ArrayList<Projectile>();
@@ -104,7 +104,7 @@ public class PlayScreen{
 			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
-			}
+		}
 	}
 	
 	public void spawnNewClient() {
@@ -139,6 +139,27 @@ public class PlayScreen{
 		
 	}
 	
+	public void updateEnemy(DrawingSurface drawer, int enemyType) {
+		if (isHost) {
+			if (enemyType == 1) {
+				enemy = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			} else if (enemyType == 2) {
+				enemy = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			} else {
+				enemy = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
+			}
+		}
+		else {
+			if (enemyType == 1) {
+				enemy = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			} else if (enemyType == 2) {
+				enemy = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			} else {
+				enemy = new Technician(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
+			}
+		}
+	}
+	
 	public void spawnNewGhost() {
 		p1Ghost = new Player(assets.get(1), (int)prevYouLocs.get(0).getX(), (int)prevYouLocs.get(0).getY(), 0);
 	}
@@ -162,8 +183,6 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/grenadeIcon.png"));		//14
 		assets.add(drawer.loadImage("assets/molotovIcon.png"));		//15
 		assets.add(drawer.loadImage("assets/shieldIcon.png"));		//16
-		
-		
 		
 		//System.out.println(players);
 		
@@ -323,8 +342,8 @@ public class PlayScreen{
 				}
 				else if(drawer.mouseButton == PConstants.RIGHT) {
 					if(you.getCooldowns()[1] - drawer.millis() <= 0) {
-						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
 						if(youType == 1) {
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 1);
 							ArrayList<Projectile> fan = you.secondary(assets.get(3));
 								for(Projectile b : fan) {
 									bullets.add(b);
@@ -332,6 +351,7 @@ public class PlayScreen{
 								you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else if(youType == 2) {
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 2);
 							ArrayList<Projectile> fan = you.secondary(assets.get(13));
 							for(Projectile b : fan) {
 								bullets.add(b);
@@ -339,6 +359,7 @@ public class PlayScreen{
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else {
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 3);
 							ArrayList<Projectile> fan = you.secondary(assets.get(2));
 							for(Projectile b : fan) {
 								bullets.add(b);

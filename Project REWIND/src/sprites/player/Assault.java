@@ -26,10 +26,10 @@ public class Assault extends Player{
 	public ArrayList<Projectile> secondary(PImage img) {
 		ArrayList<Projectile> fan = new ArrayList<Projectile>();
 		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.25, 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.25 , 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - 0.125 , 10));
-		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + 0.125 , 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + Math.PI / 8, 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - Math.PI / 8, 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() - Math.PI / 4 , 10));
+		fan.add(new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection() + Math.PI / 4, 10));
 		return fan;
 	}
 	public boolean canShift(ArrayList<Obstacle> obstacles) {

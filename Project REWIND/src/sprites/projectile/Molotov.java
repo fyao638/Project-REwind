@@ -19,18 +19,17 @@ public class Molotov extends Projectile{
 	
 	private double speed;
 	
-	private ArrayList<PImage> flames;
-	private int explosionFrame, times, cycles, drawn;
+	private ArrayList<Particle> flames;
+	private int drawn;
+	private int flameTimer;
 	
 	private ArrayList<Particle> particles;
 	
 	public Molotov(PImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
-		flames = new ArrayList<PImage>();
+		flames = new ArrayList<Particle>();
 		particles = new ArrayList<Particle>();
-		explosionFrame = 0;
-		times = 0;
-		cycles = 0;
+		flameTimer = 0;
 		drawn = 0;
 //		double i = Math.random();
 //		if (i < 0.5)
@@ -46,10 +45,10 @@ public class Molotov extends Projectile{
 	
 	public void setup(DrawingSurface drawer) {
 		for(int i = 0; i < 10; i++) {
-			flames.add(drawer.loadImage("molotovGif/frame_0" + i + "_delay-0.01s.gif"));
+			flames.add(new Particle(getImage(),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
 		}
 		for(int i = 10; i < 25; i++) {
-			flames.add(drawer.loadImage("molotovGif/frame_" + i + "_delay-0.01s.gif"));
+			flames.add(new Particle(getImage(),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
 		}
 		
 	}
@@ -83,10 +82,10 @@ public class Molotov extends Projectile{
 	public void draw(PApplet drawer) {
 		if(drawn == 0) {
 			for(int i = 0; i < 10; i++) {
-				flames.add(drawer.loadImage("molotovGif/frame_0" + i + "_delay-0.01s.gif"));
+				//flames.add(new Particle(getImage(),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
 			}
 			for(int i = 10; i < 25; i++) {
-				flames.add(drawer.loadImage("molotovGif/frame_" + i + "_delay-0.01s.gif"));
+				//flames.add(new Particle(getImage(), (int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
 			}
 			//System.out.println(flames);
 		}
@@ -100,25 +99,30 @@ public class Molotov extends Projectile{
 			}
 		}
 		
+		if (flames.size() > 0) {
+			for(int i = 0; i < flames.size(); i++) {
+				flames.get(i).draw(drawer);
+					if (!flames.get(i).act()) {
+						flames.remove(i);
+					}
+			}
+		}
+		
 		if(this.visible()) {
 
-			particles.add(new Particle(getImage(), x + getWidth() / 2, y + getHeight() / 2, 5, 5, 2));
+			particles.add(new Particle(getImage(), x + getWidth() / 2, y + getHeight() / 2, 5, 5, 4));
 			drawer.pushMatrix();
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
 			if(this.speed != 0) {
 				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
-			else if (cycles != 25) {
-				drawer.image(flames.get(explosionFrame),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100);
-				explosionFrame++;
-				times++;
-				if(times == 24) {
-					times = 19;
-					explosionFrame = 19;
-					cycles++;
+			else if (flameTimer < 400) {
+
+				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
+				flames.add(new Particle(getImage(),(int) (x + GRENADE_WIDTH / 2) - GRENADE_WIDTH / 3 - 50,(int) (y + GRENADE_HEIGHT / 2) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
 				}
-					
+				flameTimer++;
 			}
 			else
 				this.setVisibility(false);

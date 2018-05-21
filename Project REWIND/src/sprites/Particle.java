@@ -49,7 +49,7 @@ public class Particle extends Sprite {
 			width = 5;
 			height = 5;
 		}
-		else {
+		else if (type == 3) {
 			this.x = (int) (x + Math.random() * w);
 			this.y = (int) (y + Math.random() * h);
 			width = (float) 1;
@@ -59,6 +59,32 @@ public class Particle extends Sprite {
 			
 			speed = 0;
 			color = new Color(0, 255, 255);
+		}
+		else if (type == 4) {
+			lifeTime = (int) (30 + Math.random() * 50);
+			initLifeTime = lifeTime;
+			
+			//speed, randomly generated between 0.2 & 2.2
+			speed = 0.2 + Math.random() * 0.2;
+			color = new Color(255, (int) (Math.random() * 255), 0);
+			
+			turn(Math.random() * Math.PI * 2);
+			
+			width = 5;
+			height = 5;
+		}
+		else {
+			this.x = (int) (x + Math.random() * w);
+			this.y = (int) (y + Math.random() * h);
+			width = (float) 5;
+			height = (float) 5;
+			lifeTime = (int) (5 + Math.random() * 50);
+			initLifeTime = lifeTime;
+
+			turn(Math.random() * Math.PI * 2);
+			
+			speed = 0.2 + Math.random() * 0.15;
+			color = new Color(255, (int) (Math.random() * 255), 0);
 		}
 	}
 	

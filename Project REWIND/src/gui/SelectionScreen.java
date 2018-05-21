@@ -110,11 +110,17 @@ public class SelectionScreen {
 	void update(int x, int y, PApplet drawer) {
 		if ( overRect(rectX, rectY1, rectWidth, rectHeight, drawer) ) {
 			rectOver1 = true;
+			rectOver2 = false;
+			rectOver3 = false;
 		} 
 		else if(overRect(rectX, rectY2, rectWidth, rectHeight, drawer)){
+			rectOver1 = false;
 			rectOver2 = true;
+			rectOver3 = false;
 		}
 		else if(overRect(rectX, rectY3, rectWidth, rectHeight, drawer)) {
+			rectOver1 = false;
+			rectOver2 = false;
 			rectOver3 = true;
 		}
 		else {
