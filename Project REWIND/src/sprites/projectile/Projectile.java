@@ -52,5 +52,9 @@ public abstract class Projectile extends Sprite{
 	public int getType() {
 		return type;
 	}
+	
+	public double getSpeed() {
+		return speed;
+	}
 
 }
