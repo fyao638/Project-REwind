@@ -374,7 +374,6 @@ public class PlayScreen{
 							ArrayList<Projectile> fan = you.secondary(assets.get(2));
 							for(Projectile b : fan) {
 								bullets.add(b);
-								System.out.println(b.getSpeed());
 							}
 							
 							you.setCooldowns(1,drawer.millis() + 5000);
