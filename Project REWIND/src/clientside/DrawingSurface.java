@@ -200,14 +200,16 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					if((Boolean)ndo.message[1]) {
 						//isHost
 						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
-						p.changeHealth(5);
+						p.setHealth(5);
+						p2.setHealth(5);
 						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
 						p2.win();
 						
 					}
 					else {
 						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
-						p.changeHealth(5);
+						p.setHealth(5);
+						p2.setHealth(5);
 						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
 						p2.win();
 					}
