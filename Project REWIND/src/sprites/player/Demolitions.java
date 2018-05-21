@@ -2,9 +2,12 @@ package sprites.player;
 
 import java.util.ArrayList;
 
+import clientside.DrawingSurface;
+import clientside.PlayScreen;
 import processing.core.PImage;
 import sprites.projectile.Bullet;
 import sprites.projectile.Grenade;
+import sprites.projectile.Molotov;
 import sprites.projectile.Projectile;
 
 /**
@@ -15,6 +18,9 @@ import sprites.projectile.Projectile;
  */
 public class Demolitions extends Player{
 
+	
+	private int timesShot;
+	
 	public Demolitions(PImage img, int x, int y) {
 		super(img, x, y, 2);
 	}
@@ -25,17 +31,20 @@ public class Demolitions extends Player{
 		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
 		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
-		
 		return grenade;
 	}
-	public void secondary() {
-		
+	public ArrayList<Projectile> secondary(PImage img) {
+		ArrayList<Projectile> molotov = new ArrayList<Projectile>();
+		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+		molotov.add(g);
+		return molotov;
+	}
+	
+	public int timesShot() {
+		return timesShot;
 	}
 	public void rewind() {
 		
 	}
 	
-//	public int getType() {
-//		return playerType;
-//	}
 }

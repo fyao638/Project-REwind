@@ -17,9 +17,10 @@ public class Map { //extend sprite? NO
 	public static final int DRAWING_WIDTH = 800;
 	public static final int DRAWING_HEIGHT = 600;
 	
-	private ArrayList<Obstacle> obstacles;
+	private ArrayList<Obstacle> obstacles, sides;
 	public Map(PImage wallImage, PImage wallImage2) {
 		obstacles = new ArrayList<Obstacle>();
+		sides = new ArrayList<Obstacle>();
 		obstacles.add(new Obstacle(wallImage2,60,60,50,200));
 		obstacles.add(new Obstacle(wallImage,60,60,200,50));
 		obstacles.add(new Obstacle(wallImage2,690,340,50,200));
@@ -35,6 +36,11 @@ public class Map { //extend sprite? NO
 		obstacles.add(new Obstacle(wallImage,-100,0,100,DRAWING_HEIGHT));
 		obstacles.add(new Obstacle(wallImage,0,DRAWING_HEIGHT,DRAWING_WIDTH,100));
 		obstacles.add(new Obstacle(wallImage,DRAWING_WIDTH,0,100,DRAWING_HEIGHT));
+		
+		sides.add(new Obstacle(wallImage,0,-100,DRAWING_WIDTH,100));
+		sides.add(new Obstacle(wallImage,-100,0,100,DRAWING_HEIGHT));
+		sides.add(new Obstacle(wallImage,0,DRAWING_HEIGHT,DRAWING_WIDTH,100));
+		sides.add(new Obstacle(wallImage,DRAWING_WIDTH,0,100,DRAWING_HEIGHT));	
 	}
 	public void draw(PApplet d) {
 		for(Obstacle s : obstacles) {
@@ -43,6 +49,10 @@ public class Map { //extend sprite? NO
 	}
 	public ArrayList<Obstacle> getObstacles() {
 		return obstacles;
+	}
+	
+	public ArrayList<Obstacle> getSides() {
+		return sides;
 	}
 	
 }

@@ -158,6 +158,7 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/particle.png"));     	//10
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
 		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
+		assets.add(drawer.loadImage("assets/molotov.png"));      	//13
 		
 		
 		//System.out.println(players);
@@ -322,7 +323,11 @@ public class PlayScreen{
 								you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else if(youType == 2) {
-							// TODO add new ability
+							ArrayList<Projectile> fan = you.secondary(assets.get(13));
+							for(Projectile b : fan) {
+								bullets.add(b);
+							}
+							you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else {
 							ArrayList<Projectile> fan = you.secondary(assets.get(2));
@@ -334,6 +339,17 @@ public class PlayScreen{
 					}
 					
 					/*
+=======
+					}
+					else if(youType == 2) {
+						ArrayList<Projectile> molotov = ((Demolitions) you).secondary(assets.get(13));
+						for(Projectile b : molotov) {
+							bullets.add(b);
+						}
+						you.setCooldowns(1,drawer.millis() + 5000);
+
+					}
+>>>>>>> branch 'master' of https://github.com/fyao638/Project-REwind.git
 					else {
 						if(secondaryReadyTime - drawer.millis() <= 0) {
 							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
@@ -406,9 +422,13 @@ public class PlayScreen{
 		
 	}
 	
+	public int getTimer() {
+		return timer;
+	}
+	
+
 	public void setYouType(int youType) {
 		this.youType = youType;
-		//System.out.println(this.hostType);
 	}
 	public void setEnemyType(int enemyType) {
 		this.enemyType = enemyType;

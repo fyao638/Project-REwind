@@ -32,6 +32,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
  * TO DO:
  * - Fix the classes, you cant select anything but assault
  * - SFX and music?
+ * -fix hud icons
  * 
  * 
  * 

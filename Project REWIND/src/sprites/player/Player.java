@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.*;
 
 import clientside.DrawingSurface;
+import clientside.PlayScreen;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
@@ -26,7 +27,7 @@ public class Player extends Sprite {
 	private int shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	private int[] cooldowns;
 	
-	private int score;
+	private int score, timesShot;
 	
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
