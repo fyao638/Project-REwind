@@ -9,7 +9,7 @@ import processing.core.PImage;
 public class SelectionScreen {
 	// Positions of square button
 	float rectX;
-	float rectX1, rectY1;   // Assault
+	float rectX1, rectY1;   // Assaults
 	float rectX2, rectY2;	// Demolitions
 	float rectX3, rectY3;	// Technician 
 	float rectWidth;

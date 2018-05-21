@@ -88,7 +88,7 @@ public class Molotov extends Projectile{
 			for(int i = 10; i < 25; i++) {
 				flames.add(drawer.loadImage("molotovGif/frame_" + i + "_delay-0.01s.gif"));
 			}
-			System.out.println(flames);
+			//System.out.println(flames);
 		}
 		
 		if (particles.size() > 0) {

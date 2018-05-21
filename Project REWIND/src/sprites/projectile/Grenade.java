@@ -28,7 +28,7 @@ public class Grenade extends Projectile{
 	
 	private ArrayList<PImage> explosions;
 	private int explosionFrame, times, cycles, drawn;
-	
+	private int timesBounced;
 	private ArrayList<Particle> particles;
 	
 	public Grenade(PImage image, double x, double y, double dir, double speed) {
@@ -124,9 +124,12 @@ public class Grenade extends Projectile{
 				if(explosionFrame == 5)
 					explosionFrame = 0;
 			}
+			else
+				this.setVisibility(false);
 
 			drawer.popMatrix();
 		}
 		drawn++;
+		
 	}
 }

@@ -38,7 +38,7 @@ public class BouncingBullet extends Bullet{
 						return true;
 					}
 				}
-			}
+		}
 			
 			return false;
 		}
