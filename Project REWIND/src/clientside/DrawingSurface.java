@@ -171,7 +171,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					if((Integer)ndo.message[1] == 1) {
 
-						ArrayList<Projectile> fan = ((Assault)(p)).secondary(playScreen.getAssets().get(12));
+						ArrayList<Projectile> fan = ((Assault)(p)).secondary(playScreen.getAssets().get(3));
 
 						for(Projectile b : fan) {
 							playScreen.getOtherBullets().add(b);
