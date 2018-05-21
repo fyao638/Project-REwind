@@ -21,7 +21,7 @@ public abstract class Projectile extends Sprite{
 		this.type = type;
 		this.speed = speed;
 	}
-	
+	//sdkfjlkgjsd
 	// METHODS
 	
 	public String toString() {
