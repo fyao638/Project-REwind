@@ -159,6 +159,10 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
 		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
 		assets.add(drawer.loadImage("assets/molotov.png"));      	//13
+		assets.add(drawer.loadImage("assets/grenadeIcon.png"));		//14
+		assets.add(drawer.loadImage("assets/molotovIcon.png"));		//15
+		assets.add(drawer.loadImage("assets/shieldIcon.png"));		//16
+		
 		
 		
 		//System.out.println(players);

@@ -20,9 +20,28 @@ public class Hud {
 		
 		PImage icon1 = play.getAssets().get(4);
 		PImage icon2 = play.getAssets().get(5);
-		PImage icon3 = play.getAssets().get(6);
-		PImage icon4 = play.getAssets().get(7);
-		PImage icon5 = play.getAssets().get(11);
+		PImage icon3 = null;
+		PImage icon4 = null;
+		
+		if(p.getType() == 1) {
+			icon3 = play.getAssets().get(6);
+		}
+		else if(p.getType() == 2) {
+			icon3 = play.getAssets().get(15);
+		}
+		else {
+			icon3 = play.getAssets().get(11);
+		}
+		
+		if(p.getType() == 1) {
+			icon4 = play.getAssets().get(7);
+		}
+		else if(p.getType() == 2) {
+			icon4 = play.getAssets().get(14);
+		}
+		else {
+			icon4 = play.getAssets().get(16);
+		}
 		
 		drawer.noFill();
 		// Draw the health bar
@@ -121,12 +140,9 @@ public class Hud {
 		if(p.getCooldowns()[1] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("spread", 280, 539);
-			if(p.getType() == 1) {
-				drawer.image(icon3, 270, 490, 80, 80);
-			}
-			else {
-				drawer.image(icon5, 270, 490, 80, 80);
-			}
+			
+			drawer.image(icon3, 270, 490, 80, 80);
+			
 			drawer.textSize(26); 
 		}
 		else {
