@@ -173,7 +173,8 @@ public class PlayScreen{
 	
 	public void reset(DrawingSurface drawer) {
 		if(you.getHealth() <= 0) {
-			you.changeHealth(5);
+			you.setHealth(5);
+			enemy.setHealth(5);
 			enemy.win();
 			you.setCooldowns(0, 0);
 			you.setCooldowns(1, 0);
