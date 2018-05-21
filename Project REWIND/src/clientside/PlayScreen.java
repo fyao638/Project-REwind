@@ -193,7 +193,7 @@ public class PlayScreen{
 	}
 	
 	public void reset(DrawingSurface drawer) {
-		if(you.getHealth() <= 0) {
+		if(you.getHealth() <= 0 || enemy.getHealth() <= 0) {
 			you.setHealth(5);
 			enemy.setHealth(5);
 			enemy.win();
@@ -379,26 +379,6 @@ public class PlayScreen{
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}							
 					}
-					
-					/*
-=======
-					}
-					else if(youType == 2) {
-						ArrayList<Projectile> molotov = ((Demolitions) you).secondary(assets.get(13));
-						for(Projectile b : molotov) {
-							bullets.add(b);
-						}
-						you.setCooldowns(1,drawer.millis() + 5000);
-
-					}
->>>>>>> branch 'master' of https://github.com/fyao638/Project-REwind.git
-					else {
-						if(secondaryReadyTime - drawer.millis() <= 0) {
-							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
-							secondaryReadyTime = drawer.millis() + 7000;
-						}
-					}
-					*/
 				}
 			}
 		}
@@ -415,10 +395,17 @@ public class PlayScreen{
 						bullets.remove(i);
 					}
 					else if (bullets.get(i).checkPlayer(enemy)) {
-						if(bullets.remove(i).getType() == 1)
-							enemy.changeHealth(-1);
-						else
+						if(bullets.remove(i).getType() == 1) {
+							if(enemy.getType() == 3 &&  !((Technician)enemy).hasShield()) {
+								enemy.changeHealth(-1);
+							}
+							else {
+								enemy.changeHealth(-1);
+							}
+						}
+						else {
 							enemy.changeHealth(-2);
+						}
 					}
 			}
 		}

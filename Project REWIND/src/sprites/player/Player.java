@@ -94,6 +94,7 @@ public class Player extends Sprite {
 		return health;
 	}
 	public void changeHealth(int amount) {
+	
 		health += amount;
 	}
 	public void setHealth(int amount) {
