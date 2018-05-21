@@ -33,15 +33,14 @@ public class PlayScreen{
 	private Player p1Ghost;
 	private Player you, enemy;
 	private ArrayList<Particle> particles;
-	private ArrayList<Projectile> bullets;
-	private ArrayList<Projectile> otherBullets;
+	private ArrayList<Projectile> projectiles;
+	private ArrayList<Projectile> otherProjectiles;
 	private ArrayList<PImage> assets;
 	
 	private int youType, enemyType;
 	
 	private ArrayList<Point2D.Double> prevYouLocs;
 	private ArrayList<Point2D.Double> prevYouMouseLocs;
-	private ArrayList<Integer> prevYouHealth;
 	
 	private static final String messageTypeMove = "MOVE";
 	private static final String messageTypeTurn = "TURN";
@@ -67,12 +66,11 @@ public class PlayScreen{
 	public PlayScreen() {
 		assets = new ArrayList<PImage>();
 		isHost = false;
-		otherBullets = new ArrayList<Projectile>();
-		bullets = new ArrayList<Projectile>();
+		otherProjectiles = new ArrayList<Projectile>();
+		projectiles = new ArrayList<Projectile>();
 		hud = new Hud();
 		prevYouLocs = new ArrayList<Point2D.Double>();
 		prevYouMouseLocs = new ArrayList<Point2D.Double>();
-		prevYouHealth = new ArrayList<Integer>();
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
@@ -168,9 +166,9 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));			//0
+		assets.add(drawer.loadImage("assets/player.png"));		//0
 		assets.add(drawer.loadImage("assets/ghost.png"));			//1
-		assets.add(drawer.loadImage("assets/bullet.png"));			//2
+		assets.add(drawer.loadImage("assets/bullet.png"));		//2
 		assets.add(drawer.loadImage("assets/star.png"));			//3
 		assets.add(drawer.loadImage("assets/crosshair.png"));		//4
 		assets.add(drawer.loadImage("assets/time.png"));			//5
@@ -182,9 +180,9 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
 		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
 		assets.add(drawer.loadImage("assets/molotov.png"));      	//13
-		assets.add(drawer.loadImage("assets/grenadeIcon.png"));		//14
-		assets.add(drawer.loadImage("assets/molotovIcon.png"));		//15
-		assets.add(drawer.loadImage("assets/shieldIcon.png"));		//16
+		assets.add(drawer.loadImage("assets/grenadeIcon.png"));	//14
+		assets.add(drawer.loadImage("assets/molotovIcon.png"));	//15
+		assets.add(drawer.loadImage("assets/shieldIcon.png"));	//16
 		
 		//System.out.println(players);
 		
@@ -193,7 +191,7 @@ public class PlayScreen{
 	}
 	
 	public void reset(DrawingSurface drawer) {
-		if(you.getHealth() <= 0 || enemy.getHealth() <= 0) {
+		if(you.getHealth() <= 0) {
 			you.setHealth(5);
 			enemy.setHealth(5);
 			enemy.win();
@@ -202,8 +200,8 @@ public class PlayScreen{
 			you.setCooldowns(2, 0);
 			you.setCooldowns(3, 0);
 			you.setCooldowns(4, 0);
-			otherBullets = new ArrayList<Projectile>();
-			bullets = new ArrayList<Projectile>();
+			otherProjectiles = new ArrayList<Projectile>();
+			projectiles = new ArrayList<Projectile>();
 			
 			if(isHost) {
 				you.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
@@ -231,16 +229,13 @@ public class PlayScreen{
 		prevYouLocs.add(p);
 		if (prevYouLocs.size() > 120)
 			prevYouLocs.remove(0);
+		
+		Point2D.Double p2 = new Point2D.Double(enemy.getX(), enemy.getY());
 
 		Point2D.Double pMouse = new Point2D.Double(drawer.mouseX, drawer.mouseY);
 		prevYouMouseLocs.add(pMouse);
 		if (prevYouMouseLocs.size() > 120)
 			prevYouMouseLocs.remove(0);
-		
-		Integer pHealth = you.getHealth();
-		prevYouHealth.add(pHealth);
-		if (prevYouHealth.size() > 120)
-			prevYouHealth.remove(0);
 		
 		p1Ghost.setX((int)prevYouLocs.get(0).getX());
 		p1Ghost.setY((int)prevYouLocs.get(0).getY());
@@ -275,7 +270,6 @@ public class PlayScreen{
 			}
 			if (drawer.isPressed(KeyEvent.VK_R)) {
 				if(you.getCooldowns()[2] - drawer.millis() <= 0) {
-					you.setHealth(prevYouHealth.get(0));
 					you.moveToLocation(prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
 					//set cooldowns
@@ -300,7 +294,7 @@ public class PlayScreen{
 					
 					ArrayList<Projectile> fan = ((Demolitions) you).shiftAbility(assets.get(12));
 					for(Projectile b : fan) {
-						bullets.add(b);
+						projectiles.add(b);
 					}
 					
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 2);
@@ -320,11 +314,6 @@ public class PlayScreen{
 			if (you.getType() == 3 && ((Technician) you).hasShield()) {
 				Rectangle rect = ((Technician) you).getShield();
 				particles.add(new Particle(assets.get(10), you.x + 10, you.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
-				
-			}
-			if (enemy.getType() == 3 && ((Technician) enemy).hasShield()) {
-				Rectangle rect = ((Technician) enemy).getShield();
-				particles.add(new Particle(assets.get(10), enemy.x + 10, enemy.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
 				
 			}
 			
@@ -347,7 +336,7 @@ public class PlayScreen{
 						
 						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
 						
-						bullets.add(you.shoot(assets.get(2)));
+						projectiles.add(you.shoot(assets.get(2)));
 						you.setCooldowns(0,drawer.millis() + 1000);
 					}
 				}
@@ -357,7 +346,7 @@ public class PlayScreen{
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 1);
 							ArrayList<Projectile> fan = you.secondary(assets.get(3));
 								for(Projectile b : fan) {
-									bullets.add(b);
+									projectiles.add(b);
 								}
 								you.setCooldowns(1,drawer.millis() + 5000);
 						}
@@ -365,7 +354,7 @@ public class PlayScreen{
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 2);
 							ArrayList<Projectile> fan = you.secondary(assets.get(13));
 							for(Projectile b : fan) {
-								bullets.add(b);
+								projectiles.add(b);
 							}
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}
@@ -373,12 +362,31 @@ public class PlayScreen{
 							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 3);
 							ArrayList<Projectile> fan = you.secondary(assets.get(2));
 							for(Projectile b : fan) {
-								bullets.add(b);
+								projectiles.add(b);
 							}
-							
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}							
 					}
+					
+					/*
+=======
+					}
+					else if(youType == 2) {
+						ArrayList<Projectile> molotov = ((Demolitions) you).secondary(assets.get(13));
+						for(Projectile b : molotov) {
+							bullets.add(b);
+						}
+						you.setCooldowns(1,drawer.millis() + 5000);
+
+					}
+>>>>>>> branch 'master' of https://github.com/fyao638/Project-REwind.git
+					else {
+						if(secondaryReadyTime - drawer.millis() <= 0) {
+							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
+							secondaryReadyTime = drawer.millis() + 7000;
+						}
+					}
+					*/
 				}
 			}
 		}
@@ -387,42 +395,67 @@ public class PlayScreen{
 		drawer.fill(100);
 		map.draw(drawer);
 		
-		if (bullets.size() > 0) {
-			for(int i = 0; i < bullets.size(); i++) {
-					bullets.get(i).act();
-					bullets.get(i).draw(drawer);
-					if (bullets.get(i).checkObstacles(map.getObstacles())) {
-						bullets.remove(i);
-					}
-					else if (bullets.get(i).checkPlayer(enemy)) {
-						if(bullets.remove(i).getType() == 1) {
-							if(enemy.getType() == 3 &&  !((Technician)enemy).hasShield()) {
-								enemy.changeHealth(-1);
-							}
-							else {
+		if (projectiles.size() > 0) {
+			for(int i = 0; i < projectiles.size(); i++) {
+				projectiles.get(i).act();
+				projectiles.get(i).draw(drawer);
+				if (projectiles.get(i).checkObstacles(map.getObstacles())) {
+					projectiles.remove(i);
+				}
+				else if (projectiles.get(i).checkPlayer(enemy)) {
+					if(projectiles.remove(i).getType() == 1) {
+						if(enemy.getType() == 3) {
+							if(!((Technician) enemy).hasShield()) {
 								enemy.changeHealth(-1);
 							}
 						}
 						else {
-							enemy.changeHealth(-2);
+							enemy.changeHealth(-1);
 						}
 					}
+					else {
+						if(enemy.getType() == 3) {
+							if(!((Technician) enemy).hasShield()) {
+								enemy.changeHealth(-1);
+							}
+						}
+						else {
+							enemy.changeHealth(-1);
+						}
+					}
+				}
 			}
 		}
 		
-		if (otherBullets.size() > 0) {
-			for(int i = 0; i < otherBullets.size(); i++) {
-					otherBullets.get(i).act();
-					otherBullets.get(i).draw(drawer);
-					if (otherBullets.get(i).checkObstacles(map.getObstacles())) {
-						otherBullets.remove(i);
-					}
-					else if (otherBullets.get(i).checkPlayer(you)) {
-						if(otherBullets.remove(i).getType() == 1)
+		if (otherProjectiles.size() > 0) {
+			for(int i = 0; i < otherProjectiles.size(); i++) {
+				otherProjectiles.get(i).act();
+				otherProjectiles.get(i).draw(drawer);
+				if (otherProjectiles.get(i).checkObstacles(map.getObstacles())) {
+					otherProjectiles.remove(i);
+				}
+				else if (otherProjectiles.get(i).checkPlayer(you)) {
+					if(otherProjectiles.remove(i).getType() == 1) {
+						if(you.getType() == 3) {
+							if(!((Technician) you).hasShield()) {
+								you.changeHealth(-1);
+							}
+						}
+						else {
 							you.changeHealth(-1);
-						else
-							you.changeHealth(-2);
+						}
 					}
+					else {
+						if(you.getType() == 3) {
+							if(!((Technician) you).hasShield()) {
+								you.changeHealth(-2);
+							}
+						}
+						else {
+							you.changeHealth(-2);
+						}
+					}
+				}
 			}
 		}
 		// draw the players after the bullets so the bullets don't appear above the gun
@@ -475,13 +508,13 @@ public class PlayScreen{
 		return isHost;
 	}
 	public ArrayList<Projectile> getOtherBullets(){
-		return otherBullets;
+		return otherProjectiles;
 	}
 	public ArrayList<Obstacle> getObstacles(){
 		return map.getObstacles();
 	}
 	public ArrayList<Projectile> getBullets() {
-		return bullets;
+		return projectiles;
 	}
 	public ArrayList<PImage> getAssets(){
 		return assets;
