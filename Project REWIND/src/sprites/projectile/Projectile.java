@@ -14,11 +14,11 @@ public abstract class Projectile extends Sprite{
 	private int type;
 	
 	
-	public Projectile(PImage image, double x, double y, double width, double height, double dir, double speed) {
+	public Projectile(PImage image, double x, double y, double width, double height, double dir, double speed, int type) {
 		super(image, x, y, width, height);
 		
 		turn(dir);
-		type = 2;
+		this.type = type;
 		this.speed = speed;
 	}
 	

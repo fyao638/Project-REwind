@@ -25,8 +25,8 @@ public class Molotov extends Projectile{
 	
 	private ArrayList<Particle> particles;
 	
-	public Molotov(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
+	public Molotov(PImage image, double x, double y, double dir, double speed, int type) {
+		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, type);
 		flames = new ArrayList<Particle>();
 		particles = new ArrayList<Particle>();
 		flameTimer = 0;

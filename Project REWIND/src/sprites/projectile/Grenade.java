@@ -31,8 +31,8 @@ public class Grenade extends Projectile{
 	private int timesBounced;
 	private ArrayList<Particle> particles;
 	
-	public Grenade(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed);
+	public Grenade(PImage image, double x, double y, double dir, double speed, int type) {
+		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, type);
 		explosions = new ArrayList<PImage>();
 		particles = new ArrayList<Particle>();
 		explosionFrame = 0;

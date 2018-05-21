@@ -25,8 +25,8 @@ public class Bullet extends Projectile{
 	private double speed;
 	
 	
-	public Bullet(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT, dir, speed);
+	public Bullet(PImage image, double x, double y, double dir, double speed, int type) {
+		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT, dir, speed, type);
 		
 //		double i = Math.random();
 //		if (i < 0.5)

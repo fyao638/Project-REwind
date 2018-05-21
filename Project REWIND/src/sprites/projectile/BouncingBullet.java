@@ -14,8 +14,8 @@ import sprites.obstacles.Obstacle;
 public class BouncingBullet extends Bullet{
 	private int timesBounced;
 	
-	public BouncingBullet(PImage image, double x, double y, double dir, double speed) {
-		super(image, x, y, dir, speed);
+	public BouncingBullet(PImage image, double x, double y, double dir, double speed, int type) {
+		super(image, x, y, dir, speed, type);
 		
 		turn(getDirection());
 		

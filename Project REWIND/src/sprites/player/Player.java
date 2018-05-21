@@ -73,7 +73,7 @@ public class Player extends Sprite {
 	}
 	
 	public Bullet shoot(PImage img) {
-		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
+		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 1);
 	}
 	public void win() {
 		score++;
