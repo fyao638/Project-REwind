@@ -316,6 +316,11 @@ public class PlayScreen{
 				particles.add(new Particle(assets.get(10), you.x + 10, you.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
 				
 			}
+			if (enemy.getType() == 3 && ((Technician) enemy).hasShield()) {
+				Rectangle rect = ((Technician) enemy).getShield();
+				particles.add(new Particle(assets.get(10), enemy.x + 10, enemy.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
+				
+			}
 			
 			// Particles for when grenade active
 			
