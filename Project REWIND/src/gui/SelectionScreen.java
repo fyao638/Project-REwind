@@ -44,7 +44,7 @@ public class SelectionScreen {
 		timer++;
 	
 		update(drawer.mouseX, drawer.mouseY, drawer);
-		drawer.background(255);
+		drawer.background(127);
 	  
 		if (rectOver1) {
 			drawer.fill(0,255,255);
