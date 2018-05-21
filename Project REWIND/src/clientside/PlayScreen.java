@@ -379,26 +379,6 @@ public class PlayScreen{
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}							
 					}
-					
-					/*
-=======
-					}
-					else if(youType == 2) {
-						ArrayList<Projectile> molotov = ((Demolitions) you).secondary(assets.get(13));
-						for(Projectile b : molotov) {
-							bullets.add(b);
-						}
-						you.setCooldowns(1,drawer.millis() + 5000);
-
-					}
->>>>>>> branch 'master' of https://github.com/fyao638/Project-REwind.git
-					else {
-						if(secondaryReadyTime - drawer.millis() <= 0) {
-							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
-							secondaryReadyTime = drawer.millis() + 7000;
-						}
-					}
-					*/
 				}
 			}
 		}
