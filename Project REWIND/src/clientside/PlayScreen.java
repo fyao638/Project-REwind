@@ -39,16 +39,15 @@ public class PlayScreen{
 	
 	private int youType, enemyType;
 	
-	private ArrayList<Point2D.Double> prevClientLocs;
-	private ArrayList<Point2D.Double> prevClientMouseLocs;
-	private ArrayList<Point2D.Double> prevEnemyLocs;
+	private ArrayList<Point2D.Double> prevYouLocs;
+	private ArrayList<Point2D.Double> prevYouMouseLocs;
 	
 	private static final String messageTypeMove = "MOVE";
 	private static final String messageTypeTurn = "TURN";
 	private static final String messageTypeRewind = "REWIND";
 	private static final String messageTypeShoot = "SHOOT";
 	private static final String messageTypeSecondary = "SECONDARY";
-	private static final String messageTypeFlash = "FLASH";
+	private static final String messageTypeShift = "SHIFT";
 	private static final String messageTypeReset = "RESET";
 	//private ArrayList<Player> otherPlayers;
 	
@@ -70,18 +69,14 @@ public class PlayScreen{
 		otherBullets = new ArrayList<Projectile>();
 		bullets = new ArrayList<Projectile>();
 		hud = new Hud();
-		prevClientLocs = new ArrayList<Point2D.Double>();
-		prevClientMouseLocs = new ArrayList<Point2D.Double>();
-		prevEnemyLocs = new ArrayList<Point2D.Double>();
-		prevEnemyLocs = new ArrayList<Point2D.Double>();
+		prevYouLocs = new ArrayList<Point2D.Double>();
+		prevYouMouseLocs = new ArrayList<Point2D.Double>();
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
 		timer = 0;
 	}
 	public void spawnNewHost() {
-		System.out.println("Type:" + youType);
-		System.out.println("Type:" + enemyType);
 		
 		if(you == null && youType != 0) {
 			if(youType == 1) {
@@ -105,7 +100,7 @@ public class PlayScreen{
 			
 			Point2D.Double p = new Point2D.Double(you.getX(), you.getY());
 			//Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
-			prevClientLocs.add(p);
+			prevYouLocs.add(p);
 			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
@@ -116,11 +111,11 @@ public class PlayScreen{
 		System.out.println("Type:" + enemyType);
 		if(you == null && youType != 0) {
 			
-			if(enemyType == 1) {
+			if(youType == 1) {
 				System.out.println("a");
 				you = new Assault(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 			}
-			else if(enemyType == 2) {
+			else if(youType == 2) {
 				System.out.println("b");
 				you = new Demolitions(assets.get(0), DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 			}
@@ -134,15 +129,18 @@ public class PlayScreen{
 			
 			Point2D.Double p = new Point2D.Double(you.getX(), you.getY());
 			//Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
-			prevClientLocs.add(p);
+			prevYouLocs.add(p);
 			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
 		}
 	}
+	public void updatePlayerType(DrawingSurface drawer) {
+		
+	}
 	
 	public void spawnNewGhost() {
-		p1Ghost = new Player(assets.get(1), (int)prevClientLocs.get(0).getX(), (int)prevClientLocs.get(0).getY(), 0);
+		p1Ghost = new Player(assets.get(1), (int)prevYouLocs.get(0).getX(), (int)prevYouLocs.get(0).getY(), 0);
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -199,23 +197,19 @@ public class PlayScreen{
 			reset(drawer);
 		}
 		Point2D.Double p = new Point2D.Double(you.getX(), you.getY());
-		prevClientLocs.add(p);
-		if (prevClientLocs.size() > 120)
-			prevClientLocs.remove(0);
+		prevYouLocs.add(p);
+		if (prevYouLocs.size() > 120)
+			prevYouLocs.remove(0);
 		
 		Point2D.Double p2 = new Point2D.Double(enemy.getX(), enemy.getY());
-		prevEnemyLocs.add(p2);
-		if (prevEnemyLocs.size() > 120)
-			prevEnemyLocs.remove(0);
-		
 
 		Point2D.Double pMouse = new Point2D.Double(drawer.mouseX, drawer.mouseY);
-		prevClientMouseLocs.add(pMouse);
-		if (prevClientMouseLocs.size() > 120)
-			prevClientMouseLocs.remove(0);
+		prevYouMouseLocs.add(pMouse);
+		if (prevYouMouseLocs.size() > 120)
+			prevYouMouseLocs.remove(0);
 		
-		p1Ghost.setX((int)prevClientLocs.get(0).getX());
-		p1Ghost.setY((int)prevClientLocs.get(0).getY());
+		p1Ghost.setX((int)prevYouLocs.get(0).getX());
+		p1Ghost.setY((int)prevYouLocs.get(0).getY());
 		
 		drawer.background(128,128,128);
 
@@ -226,124 +220,128 @@ public class PlayScreen{
 		
 		you.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
 
-		p1Ghost.turnToward((float)prevClientMouseLocs.get(0).getX() / ratioX, (float)prevClientMouseLocs.get(0).getY() / ratioY);
+		p1Ghost.turnToward((float)prevYouMouseLocs.get(0).getX() / ratioX, (float)prevYouMouseLocs.get(0).getY() / ratioY);
 
-		if(drawer.isPressed(KeyEvent.VK_A)) {
-			you.walk(-1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
-		}
-		if (drawer.isPressed(KeyEvent.VK_D)) {
-			you.walk(1, 0, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
-		}
-		if (drawer.isPressed(KeyEvent.VK_W)) {
-			you.walk(0, -1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
-		}
-		if (drawer.isPressed(KeyEvent.VK_S)) {
-			you.walk(0, 1, map.getObstacles());
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
-		}
-		if (drawer.isPressed(KeyEvent.VK_R)) {
-			if(you.getCooldowns()[2] - drawer.millis() <= 0) {
-				you.moveToLocation(prevClientLocs.get(0).getX(), prevClientLocs.get(0).getY());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevEnemyLocs.get(0).getX(), prevEnemyLocs.get(0).getY());
-				//set cooldowns
-				you.getCooldowns()[2] = drawer.millis() + 15000;
-				you.getCooldowns()[4] = drawer.millis() + 2000;
-				
+		if(drawer.getClientCount() == 2) {
+			if(drawer.isPressed(KeyEvent.VK_A)) {
+				you.walk(-1, 0, map.getObstacles());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
 			}
-		}
-		if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
-			if(you.getCooldowns()[3] - drawer.millis() <= 0 && you.getType() == 1) {
-				if(((Assault) you).canShift(map.getObstacles())) {
-					for (int i = 0; i < (int) (50 + Math.random() * 10); i++) {
-						particles.add(new Particle(assets.get(10), you.x + you.getWidth() / 2, you.y + you.getHeight() / 2, 20, 20, 1));
+			if (drawer.isPressed(KeyEvent.VK_D)) {
+				you.walk(1, 0, map.getObstacles());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
+			}
+			if (drawer.isPressed(KeyEvent.VK_W)) {
+				you.walk(0, -1, map.getObstacles());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
+			}
+			if (drawer.isPressed(KeyEvent.VK_S)) {
+				you.walk(0, 1, map.getObstacles());
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
+			}
+			if (drawer.isPressed(KeyEvent.VK_R)) {
+				if(you.getCooldowns()[2] - drawer.millis() <= 0) {
+					you.moveToLocation(prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
+					//set cooldowns
+					you.getCooldowns()[2] = drawer.millis() + 15000;
+					you.getCooldowns()[4] = drawer.millis() + 2000;
+					
+				}
+			}
+			if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
+				if(you.getCooldowns()[3] - drawer.millis() <= 0 && you.getType() == 1) {
+					if(((Assault) you).canShift(map.getObstacles())) {
+						for (int i = 0; i < (int) (50 + Math.random() * 10); i++) {
+							particles.add(new Particle(assets.get(10), you.x + you.getWidth() / 2, you.y + you.getHeight() / 2, 20, 20, 1));
+						}
+						((Assault) you).shiftAbility(map.getObstacles());
+						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 1);
+	
+						you.setCooldowns(3, drawer.millis() + 7000);
 					}
-					((Assault) you).shiftAbility(map.getObstacles());
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
-
+				}
+				else if(you.getCooldowns()[3] - drawer.millis() <= 0 && you.getType() == 2) {
+					
+					ArrayList<Projectile> fan = ((Demolitions) you).shiftAbility(assets.get(12));
+					for(Projectile b : fan) {
+						bullets.add(b);
+					}
+					
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 2);
+					you.setCooldowns(3, drawer.millis() + 7000);
+				}
+				else if(you.getCooldowns()[3] - drawer.millis() <= 0) {
+					
+					((Technician) you).shiftAbility();
+					
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 3);
+					
 					you.setCooldowns(3, drawer.millis() + 7000);
 				}
 			}
-			else if(you.getCooldowns()[3] - drawer.millis() <= 0 && you.getType() == 2) {
-				
-				ArrayList<Projectile> fan = ((Demolitions) you).shiftAbility(assets.get(12));
-				for(Projectile b : fan) {
-					bullets.add(b);
-				}
-				you.setCooldowns(3, drawer.millis() + 7000);
-			}
-			else if(you.getCooldowns()[3] - drawer.millis() <= 0) {
-				
-				((Technician) you).shiftAbility();
-				
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeFlash);
-				
-				you.setCooldowns(3, drawer.millis() + 7000);
-			}
-		}
-		
-		// Particles for when technician has shield up
-		if (you.getType() == 3 && ((Technician) you).hasShield()) {
-			Rectangle rect = ((Technician) you).getShield();
-			particles.add(new Particle(assets.get(10), you.x + 10, you.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
 			
-		}
-		
-		// Particles for when grenade active
-		
-		
-		// Test this plz
-		//
-		//Testing
-		//if(drawer.isPressed(KeyEvent.VK_SPACE)) {
-		//	p1.changePlayerType(1);
-		//}
-		
-		
-		
-		// Draw abilities
-		if(drawer.mousePressed) {
-			if(drawer.mouseButton == PConstants.LEFT) {
-				if(you.getCooldowns()[0] - drawer.millis() <= 0) {
-					
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
-					
-					bullets.add(you.shoot(assets.get(2)));
-					you.setCooldowns(0,drawer.millis() + 1000);
-				}
+			// Particles for when technician has shield up
+			if (you.getType() == 3 && ((Technician) you).hasShield()) {
+				Rectangle rect = ((Technician) you).getShield();
+				particles.add(new Particle(assets.get(10), you.x + 10, you.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
+				
 			}
-			else if(drawer.mouseButton == PConstants.RIGHT) {
-				if(you.getCooldowns()[1] - drawer.millis() <= 0) {
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
-					if(youType == 1) {
-						ArrayList<Projectile> fan = you.secondary(assets.get(3));
+			
+			// Particles for when grenade active
+			
+			
+			// Test this plz
+			//
+			//Testing
+			//if(drawer.isPressed(KeyEvent.VK_SPACE)) {
+			//	p1.changePlayerType(1);
+			//}
+			
+			
+			
+			// Draw abilities
+			if(drawer.mousePressed) {
+				if(drawer.mouseButton == PConstants.LEFT) {
+					if(you.getCooldowns()[0] - drawer.millis() <= 0) {
+						
+						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
+						
+						bullets.add(you.shoot(assets.get(2)));
+						you.setCooldowns(0,drawer.millis() + 1000);
+					}
+				}
+				else if(drawer.mouseButton == PConstants.RIGHT) {
+					if(you.getCooldowns()[1] - drawer.millis() <= 0) {
+						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary);
+						if(youType == 1) {
+							ArrayList<Projectile> fan = you.secondary(assets.get(3));
+								for(Projectile b : fan) {
+									bullets.add(b);
+								}
+								you.setCooldowns(1,drawer.millis() + 5000);
+						}
+						else if(youType == 2) {
+							// TODO add new ability
+						}
+						else {
+							ArrayList<Projectile> fan = you.secondary(assets.get(2));
 							for(Projectile b : fan) {
 								bullets.add(b);
 							}
 							you.setCooldowns(1,drawer.millis() + 5000);
+						}							
 					}
-					else if(youType == 2) {
-						// TODO add new ability
-					}
+					
+					/*
 					else {
-						ArrayList<Projectile> fan = you.secondary(assets.get(2));
-						for(Projectile b : fan) {
-							bullets.add(b);
+						if(secondaryReadyTime - drawer.millis() <= 0) {
+							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
+							secondaryReadyTime = drawer.millis() + 7000;
 						}
-						you.setCooldowns(1,drawer.millis() + 5000);
-					}							
-				}
-				
-				/*
-				else {
-					if(secondaryReadyTime - drawer.millis() <= 0) {
-						bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
-						secondaryReadyTime = drawer.millis() + 7000;
 					}
+					*/
 				}
-				*/
 			}
 		}
 
@@ -401,7 +399,7 @@ public class PlayScreen{
 			}
 		}
 		//assets dont change, so dont take the in draw
-		hud.draw(drawer, this, you, assets.get(4), assets.get(5), assets.get(6),assets.get(7), assets.get(11), drawer.millis(), abilWidth, abilHeight);
+		hud.draw(drawer, this, you, drawer.millis(), abilWidth, abilHeight);
 		
 		
 		timer++;
