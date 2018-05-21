@@ -41,6 +41,7 @@ public class PlayScreen{
 	
 	private ArrayList<Point2D.Double> prevYouLocs;
 	private ArrayList<Point2D.Double> prevYouMouseLocs;
+	private ArrayList<Integer> prevYouHealth;
 	
 	private static final String messageTypeMove = "MOVE";
 	private static final String messageTypeTurn = "TURN";
@@ -71,6 +72,7 @@ public class PlayScreen{
 		hud = new Hud();
 		prevYouLocs = new ArrayList<Point2D.Double>();
 		prevYouMouseLocs = new ArrayList<Point2D.Double>();
+		prevYouHealth = new ArrayList<Integer>();
 		particles = new ArrayList<Particle>();
 		abilWidth = 100;
 		abilHeight = 100;
@@ -128,9 +130,7 @@ public class PlayScreen{
 			
 			
 			Point2D.Double p = new Point2D.Double(you.getX(), you.getY());
-			//Point2D.Double p2 = new Point2D.Double(hostPlayer.getX(), hostPlayer.getY());
 			prevYouLocs.add(p);
-			//prevEnemyLocs.add(p2);
 			
 			spawnNewGhost();
 		}
@@ -169,7 +169,8 @@ public class PlayScreen{
 	
 	public void reset(DrawingSurface drawer) {
 		if(you.getHealth() == 0) {
-			you.changeHealth(5);
+			you.setHealth(5);
+			enemy.setHealth(5);
 			enemy.win();
 			you.setCooldowns(0, 0);
 			you.setCooldowns(1, 0);
@@ -201,13 +202,16 @@ public class PlayScreen{
 		prevYouLocs.add(p);
 		if (prevYouLocs.size() > 120)
 			prevYouLocs.remove(0);
-		
-		Point2D.Double p2 = new Point2D.Double(enemy.getX(), enemy.getY());
 
 		Point2D.Double pMouse = new Point2D.Double(drawer.mouseX, drawer.mouseY);
 		prevYouMouseLocs.add(pMouse);
 		if (prevYouMouseLocs.size() > 120)
 			prevYouMouseLocs.remove(0);
+		
+		Integer pHealth = you.getHealth();
+		prevYouHealth.add(pHealth);
+		if (prevYouHealth.size() > 120)
+			prevYouHealth.remove(0);
 		
 		p1Ghost.setX((int)prevYouLocs.get(0).getX());
 		p1Ghost.setY((int)prevYouLocs.get(0).getY());
@@ -243,6 +247,7 @@ public class PlayScreen{
 			if (drawer.isPressed(KeyEvent.VK_R)) {
 				if(you.getCooldowns()[2] - drawer.millis() <= 0) {
 					you.moveToLocation(prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
+					you.setHealth(prevYouHealth.get(0));
 					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
 					//set cooldowns
 					you.getCooldowns()[2] = drawer.millis() + 15000;
