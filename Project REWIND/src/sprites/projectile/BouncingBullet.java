@@ -34,7 +34,7 @@ public class BouncingBullet extends Bullet{
 						turn((Math.PI/2) - incidence);
 					}
 					timesBounced++;
-					if(timesBounced > 4)
+					if(timesBounced > 5)
 						return true;
 					}
 				}
