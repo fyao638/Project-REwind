@@ -1,7 +1,4 @@
 package clientside;
-
-import java.awt.Rectangle;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Queue;
 

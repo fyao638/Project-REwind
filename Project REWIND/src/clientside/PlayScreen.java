@@ -172,6 +172,7 @@ public class PlayScreen{
 		assets.add(drawer.loadImage("assets/grenadeIcon.png"));	//14
 		assets.add(drawer.loadImage("assets/molotovIcon.png"));	//15
 		assets.add(drawer.loadImage("assets/shieldIcon.png"));	//16
+		assets.add(drawer.loadImage("assets/woodFloor.png"));	//17
 		
 		//System.out.println(players);
 		
@@ -234,7 +235,7 @@ public class PlayScreen{
 		p1Ghost.setX((int)prevYouLocs.get(0).getX());
 		p1Ghost.setY((int)prevYouLocs.get(0).getY());
 		
-		drawer.background(128,128,128);
+		drawer.background(125);
 
 		float ratioX = (float)drawer.width/DRAWING_WIDTH;
 		float ratioY = (float)drawer.height/DRAWING_HEIGHT;
