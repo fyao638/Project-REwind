@@ -141,8 +141,8 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 
 			String host = ndo.getSourceIP();
 			
-			Player p = playScreen.getEnemyPlayer();
-			Player p2 = playScreen.getYouPlayer();
+			Player enemyPlayer = playScreen.getEnemyPlayer();
+			Player myPlayer = playScreen.getYouPlayer();
 
 			//IT SHOULDNT CALL PLAYER (SHOULD BE THE OTHER PLAYER)
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
@@ -153,38 +153,38 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					}
 					
 				} else if (ndo.message[0].equals(messageTypeMove)) {
-					p.walk((Integer)ndo.message[1],(Integer)ndo.message[2], playScreen.getObstacles());
+					enemyPlayer.walk((Integer)ndo.message[1],(Integer)ndo.message[2], playScreen.getObstacles());
 					
 					//move the player
 				}
 				else if (ndo.message[0].equals(messageTypeTurn)) {
 					//turn the player
-					if(p != null) {
-						p.turnToward((Integer)ndo.message[1],(Integer)ndo.message[2]);
+					if(enemyPlayer != null) {
+						enemyPlayer.turnToward((Integer)ndo.message[1],(Integer)ndo.message[2]);
 					}
 				}
 				else if (ndo.message[0].equals(messageTypeShoot)) {
 					//player shoots
-					playScreen.getOtherBullets().add(p.shoot(playScreen.getAssets().get(2)));
+					playScreen.getOtherBullets().add(enemyPlayer.shoot(playScreen.getAssets().get(2)));
 				}
 				//player uses secondary
 				else if (ndo.message[0].equals(messageTypeSecondary)) {
 					if((Integer)ndo.message[1] == 1) {
 
-						ArrayList<Projectile> fan = ((Assault)(p)).secondary(playScreen.getAssets().get(3));
+						ArrayList<Projectile> fan = ((Assault)(enemyPlayer)).secondary(playScreen.getAssets().get(3));
 
 						for(Projectile b : fan) {
 							playScreen.getOtherBullets().add(b);
 						}
 					}
 					else if((Integer)ndo.message[1] == 2) {
-						ArrayList<Projectile> fan = ((Demolitions) p).secondary(playScreen.getAssets().get(13));
+						ArrayList<Projectile> fan = ((Demolitions) enemyPlayer).secondary(playScreen.getAssets().get(13));
 						for(Projectile b : fan) {
 							playScreen.getOtherBullets().add(b);
 						}
 					}
 					else {
-						ArrayList<Projectile> fan = ((Technician) p).secondary(playScreen.getAssets().get(2));
+						ArrayList<Projectile> fan = ((Technician) enemyPlayer).secondary(playScreen.getAssets().get(2));
 						for(Projectile b : fan) {
 							playScreen.getOtherBullets().add(b);
 						}
@@ -193,50 +193,55 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 				else if (ndo.message[0].equals(messageTypeShift)) {
 					if((Integer)ndo.message[1] == 1) {
 						for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-							playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), p.x + p.getWidth() / 2, p.y + p.getHeight() / 2, 20, 20, 1));
+							playScreen.getParticles().add(new Particle(playScreen.getAssets().get(10), enemyPlayer.x + enemyPlayer.getWidth() / 2, enemyPlayer.y + enemyPlayer.getHeight() / 2, 20, 20, 1));
 						}
-						((Assault)p).shiftAbility(playScreen.getObstacles());
+						((Assault)enemyPlayer).shiftAbility(playScreen.getObstacles());
 						
 						//player uses flash
 					}
 					else if((Integer)ndo.message[1] == 2) {
-						ArrayList<Projectile> fan = ((Demolitions)(p)).shiftAbility(playScreen.getAssets().get(12));
+						ArrayList<Projectile> fan = ((Demolitions)(enemyPlayer)).shiftAbility(playScreen.getAssets().get(12));
 						for(Projectile b : fan) {
 							playScreen.getOtherBullets().add(b);
 						}
 					}
 					else {
-						((Technician) p).shiftAbility();
+						((Technician) enemyPlayer).shiftAbility();
 					}
 				}
 				else if (ndo.message[0].equals(messageTypeRewind)) {
-					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
+					enemyPlayer.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
 				}
 				else if(ndo.message[0].equals(messageTypeReset)) {
 					
 					playScreen.resetProjectiles();
 					
-					p2.setCooldowns(0, 0);
-					p2.setCooldowns(1, 0);
-					p2.setCooldowns(2, 0);
-					p2.setCooldowns(3, 0);
-					p2.setCooldowns(4, 0);
 					if((Boolean)ndo.message[1]) {
 						//isHost
-						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
-						p.setHealth(5);
-						p2.setHealth(5);
-						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
-						p2.win();
+						enemyPlayer.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						enemyPlayer.resetHealth();
+						myPlayer.resetHealth();
+						myPlayer.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						myPlayer.win();
 						
 					}
 					else {
-						p.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
-						p.setHealth(5);
-						p2.setHealth(5);
-						p2.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
-						p2.win();
+						enemyPlayer.moveToLocation(800/2-Player.PLAYER_WIDTH/2,500);
+						enemyPlayer.resetHealth();
+						myPlayer.resetHealth();
+						myPlayer.moveToLocation(800/2-Player.PLAYER_WIDTH/2,50);
+						myPlayer.win();
 					}
+					myPlayer.setCooldowns(0, millis() + 1000);
+					myPlayer.setCooldowns(1, millis() + 1000);
+					myPlayer.setCooldowns(2, millis() + 1000);
+					myPlayer.setCooldowns(3, millis() + 1000);
+					myPlayer.setCooldowns(4, millis() + 1000);
+					enemyPlayer.setCooldowns(0, millis() + 1000);
+					enemyPlayer.setCooldowns(1, millis() + 1000);
+					enemyPlayer.setCooldowns(2, millis() + 1000);
+					enemyPlayer.setCooldowns(3, millis() + 1000);
+					enemyPlayer.setCooldowns(4, millis() + 1000);
 				}
 				else {
 					System.out.println("Its not detecting it");

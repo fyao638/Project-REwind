@@ -41,7 +41,7 @@ public class Technician extends Player {
 		super.draw(drawer);
 		// 500 very much subject to change
 		
-		if (shieldTimer < 100) {
+		if (shieldTimer < 150) {
 			shieldTimer++;
 			// draw an ellipse that shields the player
 			Rectangle shieldRect = getShield();drawer.pushMatrix();

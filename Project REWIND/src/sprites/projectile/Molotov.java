@@ -123,7 +123,7 @@ public class Molotov extends Projectile{
 			if(this.speed != 0) {
 				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
-			else if (flameTimer < 400) {
+			else if (flameTimer < 200) {
 
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
 				flames.add(new Particle(getImage(),(int) (x + GRENADE_WIDTH / 2) - GRENADE_WIDTH / 3 - 50,(int) (y + GRENADE_HEIGHT / 2) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
