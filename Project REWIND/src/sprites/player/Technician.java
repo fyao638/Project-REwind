@@ -9,7 +9,15 @@ import processing.core.PImage;
 import sprites.projectile.BouncingBullet;
 import sprites.projectile.Bullet;
 import sprites.projectile.Projectile;
-
+/**
+ * 
+ * @author Michael Kim
+ * @version 1.0
+ *  This class represents one of the player classes, demolitions.
+ * - Secondary: bouncing bullet
+ * - Shift: Energy Shield
+ *
+ */
 public class Technician extends Player {
 	// could be used when using hit detection?
 	private boolean hasShield;

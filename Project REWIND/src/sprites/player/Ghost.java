@@ -11,7 +11,13 @@ import sprites.Sprite;
 import sprites.obstacles.Obstacle;
 import sprites.projectile.Bullet;
 import sprites.projectile.Projectile;
-
+/**
+ * 
+ * @author Aakarsh Anaad
+ * @version 1.0
+ * Represents the ghost of the player that follows the player 2 seconds behind
+ *
+ */
 public class Ghost extends Sprite{
 	
 	public static final int PLAYER_WIDTH = 60;
