@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import processing.core.PImage;
 import sprites.obstacles.Obstacle;
+import sprites.player.Player;
 
 /**
  * 
@@ -42,5 +43,15 @@ public class BouncingBullet extends Bullet{
 			
 			return false;
 		}
-	
+		
+
+	public int checkPlayer(Player player) {
+		for(int i = 0; i < 4; i++) {
+			if(player.intersects(this.getX(),this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
+				return 2;
+						
+			}
+		}
+		return 0;
+	}
 }

@@ -184,6 +184,7 @@ public class PlayScreen{
 		
 	}
 	
+	
 	public void reset(DrawingSurface drawer) {
 		if(you.getHealth() <= 0) {
 			you.setHealth(5);
@@ -212,6 +213,11 @@ public class PlayScreen{
 			
 
 		}
+	}
+
+	public void resetProjectiles() {
+		otherProjectiles = new ArrayList<Projectile>();
+		projectiles = new ArrayList<Projectile>();
 	}
 	
 	public void draw(DrawingSurface drawer) {
@@ -387,16 +393,15 @@ public class PlayScreen{
 						}
 					}
 					else if (projectiles.get(i).getType() == 2) {
+						projectiles.remove(i);
 						if(enemy.getType() == 3) {
 							if(!((Technician) enemy).hasShield()) {
-								enemy.changeHealth(-2);
-								projectiles.remove(i);
+								enemy.changeHealth(-damage);
 							}
 						}
-							else {
-								enemy.changeHealth(-2);
-								projectiles.remove(i);
-							}
+						else {
+							enemy.changeHealth(-damage);
+						}
 					}
 					else if (projectiles.get(i).getType() == 3) {
 						if(enemy.getType() == 3) {
@@ -463,18 +468,17 @@ public class PlayScreen{
 							}
 					}
 					else if (otherProjectiles.get(i).getType() == 2) {
+						otherProjectiles.remove(i);
 						if(you.getType() == 3) {
 							if(!((Technician) you).hasShield()) {
-								you.changeHealth(-2);
-								otherProjectiles.remove(i);
+								you.changeHealth(-damage);
 //								if(projectiles.get(i).isDone()) {
 //									
 //								}
 							}
 						}
 							else {
-								you.changeHealth(-2);
-
+								you.changeHealth(-damage);
 							}
 					}
 					else if (otherProjectiles.get(i).getType() == 3) {

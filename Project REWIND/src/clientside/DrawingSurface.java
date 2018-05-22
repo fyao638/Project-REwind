@@ -213,7 +213,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					p.moveToLocation((Double) ndo.message[1], (Double) ndo.message[2]);
 				}
 				else if(ndo.message[0].equals(messageTypeReset)) {
-								
+					
+					playScreen.resetProjectiles();
+					
 					p2.setCooldowns(0, 0);
 					p2.setCooldowns(1, 0);
 					p2.setCooldowns(2, 0);

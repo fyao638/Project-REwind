@@ -97,7 +97,7 @@ public class Grenade extends Projectile{
 					Point2D.Double grenCoord = new Point2D.Double(grenX, grenY);
 					
 					double dist = grenCoord.distance(playerCoord);
-					if (dist < 28)
+					if (dist < 38)
 						return 3;
 					if (dist < 68)
 						return 2;
