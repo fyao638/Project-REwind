@@ -86,7 +86,7 @@ public class Hud {
 		drawer.fill(0,255,0);
 		drawer.text(play.getYouPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(), 720, 40);
 		
-		drawer.fill(0, 102, 153, 128);
+		drawer.fill(0, 102, 153, 100);
 		
 		if(p.getCooldowns()[0] - currentTime > 0) {
 			drawer.rectMode(PApplet.CORNERS);
@@ -113,11 +113,12 @@ public class Hud {
 		drawer.strokeWeight(1);
 		
 		drawer.textSize(26); 
-		drawer.fill(0, 102, 153);
+		drawer.fill(0, 102, 153, 100);
 		
 		if(p.getCooldowns()[0] - currentTime <= 0) {
 			drawer.textSize(26); 
 			//drawer.text("SHOT", 37, 540);
+			drawer.fill(255, 100);
 			drawer.image(icon1, 30, 490, 80, 80);
 			drawer.textSize(26); 
 		}
@@ -129,17 +130,19 @@ public class Hud {
 		if(p.getCooldowns()[2] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("REwind", 155, 539);
+			drawer.fill(255, 100);
 			drawer.image(icon2, 150, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
 			drawer.fill(255, 255, 255);
 			drawer.text(Math.round((double)(p.getCooldowns()[2] - currentTime) * 10) / 10000 + "sec", 150, 540);
-			drawer.fill(0, 102, 153);
+			drawer.fill(0, 102, 153,100);
 		}
 		if(p.getCooldowns()[1] - currentTime <= 0) {
 			drawer.textSize(20);
 			//drawer.text("spread", 280, 539);
+			drawer.fill(255, 100);
 			
 			drawer.image(icon3, 270, 490, 80, 80);
 			
@@ -152,7 +155,7 @@ public class Hud {
 		}
 		if(p.getCooldowns()[3] - currentTime <= 0) {
 			drawer.textSize(20);
-			//drawer.text("FLASH", 400, 539);
+			drawer.fill(255, 100);
 			drawer.image(icon4, 390, 490, 80, 80);
 			drawer.textSize(26); 
 		}

@@ -26,8 +26,8 @@ public class Molotov extends Projectile{
 	
 	private ArrayList<Particle> particles;
 	
-	public Molotov(PImage image, double x, double y, double dir, double speed, int type) {
-		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, type);
+	public Molotov(PImage image, double x, double y, double dir, double speed) {
+		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, 3);
 		flames = new ArrayList<Particle>();
 		particles = new ArrayList<Particle>();
 		flameTimer = 0;
@@ -71,7 +71,7 @@ public class Molotov extends Projectile{
 		return false;
 	}
 		
-	public boolean checkPlayer(Player player) {
+	public int checkPlayer(Player player) {
 //		for(int i = 0; i < 4; i++) {
 //			if(player.intersects(this.getX(),this.getY(), GRENADE_WIDTH,  GRENADE_HEIGHT) && this.speed == 0) {
 //				return true;
@@ -79,10 +79,10 @@ public class Molotov extends Projectile{
 //			}
 //		}
 		if(player.intersects((x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 50), (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 50), GRENADE_HEIGHT + 100, GRENADE_HEIGHT + 100) && this.speed == 0) {
-			return true;
+			return 1;
 		}
 		
-		return false;
+		return 0;
 	}
 	
 	public void draw(PApplet drawer) {
@@ -140,7 +140,7 @@ public class Molotov extends Projectile{
 	}
 
 	@Override
-	public boolean checkIfActive() {
+	public boolean isActive() {
 		// TODO Auto-generated method stub
 		return isActive;
 	}

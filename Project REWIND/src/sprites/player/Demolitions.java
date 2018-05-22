@@ -29,13 +29,13 @@ public class Demolitions extends Player{
 	}
 	public ArrayList<Projectile> shiftAbility(PImage img) {
 		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
-		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 2);
+		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
 		return grenade;
 	}
 	public ArrayList<Projectile> secondary(PImage img) {
 		ArrayList<Projectile> molotov = new ArrayList<Projectile>();
-		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 3);
+		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		molotov.add(g);
 		return molotov;
 	}

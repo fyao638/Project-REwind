@@ -62,14 +62,14 @@ public class Bullet extends Projectile{
 		return false;
 	}
 	
-	public boolean checkPlayer(Player player) {
+	public int checkPlayer(Player player) {
 		for(int i = 0; i < 4; i++) {
 			if(player.intersects(this.getX(),this.getY(), BULLET_WIDTH, BULLET_HEIGHT)) {
-				return true;
+				return 1;
 						
 			}
 		}
-		return false;
+		return 0;
 	}
 		
 	
@@ -84,9 +84,9 @@ public class Bullet extends Projectile{
 	}
 
 	@Override
-	public boolean checkIfActive() {
+	public boolean isActive() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 }

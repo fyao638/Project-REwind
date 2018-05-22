@@ -1,5 +1,6 @@
 package sprites.projectile;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import clientside.DrawingSurface;
@@ -30,26 +31,29 @@ public class Grenade extends Projectile{
 	private int explosionFrame, times, cycles, drawn;
 	private boolean isDone;
 	private ArrayList<Particle> particles;
+
+	private boolean isActive;
 	
-	public Grenade(PImage image, double x, double y, double dir, double speed, int type) {
-		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, type);
+	private boolean affected;
+	
+	public Grenade(PImage image, double x, double y, double dir, double speed) {
+		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, 4);
 		explosions = new ArrayList<PImage>();
 		particles = new ArrayList<Particle>();
 		explosionFrame = 0;
 		times = 0;
 		cycles = 0;
 		drawn = 0;
-		isDone = false;
 //		double i = Math.random();
 //		if (i < 0.5)
 //			turn(dir + (Math.random()/50.0));
 //		else
 //			turn(dir - (Math.random()/50.0));
 		turn(dir);
-		
+		isActive = true;
 		this.speed = speed;
 		
-		
+		affected = false;
 	}
 	
 	public void setup(DrawingSurface drawer) {
@@ -77,14 +81,31 @@ public class Grenade extends Projectile{
 		return false;
 	}
 		
-	public boolean checkPlayer(Player player) {
-		for(int i = 0; i < 4; i++) {
-			if(player.intersects(this.getX(),this.getY(), GRENADE_WIDTH,  GRENADE_HEIGHT) && this.speed == 0) {
-				return true;
-						
+	public int checkPlayer(Player player) {
+		if (speed == 0 && cycles == 1) {
+			for(int i = 0; i < 4; i++) {
+				if(player.intersects((x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 50), (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 50), GRENADE_HEIGHT + 100, GRENADE_HEIGHT + 100) && this.speed == 0) {
+					
+					double pX = player.getCenterX();
+					double pY = player.getCenterY();
+					
+					Point2D.Double playerCoord = new Point2D.Double(pX, pY);
+					
+					double grenX = (x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 50) + (GRENADE_HEIGHT + 100) / 2;
+					double grenY = (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 50) + (GRENADE_HEIGHT + 100) / 2;
+					
+					Point2D.Double grenCoord = new Point2D.Double(grenX, grenY);
+					
+					double dist = grenCoord.distance(playerCoord);
+					if (dist < 25)
+						return 3;
+					if (dist < 80)
+						return 2;
+					return 1;
+				}
 			}
 		}
-		return false;
+		return 0;
 	}
 	
 	public void draw(PApplet drawer) {
@@ -126,7 +147,7 @@ public class Grenade extends Projectile{
 					explosionFrame = 0;
 			}
 			else {
-				isDone = true;
+				isActive = false;
 				this.setVisibility(false);
 			}
 
@@ -135,14 +156,18 @@ public class Grenade extends Projectile{
 		drawn++;
 		
 	}
-	
-	public boolean isDone() {
-		return isDone;
-	}
 
 	@Override
-	public boolean checkIfActive() {
+	public boolean isActive() {
 		// TODO Auto-generated method stub
-		return false;
+		return isActive;
+	}
+	
+	public boolean hasAffected() {
+		return affected;
+	}
+	
+	public void changeAffected() {
+		affected = true;
 	}
 }

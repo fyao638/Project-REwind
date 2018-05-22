@@ -35,9 +35,10 @@ public abstract class Projectile extends Sprite{
 	// return true if it hits an obstacle, false if otherwise
 	public abstract boolean checkObstacles(ArrayList<Obstacle> obstacles);
 	
-	public abstract boolean checkPlayer(Player player);
-		
-	public abstract boolean checkIfActive();
+	// > 0 for hit, <= 0 for miss
+	public abstract int checkPlayer(Player player);
+	
+	public abstract boolean isActive();
 	
 	public void draw(PApplet drawer) {
 		if(this.visible()) {
