@@ -3,6 +3,7 @@ package sprites.projectile;
 import java.util.ArrayList;
 
 import clientside.DrawingSurface;
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Particle;
@@ -26,7 +27,7 @@ public class Molotov extends Projectile{
 	
 	private ArrayList<Particle> particles;
 	
-	public Molotov(PImage image, double x, double y, double dir, double speed) {
+	public Molotov(ScaleImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, 3);
 		flames = new ArrayList<Particle>();
 		particles = new ArrayList<Particle>();
@@ -121,7 +122,8 @@ public class Molotov extends Projectile{
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
 			if(this.speed != 0) {
-				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+				getImage().draw(drawer, (int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+				//drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
 			else if (flameTimer < 200) {
 

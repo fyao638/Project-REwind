@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import clientside.DrawingSurface;
 import clientside.PlayScreen;
+import gui.ScaleImage;
 import processing.core.PImage;
 import sprites.projectile.Bullet;
 import sprites.projectile.Grenade;
@@ -23,10 +24,10 @@ public class Demolitions extends Player{
 	
 	private int timesShot;
 	
-	public Demolitions(PImage img, int x, int y) {
+	public Demolitions(ScaleImage img, int x, int y) {
 		super(img, x, y, 2);
 	}
-	public Bullet shoot(PImage img) {
+	public Bullet shoot(ScaleImage img) {
 		return super.shoot(img);
 	}
 	public ArrayList<Projectile> shiftAbility(PImage img) {

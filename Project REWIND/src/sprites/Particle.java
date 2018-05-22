@@ -2,6 +2,7 @@ package sprites;
 
 import java.awt.Color;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 //doesn't have to be a sprite
@@ -22,7 +23,7 @@ public class Particle extends Sprite {
 	private float width;
 	private float height;
 	
-	public Particle(PImage image, double x, double y, double w, double h, int type) {
+	public Particle(ScaleImage image, double x, double y, double w, double h, int type) {
 		super(image, x, y, w, h);
 		if (type == 1) {		// 1 for flash, 2 for grenade, 3 for shield
 			lifeTime = (int) (50 + Math.random() * 50);

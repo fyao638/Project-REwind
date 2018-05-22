@@ -3,6 +3,7 @@ package sprites.projectile;
 import java.awt.Shape;
 import java.util.ArrayList;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
@@ -15,8 +16,6 @@ import sprites.player.Player;
  * This class represents the bullets that are shot from weapons in the game.
  */
 public class Bullet extends Projectile{
-	
-	private PImage img;
 
 	public static final double BULLET_WIDTH = 20;
 	public static final double BULLET_HEIGHT = 5;
@@ -25,7 +24,7 @@ public class Bullet extends Projectile{
 	private double speed;
 	
 	
-	public Bullet(PImage image, double x, double y, double dir, double speed, int type) {
+	public Bullet(ScaleImage image, double x, double y, double dir, double speed, int type) {
 		super(image, x, y, BULLET_WIDTH, BULLET_HEIGHT, dir, speed, type);
 		
 //		double i = Math.random();
@@ -78,7 +77,7 @@ public class Bullet extends Projectile{
 			drawer.pushMatrix();
 			drawer.translate((float) (x + BULLET_WIDTH / 2), (float) (y + BULLET_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
-			drawer.image(getImage(),(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)BULLET_WIDTH,(int)BULLET_HEIGHT);
+			getImage().draw(drawer,(int) - BULLET_WIDTH / 3,(int) - BULLET_HEIGHT/ 2,(int)BULLET_WIDTH,(int)BULLET_HEIGHT);
 			drawer.popMatrix();
 		}
 	}

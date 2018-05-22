@@ -1,8 +1,9 @@
 package sprites;
 
 import java.awt.geom.Rectangle2D;
+
+import gui.ScaleImage;
 import processing.core.PApplet;
-import processing.core.PImage;
 
 /**
  * 
@@ -16,11 +17,11 @@ public class Sprite extends Rectangle2D.Double {
 	private double dir;
 	private boolean isVisible;
 	
-	private PImage img;
+	private ScaleImage img;
 	
 	//Constructors
 	
-	public Sprite(PImage image, double x, double y, double w, double h) {
+	public Sprite(ScaleImage image, double x, double y, double w, double h) {
 		super(x,y,w,h);
 		this.img = image;
 		dir = 0;
@@ -29,7 +30,7 @@ public class Sprite extends Rectangle2D.Double {
 		isVisible = true;
 	}
 	
-	public Sprite(PImage image, double w, double h) {
+	public Sprite(ScaleImage image, double w, double h) {
 		super(0,0,w,h);
 		this.img = image;
 		dir = 0;
@@ -59,7 +60,7 @@ public class Sprite extends Rectangle2D.Double {
 		
 		public void draw(PApplet drawer) {
 			if (isVisible) {
-				drawer.image(img,(int)x,(int)y,(int)width,(int)height);
+				img.draw(drawer, (float)x, (float)y, (float)width, (float)height);
 			}
 		}
 		
@@ -88,7 +89,7 @@ public class Sprite extends Rectangle2D.Double {
 			return dir;
 		}
 		
-		public PImage getImage() {
+		public ScaleImage getImage() {
 			return img;
 		}
 		

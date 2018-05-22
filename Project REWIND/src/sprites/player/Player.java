@@ -6,6 +6,7 @@ import java.util.*;
 
 import clientside.DrawingSurface;
 import clientside.PlayScreen;
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
@@ -41,7 +42,7 @@ public class Player extends Sprite {
 	
 	private Point2D.Double bulletPoint;
 	
-	public Player(PImage img, double x, double y, int type) {
+	public Player(ScaleImage img, double x, double y, int type) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 		/*0 - primary fire
 		1 - secondary fire
@@ -79,7 +80,7 @@ public class Player extends Sprite {
 		return "";
 	}
 	
-	public Bullet shoot(PImage img) {
+	public Bullet shoot(ScaleImage img) {
 		return new Bullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 1);
 	}
 	public void win() {
@@ -133,7 +134,8 @@ public class Player extends Sprite {
 		drawer.pushMatrix();
 		drawer.translate((float) (x + PLAYER_WIDTH / 2), (float) (y + PLAYER_HEIGHT / 2));
 		drawer.rotate((float) angle);
-		drawer.image(getImage(), (float) (- PLAYER_WIDTH / 3), (float) (- PLAYER_HEIGHT / (1.4)),(float)width,(float)height);
+		getImage().draw(drawer,(float) (- PLAYER_WIDTH / 3), (float) (- PLAYER_HEIGHT / (1.4)),(float)width,(float)height);
+		//drawer.image(getImage(), (float) (- PLAYER_WIDTH / 3), (float) (- PLAYER_HEIGHT / (1.4)),(float)width,(float)height);
 		/* Described below in Draw the hitbox section
 		drawer.noFill();
 		drawer.stroke(0);
