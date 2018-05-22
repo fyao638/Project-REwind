@@ -6,7 +6,9 @@ import jay.jaysound.JayLayerListener;
 /**
  * 
  * @author Frank Yao
- * This class manages sounds in the game.
+ * @version 1.0
+ * This class manages sounds in the game. 
+ * - only contains music and a broken laugh method
  *
  */
 public class SoundManager implements JayLayerListener {

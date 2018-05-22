@@ -14,6 +14,7 @@ import processing.core.PApplet;
 /**
  * 
  * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @version 1.0
  * This class handles the initial setup of the window and DrawingSurface.
  *
  */
@@ -47,7 +48,6 @@ public class Main {
 	    
 	    window.getContentPane().removeAll();
 	    
-	    //panel1 = new MenuScreen(this); 
 	    panel2 = new DrawingSurface();
 	    
 	    cardPanel.add(processingCanvas,"2");

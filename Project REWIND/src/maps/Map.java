@@ -10,7 +10,7 @@ import sprites.obstacles.Obstacle;
 
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @author Aakarsh Anand
  * This class represents the game map and controls what obstacles are present.
  */
 public class Map { //extend sprite? NO

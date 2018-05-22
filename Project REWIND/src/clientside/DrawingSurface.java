@@ -1,5 +1,6 @@
 package clientside;
 
+import java.awt.Rectangle;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -20,9 +21,10 @@ import sprites.player.Technician;
 import sprites.projectile.Projectile;
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @author  Frank Yao
+ * @version 1.0
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
- * This class is also responsible for handling networked messages and  
+ * This class is also responsible for handling messages from the network and displaying them on playScreen.
  *
  */
 public class DrawingSurface extends PApplet implements NetworkListener{
@@ -45,14 +47,14 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	private boolean isOffline;
 	private NetworkMessenger nm;
 	
-	private static final String messageTypeMove = "MOVE";
-	private static final String messageTypeTurn = "TURN";
-	private static final String messageTypeRewind = "REWIND";
-	private static final String messageTypeShoot = "SHOOT";
-	private static final String messageTypeSecondary = "SECONDARY";
-	private static final String messageTypeShift = "SHIFT";
-	private static final String messageTypeReset = "RESET";
-	private static final String messageTypePType = "PTYPE";
+	public static final String messageTypeMove = "MOVE";
+	public static final String messageTypeTurn = "TURN";
+	public static final String messageTypeRewind = "REWIND";
+	public static final String messageTypeShoot = "SHOOT";
+	public static final String messageTypeSecondary = "SECONDARY";
+	public static final String messageTypeShift = "SHIFT";
+	public static final String messageTypeReset = "RESET";
+	public static final String messageTypePType = "PTYPE";
 	
 	private int clientCount = 0;
 	private SoundManager sound;
@@ -118,13 +120,10 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			menuScreen.draw(this);
 		}
 		else if(gameState == 1) {
-			//playScreen.setHostType(selectionScreen.getType());
 			selectionScreen.draw(this);
 		}
 		else {
 			sound.stopMusic();
-			//System.out.println(selectionScreen.getType());
-			
 			playScreen.draw(this);
 			
 			processNetworkMessages();
@@ -241,13 +240,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 					System.out.println("Its not detecting it");
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
-				/*
-				for (int i = 0; i < ndo.message.length; i++) {
-					InetAddress address = (InetAddress)ndo.message[i];
-					
-				}
-				*/
-				//System.out.println("HELLO");
 				clientCount = ndo.message.length;
 				//System.out.println(clientCount);
 				
