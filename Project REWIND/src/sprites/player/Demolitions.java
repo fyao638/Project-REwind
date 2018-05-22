@@ -35,7 +35,7 @@ public class Demolitions extends Player{
 	}
 	public ArrayList<Projectile> secondary(PImage img) {
 		ArrayList<Projectile> molotov = new ArrayList<Projectile>();
-		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 2);
+		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10, 3);
 		molotov.add(g);
 		return molotov;
 	}

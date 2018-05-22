@@ -82,5 +82,11 @@ public class Bullet extends Projectile{
 			drawer.popMatrix();
 		}
 	}
+
+	@Override
+	public boolean checkIfActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

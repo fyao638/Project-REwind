@@ -18,6 +18,7 @@ import sprites.player.Assault;
 import sprites.player.Demolitions;
 import sprites.player.Player;
 import sprites.player.Technician;
+import sprites.projectile.Grenade;
 import sprites.projectile.Projectile;
 
 /**
@@ -409,7 +410,8 @@ public class PlayScreen{
 					projectiles.remove(i);
 				}
 				else if (projectiles.get(i).checkPlayer(enemy)) {
-					if(projectiles.remove(i).getType() == 1) {
+					if(projectiles.get(i).getType() == 1) {
+						projectiles.remove(i);
 						if(enemy.getType() == 3) {
 							if(!((Technician) enemy).hasShield()) {
 								enemy.changeHealth(-1);
@@ -419,15 +421,31 @@ public class PlayScreen{
 							enemy.changeHealth(-1);
 						}
 					}
-					else {
+					else if (projectiles.get(i).getType() == 2) {
 						if(enemy.getType() == 3) {
 							if(!((Technician) enemy).hasShield()) {
-								enemy.changeHealth(-1);
+								enemy.changeHealth(-2);
 							}
 						}
-						else {
-							enemy.changeHealth(-1);
+							else {
+								enemy.changeHealth(-2);
+							}
+					}
+					else {
+						if(enemy.getType() == 3) {
+							if(!((Technician) you).hasShield()) {
+								if(timer % 50 == 0)
+									enemy.changeHealth(-1);
+								if(!projectiles.get(i).checkIfActive())
+									projectiles.remove(i);
+							}
 						}
+							else {
+								if(timer % 50 == 0)
+									enemy.changeHealth(-1);
+								if(!projectiles.get(i).checkIfActive())
+									projectiles.remove(i);
+							}
 					}
 				}
 			}
@@ -441,25 +459,45 @@ public class PlayScreen{
 					otherProjectiles.remove(i);
 				}
 				else if (otherProjectiles.get(i).checkPlayer(you)) {
-					if(otherProjectiles.remove(i).getType() == 1) {
+					if(otherProjectiles.get(i).getType() == 1) {
+						otherProjectiles.remove(i);
 						if(you.getType() == 3) {
 							if(!((Technician) you).hasShield()) {
 								you.changeHealth(-1);
 							}
 						}
-						else {
-							you.changeHealth(-1);
+							else {
+								you.changeHealth(-1);
+							}
+					}
+					else if (otherProjectiles.get(i).getType() == 2) {
+						if(you.getType() == 3) {
+							if(!((Technician) you).hasShield()) {
+								you.changeHealth(-2);
+//								if(projectiles.get(i).isDone()) {
+//									
+//								}
+							}
 						}
+							else {
+								you.changeHealth(-2);
+							}
 					}
 					else {
 						if(you.getType() == 3) {
 							if(!((Technician) you).hasShield()) {
-								you.changeHealth(-2);
+								if(timer % 50 == 0)
+									you.changeHealth(-1);
+								if(!otherProjectiles.get(i).checkIfActive())
+									otherProjectiles.remove(i);
 							}
 						}
-						else {
-							you.changeHealth(-2);
-						}
+							else {
+								if(timer % 50 == 0)
+									you.changeHealth(-1);
+								if(!otherProjectiles.get(i).checkIfActive())
+									otherProjectiles.remove(i);
+							}
 					}
 				}
 			}

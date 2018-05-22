@@ -22,6 +22,7 @@ public class Molotov extends Projectile{
 	private ArrayList<Particle> flames;
 	private int drawn;
 	private int flameTimer;
+	private boolean isActive;
 	
 	private ArrayList<Particle> particles;
 	
@@ -31,6 +32,7 @@ public class Molotov extends Projectile{
 		particles = new ArrayList<Particle>();
 		flameTimer = 0;
 		drawn = 0;
+		isActive = true;
 //		double i = Math.random();
 //		if (i < 0.5)
 //			turn(dir + (Math.random()/50.0));
@@ -70,12 +72,16 @@ public class Molotov extends Projectile{
 	}
 		
 	public boolean checkPlayer(Player player) {
-		for(int i = 0; i < 4; i++) {
-			if(player.intersects(this.getX(),this.getY(), GRENADE_WIDTH,  GRENADE_HEIGHT) && this.speed == 0) {
-				return true;
-						
-			}
+//		for(int i = 0; i < 4; i++) {
+//			if(player.intersects(this.getX(),this.getY(), GRENADE_WIDTH,  GRENADE_HEIGHT) && this.speed == 0) {
+//				return true;
+//						
+//			}
+//		}
+		if(player.intersects((x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 50), (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 50), GRENADE_HEIGHT + 100, GRENADE_HEIGHT + 100) && this.speed == 0) {
+			return true;
 		}
+		
 		return false;
 	}
 	
@@ -124,11 +130,19 @@ public class Molotov extends Projectile{
 				}
 				flameTimer++;
 			}
-			else
+			else {
+				isActive = false;
 				this.setVisibility(false);
+			}
 			drawer.popMatrix();
 		}
 		drawn++;
+	}
+
+	@Override
+	public boolean checkIfActive() {
+		// TODO Auto-generated method stub
+		return isActive;
 	}
 
 }
