@@ -22,6 +22,7 @@ import sprites.projectile.Projectile;
  * 
  * @author Aakarsh Anand, Frank Yao, Michael Kim
  * This class controls what screen is drawn repeatedly: PlayScreen or MenuScreen.
+ * This class is also responsible for handling networked messages and  
  *
  */
 public class DrawingSurface extends PApplet implements NetworkListener{

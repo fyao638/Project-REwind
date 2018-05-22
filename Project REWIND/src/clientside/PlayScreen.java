@@ -50,7 +50,6 @@ public class PlayScreen{
 	private static final String messageTypeSecondary = "SECONDARY";
 	private static final String messageTypeShift = "SHIFT";
 	private static final String messageTypeReset = "RESET";
-	//private ArrayList<Player> otherPlayers;
 	
 	private Map map;
 	private Hud hud;
