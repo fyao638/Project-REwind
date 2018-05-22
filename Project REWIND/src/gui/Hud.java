@@ -65,33 +65,70 @@ public class Hud {
 		drawer.fill(255, 100);
 		drawer.stroke(255);
 		drawer.strokeWeight(2);
-		drawer.rect( 10, 10, 200, 50, 20);
+		drawer.rect(10, 10, 200, 50, 20);
 		
 		boolean isDead = false;
-		
-		if(p.getHealth() < 0) {
-			isDead = true;
+		if (p.getType() == 1) {
+			if(p.getHealth() < 0) {
+				isDead = true;
+			}
+			else if(p.getHealth() <= 2 && p.getHealth() > -1) {
+				drawer.fill(255, 0, 0, 100);
+			}
+			else if(p.getHealth() < 4) {
+				drawer.fill(255, 255, 0, 100);
+			}
+			else if(p.getHealth() >= 4) {
+				drawer.fill(0, 255, 0, 100);
+			}
+			else {
+				isDead = true;
+				// or broken
+			}
 		}
-		else if(p.getHealth() < 3 && p.getHealth() > -1) {
-			drawer.fill(255, 0, 0, 100);
-		}
-		else if(p.getHealth() < 4) {
-			drawer.fill(255, 255, 0, 100);
-		}
-		else if(p.getHealth()< 6){
-			drawer.fill(0, 255, 0, 100);
+		else if (p.getType() == 2) {
+			if(p.getHealth() < 0) {
+				isDead = true;
+			}
+			else if(p.getHealth() <= 3 && p.getHealth() > -1) {
+				drawer.fill(255, 0, 0, 100);
+			}
+			else if(p.getHealth() < 6) {
+				drawer.fill(255, 255, 0, 100);
+			}
+			else if(p.getHealth() >= 6) {
+				drawer.fill(0, 255, 0, 100);
+			}
+			else {
+				isDead = true;
+				// or broken
+			}
 		}
 		else {
-			isDead = true;
-			// or broken
+			if(p.getHealth() < 0) {
+				isDead = true;
+			}
+			else if(p.getHealth() <= 2 && p.getHealth() > -1) {
+				drawer.fill(255, 0, 0, 100);
+			}
+			else if(p.getHealth() < 4) {
+				drawer.fill(255, 255, 0, 100);
+			}
+			else if(p.getHealth() >= 4) {
+				drawer.fill(0, 255, 0, 100);
+			}
+			else {
+				isDead = true;
+				// or broken
+			}
 		}
 		if(!isDead) {
-			drawer.rect( 10, 10, (float)(200 * (double)p.getHealth() / 5), 50, 20);
+			drawer.rect( 10, 10, (float)(200 * (double)p.getHealth() / p.getMaxHealth()), 50, 20);
 		}
 		
 		drawer.noFill();
 		drawer.stroke(0, 102, 153);
-		drawer.strokeWeight(10); 
+		drawer.strokeWeight(10);
 		
 		drawer.rect(20, 480, abilWidth, abilHeight, 20);
 		drawer.rect(140, 480, abilWidth, abilHeight, 20);
@@ -100,8 +137,8 @@ public class Hud {
 		
 		drawer.textSize(40); 
 		
-		drawer.fill(255,140,0);
-		drawer.text(play.getYouPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(),  670 , 50);
+		drawer.fill(255,140,0, 100);
+		drawer.text(play.getYouPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(),  600, 50);
 		
 		drawer.fill(0, 102, 153, 100);
 		
@@ -116,14 +153,33 @@ public class Hud {
 			drawer.rectMode(PApplet.CORNER);
 		}
 		if(p.getCooldowns()[1] - currentTime > 0) {
-			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 5000, 20);
-			drawer.rectMode(PApplet.CORNER);
+			if (p.getType() == 2) {
+				drawer.rectMode(PApplet.CORNERS);
+				drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 10000, 20);
+				drawer.rectMode(PApplet.CORNER);
+			}
+			else {
+				drawer.rectMode(PApplet.CORNERS);
+				drawer.rect(260, 580, 260 + abilWidth, 580 - 100 * (p.getCooldowns()[1] - currentTime) / 5000, 20);
+				drawer.rectMode(PApplet.CORNER);
+			}
 		}
 		if(p.getCooldowns()[3] - currentTime > 0) {
-			drawer.rectMode(PApplet.CORNERS);
-			drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (p.getCooldowns()[3] - currentTime) / 7000, 20);
-			drawer.rectMode(PApplet.CORNER);
+			if (p.getType() == 3) {
+				drawer.rectMode(PApplet.CORNERS);
+				drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (p.getCooldowns()[3] - currentTime) / 12000, 20);
+				drawer.rectMode(PApplet.CORNER);
+			}
+			else if (p.getType() == 1) {
+				drawer.rectMode(PApplet.CORNERS);
+				drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (p.getCooldowns()[3] - currentTime) / 3000, 20);
+				drawer.rectMode(PApplet.CORNER);
+			}
+			else {
+				drawer.rectMode(PApplet.CORNERS);
+				drawer.rect(380, 580, 380 + abilWidth, 580 - 100 * (p.getCooldowns()[3] - currentTime) / 7000, 20);
+				drawer.rectMode(PApplet.CORNER);
+			}
 		}
 		
 		drawer.noStroke();

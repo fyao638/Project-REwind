@@ -35,7 +35,7 @@ public class Player extends Sprite {
 	// 2 = "loud and proud" / demolition = red and black = burst(may be changed) / grenade
 	// 3 = "400+ IQ plays" / technician = green and grey = bounce / shield
 	//Will also determine the look?
-	private int playerType, health;
+	private int playerType, health, maxHealth;
 	
 	private Rectangle boundingRect;
 	
@@ -50,10 +50,21 @@ public class Player extends Sprite {
 		4 - ghost respawn time*/
 		cooldowns = new int[]{0,0,0,0,0};
 		score = 0;
-		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
 		playerType = type;
+		if (playerType == 1) {
+			health = 4;
+			maxHealth = health;
+		}
+		else if (playerType == 2) {
+			health = 8;
+			maxHealth = health;
+		}
+		else {
+			health = 6;
+			maxHealth = health;
+		}
 	}
 	public void setCooldowns(int index, int newVal) {
 		cooldowns[index] = newVal;
@@ -89,10 +100,25 @@ public class Player extends Sprite {
 	public int getHealth() {
 		return health;
 	}
+	public int getMaxHealth() {
+		return maxHealth;
+	}
 	public void changeHealth(int amount) {
 	
 		health += amount;
 	}
+	public void resetHealth() {
+		if (playerType == 1) {
+			health = 4;
+		}
+		else if (playerType == 2) {
+			health = 8;
+		}
+		else {
+			health = 6;
+		}
+	}
+	
 	public void setHealth(int amount) {
 		health = amount;
 	}
@@ -144,18 +170,30 @@ public class Player extends Sprite {
 	}
 	
 	public void walk(int xDir, int yDir, ArrayList<Obstacle> obstacles) {
-		if(canMove(xDir * 5, yDir * 5, obstacles)) {
-			this.moveByAmount(xDir * 5, yDir * 5);
+		if (playerType == 1) {
+			if(canMove(xDir * 6, yDir * 6, obstacles)) {
+				this.moveByAmount(xDir * 6, yDir * 6);
+			}
+		}
+		else if (playerType == 2) {
+			if(canMove(xDir * 4, yDir * 4, obstacles)) {
+				this.moveByAmount(xDir * 4, yDir * 4);
+			}
+		}
+		else {
+			if(canMove(xDir * 6.5, yDir * 6.5, obstacles)) {
+				this.moveByAmount(xDir * 6.5, yDir * 6.5);
+			}
 		}
 	}
 	
-	private boolean canMove(int xChange, int yChange, ArrayList<Obstacle> obstacles) {
+	private boolean canMove(double d, double e, ArrayList<Obstacle> obstacles) {
 		double pX = getX();
 		double pY = getY();
 		for(Shape s: obstacles) {
-			if (xChange != 0) {
-				if (xChange > 0) {
-					for (int i = 1; i <= xChange; i++) {
+			if (d != 0) {
+				if (d > 0) {
+					for (int i = 1; i <= d; i++) {
 						
 						moveToLocation(pX + i, pY);
 						if(s.getBounds().intersects(boundingRect.getX(), boundingRect.getY(), boundingRect.width, boundingRect.height)) {
@@ -165,7 +203,7 @@ public class Player extends Sprite {
 					}
 				}
 				else {
-					for (int i = -1; i >= xChange; i--) {
+					for (int i = -1; i >= d; i--) {
 						moveToLocation(pX + i, pY);
 						if(s.getBounds().intersects(boundingRect.getX(), boundingRect.getY(), boundingRect.width, boundingRect.height)) {
 							moveToLocation(pX, pY);
@@ -175,9 +213,9 @@ public class Player extends Sprite {
 				}
 			
 			}
-			if (yChange != 0) {
-				if (yChange > 0) {
-					for (int i = 1; i <= yChange; i++) {
+			if (e != 0) {
+				if (e > 0) {
+					for (int i = 1; i <= e; i++) {
 						moveToLocation(pX, pY + i);
 						if(s.getBounds().intersects(boundingRect.getX(), boundingRect.getY(), boundingRect.width, boundingRect.height)) {
 							moveToLocation(pX, pY);
@@ -186,7 +224,7 @@ public class Player extends Sprite {
 					}
 				}
 				else {
-					for (int i = -1; i >= yChange; i--) {
+					for (int i = -1; i >= e; i--) {
 						moveToLocation(pX, pY + i);
 						if(s.getBounds().intersects(boundingRect.getX(), boundingRect.getY(), boundingRect.width, boundingRect.height)) {
 							moveToLocation(pX, pY);
