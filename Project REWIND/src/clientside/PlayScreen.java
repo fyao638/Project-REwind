@@ -2,8 +2,6 @@ package clientside;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -46,7 +44,6 @@ public class PlayScreen{
 	
 	private Map map;
 	private Hud hud;
-	
 	
 	private float abilWidth, abilHeight;
 	

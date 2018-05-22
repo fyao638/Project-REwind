@@ -34,6 +34,7 @@ public class MenuScreen{
 	public void setup(PApplet drawer) {
 		logo = drawer.loadImage("assets/logo.png");
 		
+		
 	}	
 	public void draw(DrawingSurface drawer) {
 	
