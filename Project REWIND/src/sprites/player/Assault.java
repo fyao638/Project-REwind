@@ -12,7 +12,10 @@ import sprites.projectile.Projectile;
 /**
  * 
  * @author Frank Yao
+ * @version 1.0
  * This class represents one of the player classes, assault.
+ * - Secondary: fan of ninja stars
+ * - Shift: flash
  *
  */
 public class Assault extends Player{

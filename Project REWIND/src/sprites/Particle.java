@@ -7,7 +7,8 @@ import processing.core.PImage;
 //doesn't have to be a sprite
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @author  Michael Kim
+ * @version 1.0
  * This class represents the particles that are created when certain actions occur.
  */
 public class Particle extends Sprite {

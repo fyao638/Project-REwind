@@ -2,6 +2,8 @@ package clientside;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -41,15 +43,6 @@ public class PlayScreen{
 	private ArrayList<Point2D.Double> prevYouLocs;
 	private ArrayList<Point2D.Double> prevYouMouseLocs;
 	private ArrayList<Integer> prevYouHealth;
-	
-	private static final String messageTypeMove = "MOVE";
-	private static final String messageTypeTurn = "TURN";
-	private static final String messageTypeRewind = "REWIND";
-	private static final String messageTypeShoot = "SHOOT";
-	private static final String messageTypeSecondary = "SECONDARY";
-	private static final String messageTypeShift = "SHIFT";
-	private static final String messageTypeReset = "RESET";
-	//private ArrayList<Player> otherPlayers;
 	
 	private Map map;
 	private Hud hud;
@@ -208,13 +201,13 @@ public class PlayScreen{
 				you.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 				enemy.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 				
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, true);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeReset, true);
 			}
 			else {
 				you.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,500);
 				enemy.moveToLocation(DRAWING_WIDTH/2-Player.PLAYER_WIDTH/2,50);
 				
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeReset, false);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeReset, false);
 			}
 			
 
@@ -223,7 +216,7 @@ public class PlayScreen{
 	
 	public void draw(DrawingSurface drawer) {
 		
-		if(you.getHealth() <= 0 || enemy.getHealth() <= 0) {
+		if(you.getHealth() <= 0) {
 			reset(drawer);
 		}
 		Point2D.Double p = new Point2D.Double(you.getX(), you.getY());
@@ -258,25 +251,25 @@ public class PlayScreen{
 		if(drawer.getClientCount() == 2) {
 			if(drawer.isPressed(KeyEvent.VK_A)) {
 				you.walk(-1, 0, map.getObstacles());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, -1, 0);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeMove, -1, 0);
 			}
 			if (drawer.isPressed(KeyEvent.VK_D)) {
 				you.walk(1, 0, map.getObstacles());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 1, 0);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeMove, 1, 0);
 			}
 			if (drawer.isPressed(KeyEvent.VK_W)) {
 				you.walk(0, -1, map.getObstacles());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, -1);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeMove, 0, -1);
 			}
 			if (drawer.isPressed(KeyEvent.VK_S)) {
 				you.walk(0, 1, map.getObstacles());
-				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeMove, 0, 1);
+				drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeMove, 0, 1);
 			}
 			if (drawer.isPressed(KeyEvent.VK_R)) {
 				if(you.getCooldowns()[2] - drawer.millis() <= 0) {
 					you.setHealth(prevYouHealth.get(0));
 					you.moveToLocation(prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeRewind, prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeRewind, prevYouLocs.get(0).getX(), prevYouLocs.get(0).getY());
 					//set cooldowns
 					you.getCooldowns()[2] = drawer.millis() + 15000;
 					you.getCooldowns()[4] = drawer.millis() + 2000;
@@ -290,7 +283,7 @@ public class PlayScreen{
 							particles.add(new Particle(assets.get(10), you.x + you.getWidth() / 2, you.y + you.getHeight() / 2, 20, 20, 1));
 						}
 						((Assault) you).shiftAbility(map.getObstacles());
-						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 1);
+						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeShift, 1);
 	
 						you.setCooldowns(3, drawer.millis() + 7000);
 					}
@@ -302,14 +295,14 @@ public class PlayScreen{
 						projectiles.add(b);
 					}
 					
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 2);
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeShift, 2);
 					you.setCooldowns(3, drawer.millis() + 7000);
 				}
 				else if(you.getCooldowns()[3] - drawer.millis() <= 0) {
 					
 					((Technician) you).shiftAbility();
 					
-					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShift, 3);
+					drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeShift, 3);
 					
 					you.setCooldowns(3, drawer.millis() + 7000);
 				}
@@ -321,25 +314,17 @@ public class PlayScreen{
 				particles.add(new Particle(assets.get(10), you.x + 10, you.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
 				
 			}
-			
-			// Particles for when grenade active
-			
-			
-			// Test this plz
-			//
-			//Testing
-			//if(drawer.isPressed(KeyEvent.VK_SPACE)) {
-			//	p1.changePlayerType(1);
-			//}
-			
-			
-			
+			if (enemy.getType() == 3 && ((Technician) enemy).hasShield()) {
+				Rectangle rect = ((Technician) enemy).getShield();
+				particles.add(new Particle(assets.get(10), enemy.x + 10, enemy.y, rect.getWidth() - 10, rect.getHeight() - 20, 3));
+				
+			}
 			// Draw abilities
 			if(drawer.mousePressed) {
 				if(drawer.mouseButton == PConstants.LEFT) {
 					if(you.getCooldowns()[0] - drawer.millis() <= 0) {
 						
-						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeShoot);
+						drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeShoot);
 						
 						projectiles.add(you.shoot(assets.get(2)));
 						you.setCooldowns(0,drawer.millis() + 1000);
@@ -348,7 +333,7 @@ public class PlayScreen{
 				else if(drawer.mouseButton == PConstants.RIGHT) {
 					if(you.getCooldowns()[1] - drawer.millis() <= 0) {
 						if(youType == 1) {
-							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 1);
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeSecondary, 1);
 							ArrayList<Projectile> fan = you.secondary(assets.get(3));
 								for(Projectile b : fan) {
 									projectiles.add(b);
@@ -356,7 +341,7 @@ public class PlayScreen{
 								you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else if(youType == 2) {
-							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 2);
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeSecondary, 2);
 							ArrayList<Projectile> fan = you.secondary(assets.get(13));
 							for(Projectile b : fan) {
 								projectiles.add(b);
@@ -364,7 +349,7 @@ public class PlayScreen{
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}
 						else {
-							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeSecondary, 3);
+							drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeSecondary, 3);
 							ArrayList<Projectile> fan = you.secondary(assets.get(2));
 							for(Projectile b : fan) {
 								projectiles.add(b);
@@ -372,26 +357,6 @@ public class PlayScreen{
 							you.setCooldowns(1,drawer.millis() + 5000);
 						}							
 					}
-					
-					/*
-=======
-					}
-					else if(youType == 2) {
-						ArrayList<Projectile> molotov = ((Demolitions) you).secondary(assets.get(13));
-						for(Projectile b : molotov) {
-							bullets.add(b);
-						}
-						you.setCooldowns(1,drawer.millis() + 5000);
-
-					}
->>>>>>> branch 'master' of https://github.com/fyao638/Project-REwind.git
-					else {
-						if(secondaryReadyTime - drawer.millis() <= 0) {
-							bullets.add(((Demolitions)clientPlayer).secondary(assets.get(2)).get(0));
-							secondaryReadyTime = drawer.millis() + 7000;
-						}
-					}
-					*/
 				}
 			}
 		}
@@ -564,7 +529,7 @@ public class PlayScreen{
 		enemy.draw(drawer);
 		
 		if(drawer.getNetM() != null) {
-			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, messageTypeTurn, drawer.mouseX, drawer.mouseY);
+			drawer.getNetM().sendMessage(NetworkDataObject.MESSAGE, DrawingSurface.messageTypeTurn, drawer.mouseX, drawer.mouseY);
 		}
 		
 		if (particles.size() > 0) {

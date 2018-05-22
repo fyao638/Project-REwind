@@ -13,8 +13,10 @@ import sprites.projectile.Projectile;
 /**
  * 
  * @author Aakarsh Anand
+ * @version 1.0
  * This class represents one of the player classes, demolitions.
- *
+ * - Secondary: molotov
+ * - Shift: Grenade
  */
 public class Demolitions extends Player{
 

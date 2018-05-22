@@ -6,7 +6,8 @@ import processing.core.PImage;
 
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @author  Michael Kim
+ * @version 1.0
  * This class is the superclass for all objects on the map. It controls things that apply to all of them like moving and turning.
  */
 public class Sprite extends Rectangle2D.Double {

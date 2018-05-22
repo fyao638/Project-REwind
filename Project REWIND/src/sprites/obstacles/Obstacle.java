@@ -9,7 +9,8 @@ import sprites.Sprite;
 
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
+ * @author  Michael Kim
+ * @version 1.0
  * This class represents an obstacle on the map that tracks collisions with other players, bullets, and abilities.
  */
 public class Obstacle extends Sprite {

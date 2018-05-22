@@ -9,14 +9,32 @@ import sprites.player.Player;
 
 /**
  * 
- * @author Aakarsh Anand, Frank Yao, Michael Kim
- * This class represents the all the HUD elements of the game, like ability icons with cooldowns and the life bar.
+ * @author Frank Yao
+ * @version 1.0
+ * This class represents the all the HUD elements of the game including: 
+ * - Cooldowns
+ * - Health
+ * - Score
+ * - Character marker
+ * - Ability Icons
  */
 public class Hud {
 	
 	public Hud() {
 	}
 	public void draw(DrawingSurface drawer, PlayScreen play, Player p, long currentTime, float abilWidth, float abilHeight) {
+		
+		double x = p.getX();
+		double y = p.getY();
+		double width = p.width;
+		double height = p.height;
+		
+		
+		drawer.stroke(255,140,0);
+		drawer.fill(255,140,0);
+		drawer.triangle((float)(x + width/ 4), (float)(y - height / 3), (float)(x + width / 2), (float)y, (float)(x + 3 * width/ 4), (float)(y - height / 3));
+		
+		
 		
 		PImage icon1 = play.getAssets().get(4);
 		PImage icon2 = play.getAssets().get(5);
@@ -43,7 +61,6 @@ public class Hud {
 			icon4 = play.getAssets().get(16);
 		}
 		
-		drawer.noFill();
 		// Draw the health bar
 		drawer.fill(255, 100);
 		drawer.stroke(255);
@@ -81,10 +98,10 @@ public class Hud {
 		drawer.rect(260, 480, abilWidth, abilHeight, 20);
 		drawer.rect(380, 480, abilWidth, abilHeight, 20);
 		
-		drawer.textSize(26); 
+		drawer.textSize(40); 
 		
-		drawer.fill(0,255,0);
-		drawer.text(play.getYouPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(), 720, 40);
+		drawer.fill(255,140,0);
+		drawer.text(play.getYouPlayer().getScore() + " vs " + play.getEnemyPlayer().getScore(),  670 , 50);
 		
 		drawer.fill(0, 102, 153, 100);
 		

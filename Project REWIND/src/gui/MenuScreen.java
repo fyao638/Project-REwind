@@ -26,7 +26,7 @@ public class MenuScreen{
 	public MenuScreen() {
 		rectOver1 = false;
 		rectX = 200;
-		rectY = 180;
+		rectY = 280;
 		rectWidth = 290;
 		rectHeight = 100;
 	}
@@ -51,6 +51,7 @@ public class MenuScreen{
 		
 		
 		drawer.stroke(0);
+		drawer.strokeWeight(10);
 		drawer.rect(rectX, rectY, rectWidth, rectHeight, 30);
 		drawer.textSize(80);
 		drawer.fill(0);
@@ -59,8 +60,6 @@ public class MenuScreen{
 		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 130, 600, 100);
 		
 		
-		
-	
 	  	if(drawer.mousePressed && overRect(rectX, rectY, rectWidth, rectHeight, drawer)) {
 	  		drawer.changeState(1);
 	    }

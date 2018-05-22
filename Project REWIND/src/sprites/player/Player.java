@@ -24,10 +24,9 @@ public class Player extends Sprite {
 	public static final int PLAYER_HEIGHT = 40;
 	private static final double BUL_ANGLE = Math.atan((PLAYER_HEIGHT - 20) / (2 * PLAYER_WIDTH) / 3);
 	private static final double BUL_DISTANCE = PLAYER_WIDTH * 1.0 / 2;
-	private int shotReadyTime, rewindReadyTime, secondaryReadyTime, shiftReadyTime, ghostReappearTime;
 	private int[] cooldowns;
 	
-	private int score, timesShot;
+	private int score;
 	
 	//This will be used to determine the abilities and secondary fire of the player as there be different ones
 	// EX:
@@ -39,13 +38,11 @@ public class Player extends Sprite {
 	private int playerType, health;
 	
 	private Rectangle boundingRect;
-	private Rectangle hitBox;
 	
 	private Point2D.Double bulletPoint;
 	
 	public Player(PImage img, double x, double y, int type) {
 		super(img, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-		//System.out.println("CONSTRUCTION");
 		/*0 - primary fire
 		1 - secondary fire
 		2 - rewind
@@ -56,7 +53,6 @@ public class Player extends Sprite {
 		health = 5;
 		bulletPoint = new Point2D.Double(x + PLAYER_WIDTH + 5, y + PLAYER_HEIGHT - 25);
 		boundingRect = new Rectangle(getBoundRect());
-		hitBox = new Rectangle();
 		playerType = type;
 	}
 	public void setCooldowns(int index, int newVal) {
