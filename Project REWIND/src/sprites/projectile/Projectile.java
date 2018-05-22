@@ -37,6 +37,7 @@ public abstract class Projectile extends Sprite{
 	
 	public abstract boolean checkPlayer(Player player);
 		
+	public abstract boolean checkIfActive();
 	
 	public void draw(PApplet drawer) {
 		if(this.visible()) {

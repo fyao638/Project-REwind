@@ -28,7 +28,7 @@ public class Grenade extends Projectile{
 	
 	private ArrayList<PImage> explosions;
 	private int explosionFrame, times, cycles, drawn;
-	private int timesBounced;
+	private boolean isDone;
 	private ArrayList<Particle> particles;
 	
 	public Grenade(PImage image, double x, double y, double dir, double speed, int type) {
@@ -39,6 +39,7 @@ public class Grenade extends Projectile{
 		times = 0;
 		cycles = 0;
 		drawn = 0;
+		isDone = false;
 //		double i = Math.random();
 //		if (i < 0.5)
 //			turn(dir + (Math.random()/50.0));
@@ -124,12 +125,24 @@ public class Grenade extends Projectile{
 				if(explosionFrame == 5)
 					explosionFrame = 0;
 			}
-			else
+			else {
+				isDone = true;
 				this.setVisibility(false);
+			}
 
 			drawer.popMatrix();
 		}
 		drawn++;
 		
+	}
+	
+	public boolean isDone() {
+		return isDone;
+	}
+
+	@Override
+	public boolean checkIfActive() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
