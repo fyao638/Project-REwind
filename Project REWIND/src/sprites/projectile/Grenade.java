@@ -99,7 +99,7 @@ public class Grenade extends Projectile{
 					double dist = grenCoord.distance(playerCoord);
 					if (dist < 38)
 						return 3;
-					if (dist < 68)
+					if (dist < 58)
 						return 2;
 					return 1;
 				}
