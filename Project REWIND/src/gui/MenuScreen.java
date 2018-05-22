@@ -85,7 +85,7 @@ public class MenuScreen{
 	
 	
 	void update(int x, int y, PApplet drawer) {
-		if ( overRect(rectX, rectY, rectWidth, rectHeight, drawer) ) {
+		if ( overRect(rectX, rectY + 70, rectWidth, rectHeight, drawer) ) {
 			rectOver1 = true;
 		} 
 		else {
