@@ -276,6 +276,10 @@ public class PlayScreen{
 					
 				}
 			}
+			if(drawer.isPressed(KeyEvent.VK_F)) {
+				System.out.println("HOAHO");
+				drawer.getSoundM().laugh();
+			}
 			if (drawer.isPressed(KeyEvent.VK_SHIFT)) {
 				if(myPlayer.getCooldowns()[3] - drawer.millis() <= 0 && myPlayer.getType() == 1) {
 					if(((Assault) myPlayer).canShift(map.getObstacles())) {

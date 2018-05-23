@@ -86,7 +86,7 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	public void checkConnection() {
 		//System.out.println("hello world");
 		if(clientCount > 0) {
-			gameState = 2;
+			changeState(2);
 			playScreen.setup(this);
 			if(clientCount == 1) {
 				playScreen.setYouType(selectionScreen.getType());
@@ -120,7 +120,6 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 			selectionScreen.draw(this);
 		}
 		else {
-			sound.stopMusic();
 			playScreen.draw(this);
 			
 			processNetworkMessages();
@@ -256,6 +255,9 @@ public class DrawingSurface extends PApplet implements NetworkListener{
 	}
 	// 0 = menu, 1 = in game
 	public void changeState(int newState) {
+		if(newState == 2) {
+			sound.next();
+		}
 		gameState = newState;
 	}
 	

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import clientside.DrawingSurface;
@@ -27,6 +28,8 @@ public class SelectionScreen {
 	ScaleImage logo;
 	private int timer;
 	private boolean netPanelOpened;
+	private boolean hasBeenOpened;
+	private int timeOpened;
 	
 	public SelectionScreen() {
 		timer = 0;
@@ -43,6 +46,8 @@ public class SelectionScreen {
 		rectHeight = 100;
 		rectX = 0;
 		netPanelOpened = false;
+		hasBeenOpened = false;
+		timeOpened = 0;
 	}
 
 	public void setup(DrawingSurface drawer) {
@@ -50,6 +55,19 @@ public class SelectionScreen {
 	}
 	
 	public void draw(DrawingSurface drawer) {
+		
+		if(!hasBeenOpened) {
+			timeOpened = drawer.millis();
+			hasBeenOpened = true;
+		}
+		
+		if(drawer.isPressed(KeyEvent.VK_R)) {
+			if(drawer.millis() - timeOpened < 2000) {
+				drawer.changeState(0);
+			}
+		}
+		
+		
 		timer++;
 		update(drawer.mouseX, drawer.mouseY, drawer);
 		drawer.background(127);
