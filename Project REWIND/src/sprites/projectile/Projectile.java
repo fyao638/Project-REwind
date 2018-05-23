@@ -2,6 +2,7 @@ package sprites.projectile;
 
 import java.util.ArrayList;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Sprite;
@@ -14,7 +15,7 @@ public abstract class Projectile extends Sprite{
 	private int type;
 	
 	
-	public Projectile(PImage image, double x, double y, double width, double height, double dir, double speed, int type) {
+	public Projectile(ScaleImage image, double x, double y, double width, double height, double dir, double speed, int type) {
 		super(image, x, y, width, height);
 		
 		turn(dir);
@@ -45,7 +46,7 @@ public abstract class Projectile extends Sprite{
 			drawer.pushMatrix();
 			drawer.translate((float) (x + width / 2), (float) (y + height / 2));
 			drawer.rotate((float) getDirection());
-			drawer.image(getImage(),(int) - width / 3,(int) - height/ 2,(int)width,(int)height);
+			getImage().draw(drawer,(int) - width / 3,(int) - height/ 2,(int)width,(int)height);
 			drawer.popMatrix();
 		}
 		

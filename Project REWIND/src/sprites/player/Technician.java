@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.projectile.BouncingBullet;
@@ -23,12 +24,12 @@ public class Technician extends Player {
 	private boolean hasShield;
 	// timer for the shield
 	private int shieldTimer;
-	public Technician(PImage img, int x, int y) {
+	public Technician(ScaleImage img, int x, int y) {
 		super(img, x, y, 3);
 		shieldTimer = 1000;
 		hasShield = false;
 	}
-	public Bullet shoot(PImage img) {
+	public Bullet shoot(ScaleImage img) {
 		return super.shoot(img);
 	}
 	public ArrayList<Projectile> secondary(PImage img) {

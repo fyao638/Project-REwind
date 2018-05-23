@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import gui.Hud;
+import gui.ScaleImage;
 import maps.Map;
 import network.frontend.NetworkDataObject;
 import processing.core.PConstants;
@@ -34,7 +35,7 @@ public class PlayScreen{
 	private ArrayList<Particle> particles;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> otherProjectiles;
-	private ArrayList<PImage> assets;
+	private ArrayList<ScaleImage> assets;
 	
 	private int youType, enemyType;
 	
@@ -52,7 +53,7 @@ public class PlayScreen{
 	private int timer;
 	
 	public PlayScreen() {
-		assets = new ArrayList<PImage>();
+		assets = new ArrayList<ScaleImage>();
 		isHost = false;
 		otherProjectiles = new ArrayList<Projectile>();
 		projectiles = new ArrayList<Projectile>();

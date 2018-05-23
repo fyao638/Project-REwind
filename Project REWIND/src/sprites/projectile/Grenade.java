@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import clientside.DrawingSurface;
+import gui.ScaleImage;
 import processing.core.PApplet;
 import processing.core.PImage;
 import sprites.Particle;
@@ -36,7 +37,7 @@ public class Grenade extends Projectile{
 	
 	private boolean affected;
 	
-	public Grenade(PImage image, double x, double y, double dir, double speed) {
+	public Grenade(ScaleImage image, double x, double y, double dir, double speed) {
 		super(image, x, y, GRENADE_WIDTH, GRENADE_HEIGHT, dir, speed, 4);
 		explosions = new ArrayList<PImage>();
 		particles = new ArrayList<Particle>();
@@ -133,6 +134,7 @@ public class Grenade extends Projectile{
 			drawer.translate((float) (x + GRENADE_WIDTH / 2), (float) (y + GRENADE_HEIGHT / 2));
 			drawer.rotate((float) getDirection());
 			if(this.speed != 0) {
+				//getImage().draw(, x, y, w, h);
 				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
 			else if (cycles != 5) {
