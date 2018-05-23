@@ -1,4 +1,5 @@
 package gui;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import clientside.DrawingSurface;
@@ -30,9 +31,7 @@ public class MenuScreen{
 		mainMenuFrames = new ArrayList<PImage>();
 		frameNum = 0;
 		rectOver1 = false;
-		rectX = 200;
-		rectY = 280;
-		rectWidth = 290;
+		rectWidth = 300;
 		rectHeight = 100;
 	}
 
@@ -46,9 +45,15 @@ public class MenuScreen{
 			mainMenuFrames.add(drawer.loadImage("mainMenuGif/frame_" + i + "_delay-0.03s.gif" ));
 		}
 		
+		rectX = (float) (drawer.width / 2.0 - rectWidth / 2.0);
+		rectY = (float) (drawer.height / 2.0 - rectHeight / 2.0);
+		
 	}	
 	public void draw(DrawingSurface drawer) {
 	
+		
+		
+		
 		update(drawer.mouseX, drawer.mouseY, drawer);
 		drawer.image( mainMenuFrames.get(frameNum), 0, 0, drawer.width, drawer.height);
 	  
@@ -59,20 +64,17 @@ public class MenuScreen{
 			drawer.noFill();;
 		}
 		
-		rectX = (float) (drawer.width / 2.0 - rectWidth / 2.0);
-		
-		
 		drawer.stroke(255);
 		drawer.strokeWeight(10);
-		drawer.rect(rectX, rectY + 70, rectWidth, rectHeight, 30);
+		drawer.rect(rectX, rectY + 100, rectWidth , rectHeight, 30);
 		drawer.textSize(80);
 		drawer.fill(255);
-		drawer.text("PLAY", rectX + 45, rectY + rectHeight + 50);
+		drawer.text("PLAY", rectX + 50, rectY + rectHeight + 80);
 		
-		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 130, 600, 100);
+		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 100, 600, 100);
 		
 		
-	  	if(drawer.mousePressed && overRect(rectX, rectY, rectWidth, rectHeight, drawer)) {
+	  	if(drawer.mousePressed && overRect(rectX, rectY + 100, rectWidth, rectHeight, drawer)) {
 	  		drawer.changeState(1);
 	    }
 	  	
@@ -81,11 +83,17 @@ public class MenuScreen{
 	  	if(frameNum == 74) {
 	  		frameNum = 0;
 	  	}
+	  	
+	  	if(drawer.isPressed(KeyEvent.VK_R)) {
+	  		if(drawer.millis() <= 2000) {
+	  			System.exit(0);
+	  		}
+	  	}
 	}
 	
 	
 	void update(int x, int y, PApplet drawer) {
-		if ( overRect(rectX, rectY + 70, rectWidth, rectHeight, drawer) ) {
+		if ( overRect(rectX, rectY + 100, rectWidth, rectHeight, drawer) ) {
 			rectOver1 = true;
 		} 
 		else {
@@ -93,7 +101,7 @@ public class MenuScreen{
 		}
 	}
 	boolean overRect(float x, float y, float width, float height, PApplet drawer)  {
-		if (drawer.mouseX >= x && drawer.mouseX <= x+width && drawer.mouseY >= y && drawer.mouseY <= y+height) {
+		if (drawer.mouseX >= x && drawer.mouseX <= x+width && drawer.mouseY >= y  && drawer.mouseY <= y+height ) {
 			return true;
 	    } 
 		else {

@@ -17,19 +17,22 @@ public class SoundManager implements JayLayerListener {
 	
 	public SoundManager() {
 		//badnames
-		String[] songs = new String[]{"title2.mp3"};
+		String[] playMusic = new String[]{"title2.mp3"};
+		String[] menuMusic = new String[]{"menu.mp3"};
 		String[] soundEffects = new String[] {"laugh.mp3"};
 		
 		 sound=new JayLayer("audio/","audio/",false);
 		  sound.addPlayList();
+		  sound.addPlayList();
 		  sound.addSoundEffects(soundEffects);
-		  sound.addSongs(0,songs);
+		  sound.addSongs(0,menuMusic);
+		  sound.addSongs(1, playMusic);
 		  sound.changePlayList(0);
 		  sound.addJayLayerListener(this);
 	}
 	
 	public void playMenuMusic() {
-		 sound.nextSong();
+		sound.nextSong();
 	}
 	public void stopMusic() {
 		if(sound.isPlaying()) {
@@ -37,14 +40,16 @@ public class SoundManager implements JayLayerListener {
 		}
 	}
 	public void laugh() {
-		System.out.println("Heheh");
 		sound.playSoundEffect(0);
+	}
+	public void next() {
+		sound.changePlayList(1);
+		sound.nextSong();
 	}
 	
 	@Override
 	public void musicStarted() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
