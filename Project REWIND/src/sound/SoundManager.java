@@ -24,6 +24,7 @@ public class SoundManager implements JayLayerListener {
 		 sound=new JayLayer("audio/","audio/",false);
 		  sound.addPlayList();
 		  sound.addPlayList();
+		
 		  sound.addSoundEffects(soundEffects);
 		  sound.addSongs(0,menuMusic);
 		  sound.addSongs(1, playMusic);
