@@ -2,7 +2,7 @@ package sprites.projectile;
 
 import java.util.ArrayList;
 
-import processing.core.PImage;
+import gui.ScaleImage;
 import sprites.obstacles.Obstacle;
 import sprites.player.Player;
 
@@ -15,7 +15,7 @@ import sprites.player.Player;
 public class BouncingBullet extends Bullet{
 	private int timesBounced;
 	
-	public BouncingBullet(PImage image, double x, double y, double dir, double speed, int type) {
+	public BouncingBullet(ScaleImage image, double x, double y, double dir, double speed, int type) {
 		super(image, x, y, dir, speed, type);
 		
 		turn(getDirection());

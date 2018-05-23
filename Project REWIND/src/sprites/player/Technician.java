@@ -32,7 +32,7 @@ public class Technician extends Player {
 	public Bullet shoot(ScaleImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Projectile> secondary(PImage img) {
+	public ArrayList<Projectile> secondary(ScaleImage img) {
 		BouncingBullet b = new BouncingBullet(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 7, 2);
 		ArrayList<Projectile> bounce = new ArrayList<Projectile>();
 		bounce.add(b);

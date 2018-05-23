@@ -3,8 +3,8 @@ package sprites.obstacles;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
-import processing.core.PImage;
 import sprites.Sprite;
 
 /**
@@ -15,12 +15,12 @@ import sprites.Sprite;
  */
 public class Obstacle extends Sprite {
 	
-	private PImage img;
+	private ScaleImage img;
 	private Line2D.Double[] lineComposition;
 	private double[] lineCompositionNormals;
 	private Line2D.Double l1, l2, l3, l4;
 
-	public Obstacle(PImage image, double x, double y, double w, double h) {
+	public Obstacle(ScaleImage image, double x, double y, double w, double h) {
 		super(image, x, y, w, h);
 		l1 = new Line2D.Double(x, y, x + w, y);
 		l2 = new Line2D.Double(x + w, y, x + w, y + h);
@@ -43,7 +43,7 @@ public class Obstacle extends Sprite {
 	}
 	
 	public void draw(PApplet drawer) {
-		drawer.image(getImage(), (float)x,(float)y,(float)width,(float)height);
+		getImage().draw(drawer, (float)x,(float)y,(float)width,(float)height);
 	}
 	
 	private double calcNormal(Line2D.Double l) {

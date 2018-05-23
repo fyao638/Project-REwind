@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import clientside.DrawingSurface;
 import clientside.PlayScreen;
 import gui.ScaleImage;
-import processing.core.PImage;
 import sprites.projectile.Bullet;
 import sprites.projectile.Grenade;
 import sprites.projectile.Molotov;
@@ -30,13 +29,13 @@ public class Demolitions extends Player{
 	public Bullet shoot(ScaleImage img) {
 		return super.shoot(img);
 	}
-	public ArrayList<Projectile> shiftAbility(PImage img) {
+	public ArrayList<Projectile> shiftAbility(ScaleImage img) {
 		ArrayList<Projectile> grenade = new ArrayList<Projectile>();
 		Grenade g = new Grenade(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 10);
 		grenade.add(g);
 		return grenade;
 	}
-	public ArrayList<Projectile> secondary(PImage img) {
+	public ArrayList<Projectile> secondary(ScaleImage img) {
 		ArrayList<Projectile> molotov = new ArrayList<Projectile>();
 		Molotov g = new Molotov(img, this.getBulletPoint().getX(), this.getBulletPoint().getY(), this.getDirection(), 8.25);
 		molotov.add(g);

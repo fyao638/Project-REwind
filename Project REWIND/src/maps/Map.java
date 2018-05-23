@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
 
+import gui.ScaleImage;
 import processing.core.PApplet;
-import processing.core.PImage;
 import sprites.obstacles.Obstacle;
 
 /**
@@ -18,7 +18,7 @@ public class Map { //extend sprite? NO
 	public static final int DRAWING_HEIGHT = 600;
 	
 	private ArrayList<Obstacle> obstacles, sides;
-	public Map(PImage wallImage, PImage wallImage2) {
+	public Map(ScaleImage wallImage, ScaleImage wallImage2) {
 		obstacles = new ArrayList<Obstacle>();
 		sides = new ArrayList<Obstacle>();
 		obstacles.add(new Obstacle(wallImage2,60,60,50,200));

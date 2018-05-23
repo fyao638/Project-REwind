@@ -4,7 +4,6 @@ import clientside.DrawingSurface;
 import clientside.PlayScreen;
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PImage;
 import sprites.player.Player;
 
 /**
@@ -36,10 +35,10 @@ public class Hud {
 		
 		
 		
-		PImage icon1 = play.getAssets().get(4);
-		PImage icon2 = play.getAssets().get(5);
-		PImage icon3 = null;
-		PImage icon4 = null;
+		ScaleImage icon1 = play.getAssets().get(4);
+		ScaleImage icon2 = play.getAssets().get(5);
+		ScaleImage icon3 = null;
+		ScaleImage icon4 = null;
 		
 		if(p.getType() == 1) {
 			icon3 = play.getAssets().get(6);
@@ -192,7 +191,7 @@ public class Hud {
 			drawer.textSize(26); 
 			//drawer.text("SHOT", 37, 540);
 			drawer.fill(255, 100);
-			drawer.image(icon1, 30, 490, 80, 80);
+			icon1.draw(drawer, 30, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
@@ -204,7 +203,7 @@ public class Hud {
 			drawer.textSize(20);
 			//drawer.text("REwind", 155, 539);
 			drawer.fill(255, 100);
-			drawer.image(icon2, 150, 490, 80, 80);
+			icon2.draw(drawer, 150, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {
@@ -217,7 +216,7 @@ public class Hud {
 			//drawer.text("spread", 280, 539);
 			drawer.fill(255, 100);
 			
-			drawer.image(icon3, 270, 490, 80, 80);
+			icon3.draw(drawer, 270, 490, 80, 80);
 			
 			drawer.textSize(26); 
 		}
@@ -229,7 +228,7 @@ public class Hud {
 		if(p.getCooldowns()[3] - currentTime <= 0) {
 			drawer.textSize(20);
 			drawer.fill(255, 100);
-			drawer.image(icon4, 390, 490, 80, 80);
+			icon4.draw(drawer, 390, 490, 80, 80);
 			drawer.textSize(26); 
 		}
 		else {

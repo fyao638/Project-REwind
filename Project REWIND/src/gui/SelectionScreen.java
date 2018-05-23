@@ -6,7 +6,6 @@ import clientside.DrawingSurface;
 import network.frontend.NetworkDataObject;
 import network.frontend.NetworkMessenger;
 import processing.core.PApplet;
-import processing.core.PImage;
 /**
  * 
  * @author Aakarsh Anaad 
@@ -16,7 +15,7 @@ import processing.core.PImage;
  */
 public class SelectionScreen {
 	// Positions of square button\
-	ArrayList<PImage> assets;
+	ArrayList<ScaleImage> assets;
 	float rectX;
 	float rectX1, rectY1;   // Assaults
 	float rectX2, rectY2;	// Demolitions
@@ -25,7 +24,7 @@ public class SelectionScreen {
 	float rectHeight;
 	boolean rectOver1, rectOver2, rectOver3;
 	private int type = 1;
-	PImage logo;
+	ScaleImage logo;
 	private int timer;
 	private boolean netPanelOpened;
 	
@@ -47,7 +46,7 @@ public class SelectionScreen {
 	}
 
 	public void setup(DrawingSurface drawer) {
-		logo = drawer.loadImage("assets/logo.png");
+		logo = new ScaleImage(drawer.loadImage("assets/logo.png"));
 	}
 	
 	public void draw(DrawingSurface drawer) {
@@ -79,7 +78,7 @@ public class SelectionScreen {
 		drawer.fill(0);
 		drawer.text("Demolitions", rectX + 25, rectY2 + rectHeight - 25);
 		
-		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY1 - 130, 600, 100);
+		logo.draw(drawer, (float) (drawer.width / 2.0 - 600 / 2.0), rectY1 - 130, 600, 100);
 		
 		if (rectOver3) {
 			drawer.fill(0,255,255);

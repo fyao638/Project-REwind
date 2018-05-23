@@ -20,7 +20,7 @@ import sprites.player.Player;
  */
 public class Grenade extends Projectile{
 	
-	private PImage img;
+	private ScaleImage img;
 
 	public static final int GRENADE_WIDTH = 40;
 	public static final int GRENADE_HEIGHT = 40;
@@ -135,7 +135,7 @@ public class Grenade extends Projectile{
 			drawer.rotate((float) getDirection());
 			if(this.speed != 0) {
 				//getImage().draw(, x, y, w, h);
-				drawer.image(getImage(),(int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
+				getImage().draw(drawer, (int) - GRENADE_WIDTH / 3,(int) - GRENADE_HEIGHT/ 2,(int)GRENADE_HEIGHT,(int)GRENADE_HEIGHT);
 			}
 			else if (cycles != 5) {
 				drawer.image(explosions.get(explosionFrame),(int) - GRENADE_WIDTH / 3 - 50,(int) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100);

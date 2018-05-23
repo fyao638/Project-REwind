@@ -8,7 +8,6 @@ import network.frontend.NetworkDataObject;
 import network.frontend.NetworkListener;
 import network.frontend.NetworkMessenger;
 import processing.core.PApplet;
-import processing.core.PImage;
 
 /**
  * 
@@ -21,13 +20,13 @@ public class MenuScreen{
 	float rectWidth;
 	float rectHeight;
 	boolean rectOver1;
-	PImage logo;
+	ScaleImage logo;
 	int frameNum;
 	
-	ArrayList<PImage> mainMenuFrames;
+	ArrayList<ScaleImage> mainMenuFrames;
 	
 	public MenuScreen() {
-		mainMenuFrames = new ArrayList<PImage>();
+		mainMenuFrames = new ArrayList<ScaleImage>();
 		frameNum = 0;
 		rectOver1 = false;
 		rectX = 200;
@@ -37,20 +36,20 @@ public class MenuScreen{
 	}
 
 	public void setup(PApplet drawer) {
-		logo = drawer.loadImage("assets/logo.png");
+		logo = new ScaleImage(drawer.loadImage("assets/logo.png"));
 		
 		for(int i = 0; i < 10; i++) {
-			mainMenuFrames.add(drawer.loadImage("mainMenuGif/frame_0" + i + "_delay-0.03s.gif" ));
+			mainMenuFrames.add(new ScaleImage(drawer.loadImage("mainMenuGif/frame_0" + i + "_delay-0.03s.gif" )));
 		}
 		for(int i = 10; i < 74; i++) {
-			mainMenuFrames.add(drawer.loadImage("mainMenuGif/frame_" + i + "_delay-0.03s.gif" ));
+			mainMenuFrames.add(new ScaleImage(drawer.loadImage("mainMenuGif/frame_" + i + "_delay-0.03s.gif")));
 		}
 		
 	}	
 	public void draw(DrawingSurface drawer) {
 	
 		update(drawer.mouseX, drawer.mouseY, drawer);
-		drawer.image( mainMenuFrames.get(frameNum), 0, 0, drawer.width, drawer.height);
+		mainMenuFrames.get(frameNum).draw(drawer, 0, 0, drawer.width, drawer.height);
 	  
 		if (rectOver1) {
 			drawer.fill(0,255,255);
@@ -69,10 +68,10 @@ public class MenuScreen{
 		drawer.fill(255);
 		drawer.text("PLAY", rectX + 45, rectY + rectHeight + 50);
 		
-		drawer.image(logo, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 130, 600, 100);
+		logo.draw(drawer, (float) (drawer.width / 2.0 - 600 / 2.0), rectY - 130, 600, 100);
 		
 		
-	  	if(drawer.mousePressed && overRect(rectX, rectY, rectWidth, rectHeight, drawer)) {
+	  	if(drawer.mousePressed && overRect(rectX, rectY + 70, rectWidth, rectHeight, drawer)) {
 	  		drawer.changeState(1);
 	    }
 	  	

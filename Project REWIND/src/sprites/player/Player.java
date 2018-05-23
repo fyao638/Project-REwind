@@ -89,7 +89,7 @@ public class Player extends Sprite {
 	public int getScore() {
 		return score;
 	}
-	public ArrayList<Projectile> secondary(PImage img) {
+	public ArrayList<Projectile> secondary(ScaleImage img) {
 		return null;
 	}
 	public int getType() {

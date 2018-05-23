@@ -10,7 +10,6 @@ import gui.ScaleImage;
 import maps.Map;
 import network.frontend.NetworkDataObject;
 import processing.core.PConstants;
-import processing.core.PImage;
 import sprites.Particle;
 import sprites.obstacles.Obstacle;
 import sprites.player.Assault;
@@ -156,24 +155,24 @@ public class PlayScreen{
 	
 	public void setup(DrawingSurface drawer) {
 		drawer.noStroke();
-		assets.add(drawer.loadImage("assets/player.png"));		//0
-		assets.add(drawer.loadImage("assets/ghost.png"));			//1
-		assets.add(drawer.loadImage("assets/bullet.png"));		//2
-		assets.add(drawer.loadImage("assets/star.png"));			//3
-		assets.add(drawer.loadImage("assets/crosshair.png"));		//4
-		assets.add(drawer.loadImage("assets/time.png"));			//5
-		assets.add(drawer.loadImage("assets/starIcon.png"));		//6
-		assets.add(drawer.loadImage("assets/flash.png"));			//7
-		assets.add(drawer.loadImage("assets/wall.png"));			//8
-		assets.add(drawer.loadImage("assets/wall2.png"));			//9
-		assets.add(drawer.loadImage("assets/particle.png"));     	//10
-		assets.add(drawer.loadImage("assets/bounceLogo.png"));   	//11
-		assets.add(drawer.loadImage("assets/grenade.png"));      	//12
-		assets.add(drawer.loadImage("assets/molotov.png"));      	//13
-		assets.add(drawer.loadImage("assets/grenadeIcon.png"));	//14
-		assets.add(drawer.loadImage("assets/molotovIcon.png"));	//15
-		assets.add(drawer.loadImage("assets/shieldIcon.png"));	//16
-		assets.add(drawer.loadImage("assets/woodFloor.png"));	//17
+		assets.add(new ScaleImage(drawer.loadImage("assets/player.png")));			//0
+		assets.add(new ScaleImage(drawer.loadImage("assets/ghost.png")));			//1
+		assets.add(new ScaleImage(drawer.loadImage("assets/bullet.png")));			//2
+		assets.add(new ScaleImage(drawer.loadImage("assets/star.png")));			//3
+		assets.add(new ScaleImage(drawer.loadImage("assets/crosshair.png")));		//4
+		assets.add(new ScaleImage(drawer.loadImage("assets/time.png")));			//5
+		assets.add(new ScaleImage(drawer.loadImage("assets/starIcon.png")));		//6
+		assets.add(new ScaleImage(drawer.loadImage("assets/flash.png")));			//7
+		assets.add(new ScaleImage(drawer.loadImage("assets/wall.png")));			//8
+		assets.add(new ScaleImage(drawer.loadImage("assets/wall2.png")));			//9
+		assets.add(new ScaleImage(drawer.loadImage("assets/particle.png")));     	//10
+		assets.add(new ScaleImage(drawer.loadImage("assets/bounceLogo.png")));   	//11
+		assets.add(new ScaleImage(drawer.loadImage("assets/grenade.png")));      	//12
+		assets.add(new ScaleImage(drawer.loadImage("assets/molotov.png")));      	//13
+		assets.add(new ScaleImage(drawer.loadImage("assets/grenadeIcon.png")));		//14
+		assets.add(new ScaleImage(drawer.loadImage("assets/molotovIcon.png")));		//15
+		assets.add(new ScaleImage(drawer.loadImage("assets/shieldIcon.png")));		//16
+		assets.add(new ScaleImage(drawer.loadImage("assets/woodFloor.png")));		//17
 		
 		//System.out.println(players);
 		
@@ -240,8 +239,10 @@ public class PlayScreen{
 
 		float ratioX = (float)drawer.width/DRAWING_WIDTH;
 		float ratioY = (float)drawer.height/DRAWING_HEIGHT;
-
-		drawer.scale(ratioX, ratioY);
+		
+		//drawer.scale(ratioX, ratioY);
+		// replacing drawer.scale with this not only doesn't speed up program, but doesn't scale everything
+		// ScaleImage.setWindowScaling(ratioX, ratioY);
 		
 		myPlayer.turnToward(drawer.mouseX / ratioX, drawer.mouseY / ratioY);
 
@@ -575,7 +576,7 @@ public class PlayScreen{
 	public ArrayList<Projectile> getBullets() {
 		return projectiles;
 	}
-	public ArrayList<PImage> getAssets(){
+	public ArrayList<ScaleImage> getAssets(){
 		return assets;
 	}
 	public ArrayList<Particle> getParticles(){

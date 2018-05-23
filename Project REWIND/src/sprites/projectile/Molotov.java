@@ -79,7 +79,7 @@ public class Molotov extends Projectile{
 //						
 //			}
 //		}
-		if(player.intersects((x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 50), (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 50), GRENADE_HEIGHT + 100, GRENADE_HEIGHT + 100) && this.speed == 0) {
+		if(player.intersects((x + GRENADE_WIDTH / 2) - (GRENADE_WIDTH / 3 + 100), (y + GRENADE_HEIGHT / 2) - (GRENADE_HEIGHT/ 2 + 100), GRENADE_HEIGHT + 200, GRENADE_HEIGHT + 200) && this.speed == 0) {
 			return 1;
 		}
 		
@@ -128,7 +128,7 @@ public class Molotov extends Projectile{
 			else if (flameTimer < 200) {
 
 				for (int i = 0; i < (int) (10 + Math.random() * 10); i++) {
-				flames.add(new Particle(getImage(),(int) (x + GRENADE_WIDTH / 2) - GRENADE_WIDTH / 3 - 50,(int) (y + GRENADE_HEIGHT / 2) - GRENADE_HEIGHT/ 2 - 50,(int)GRENADE_HEIGHT + 100,(int)GRENADE_HEIGHT + 100, 5));
+				flames.add(new Particle(getImage(),(int) (x + GRENADE_WIDTH / 2) - GRENADE_WIDTH / 3 - 100,(int) (y + GRENADE_HEIGHT / 2) - GRENADE_HEIGHT/ 2 - 100,(int)GRENADE_HEIGHT + 200,(int)GRENADE_HEIGHT + 200, 5));
 				}
 				flameTimer++;
 			}
